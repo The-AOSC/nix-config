@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{config, pkgs, ...}: {
   services.gitlab = {
     enable = true;
     databasePasswordFile = "/etc/credentials/gitlab/database";
@@ -9,7 +9,17 @@
       otpFile = "/etc/credentials/gitlab/otp";
       jwsFile = "/etc/credentials/gitlab/jws";  # openssl genrsa 4096
     };
+    port = 80;
   };
+  services.openssh.authorizedKeysFiles = [
+    "${config.users.users."${config.services.gitlab.user}".home}/.ssh/authorized_keys"
+  ];
+  services.openssh.settings.AllowUsers = [
+    config.services.gitlab.user
+  ];
+  services.openssh.settings.AllowGroups = [
+    config.services.gitlab.group
+  ];
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -24,8 +34,8 @@
     directories = [
       {
         directory = "/var/gitlab/state";
-        user = "gitlab";
-        group = "gitlab";
+        user = config.services.gitlab.user;
+        group = config.services.gitlab.group;
         mode = "0750";
       }
       {
@@ -36,8 +46,8 @@
       }
       {
         directory = "/var/lib/redis-gitlab";
-        user = "gitlab";
-        group = "gitlab";
+        user = config.services.gitlab.user;
+        group = config.services.gitlab.group;
         mode = "0700";
       }
     ];
