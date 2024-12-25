@@ -6,6 +6,7 @@
     ../work.nix
     ../gitlab.nix
     ../persistence.nix
+    ../remote-config.nix
   ];
   home-modules = [
     ../home.nix
