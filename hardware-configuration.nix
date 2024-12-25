@@ -39,12 +39,6 @@
       fsType = "ext4";
     };
 
-  fileSystems."/etc/nixos" =
-    { device = "/persist/system/etc/nixos";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
   fileSystems."/etc/credentials" =
     { device = "/persist/system/etc/credentials";
       fsType = "none";

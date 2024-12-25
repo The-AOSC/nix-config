@@ -4,7 +4,6 @@
     enable = true;
     hideMounts = true;
     directories = [
-      #"/etc/nixos"  # mounted in hardware-configuration.nix
     ];
     files = [
     ];
