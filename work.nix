@@ -18,7 +18,7 @@
         /- file:${cyclone} browse --timeout 60
       '';
     };
-    git-daemon.enable = true;
+    #git-daemon.enable = true;
     ntp.enable = true;
     wireshark.enable = true;
   };
