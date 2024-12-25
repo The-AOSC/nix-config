@@ -1,0 +1,12 @@
+diff '--color=auto' '--unified=3' --recursive mpv-0.35.1/player/command.c mpv-0.35.1-cut-chapter-list/player/command.c
+--- mpv-0.35.1/player/command.c	2023-01-28 21:49:47.000000000 +0500
++++ mpv-0.35.1-cut-chapter-list/player/command.c	2023-07-13 12:33:01.674835988 +0500
+@@ -1025,7 +1025,7 @@
+             talloc_free(name);
+         }
+ 
+-        *(char **)arg = res;
++        *(char **)arg = cut_osd_list(mpctx, res, cur);
+         return M_PROPERTY_OK;
+     }
+     case M_PROPERTY_SET: {

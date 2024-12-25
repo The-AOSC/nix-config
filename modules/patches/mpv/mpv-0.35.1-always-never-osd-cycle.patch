@@ -1,0 +1,28 @@
+diff '--color=auto' '--unified=3' --recursive mpv-0.35.1/player/lua/osc.lua mpv-0.35.1-always-never-osd-cycle/player/lua/osc.lua
+--- mpv-0.35.1/player/lua/osc.lua	2023-01-28 21:49:47.000000000 +0500
++++ mpv-0.35.1-always-never-osd-cycle/player/lua/osc.lua	2023-07-20 02:51:40.116616551 +0500
+@@ -2838,6 +2838,16 @@
+         end
+     end
+ 
++    if mode == "cycle-no-auto" then
++        if not state.enabled then
++            mode = "always"
++        elseif user_opts.visibility ~= "always" then
++            mode = "always"
++        else
++            mode = "never"
++        end
++    end
++
+     if mode == "auto" then
+         always_on(false)
+         enable_osc(true)
+@@ -2896,6 +2906,7 @@
+ visibility_mode(user_opts.visibility, true)
+ mp.register_script_message("osc-visibility", visibility_mode)
+ mp.add_key_binding(nil, "visibility", function() visibility_mode("cycle") end)
++mp.add_key_binding(nil, "visibility-no-auto", function() visibility_mode("cycle-no-auto") end)
+ 
+ mp.register_script_message("osc-idlescreen", idlescreen_visibility)
+ 

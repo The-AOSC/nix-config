@@ -1,0 +1,3 @@
+{pkgs, ...}: {
+  modules.options.playerctl = {};
+}

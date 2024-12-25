@@ -1,0 +1,12 @@
+diff -ruN a/src/Makefile.am b/src/Makefile.am
+--- a/src/Makefile.am	2024-10-19 20:02:39.688894683 +0500
++++ b/src/Makefile.am	2024-10-19 20:03:06.763021261 +0500
+@@ -1,4 +1,4 @@
+-bin_PROGRAMS=unrar-free
+-unrar_free_SOURCES=unrar.c opts.c opts.h
+-unrar_free_CFLAGS = @LIBARCHIVE_CFLAGS@ -fno-strict-aliasing
+-unrar_free_LDADD  = @LIBARCHIVE_LIBS@
++bin_PROGRAMS=unrar
++unrar_SOURCES=unrar.c opts.c opts.h
++unrar_CFLAGS = @LIBARCHIVE_CFLAGS@ -fno-strict-aliasing
++unrar_LDADD  = @LIBARCHIVE_LIBS@
