@@ -221,6 +221,7 @@
       "Desktop/Movies"
       "Desktop/Music"
       "nixpkgs"
+      "nix-config"
     ];
     # NOTE: doesn't work well with dynamically updated files
     files = [
