@@ -39,6 +39,11 @@
       fsType = "ext4";
     };
 
+  fileSystems."/persist/containers" =
+    { device = "/dev/disk/by-uuid/8a6ea929-ec97-4daf-bb46-3831f322d940";
+      fsType = "ext4";
+    };
+
   fileSystems."/etc/credentials" =
     { device = "/persist/system/etc/credentials";
       fsType = "none";
