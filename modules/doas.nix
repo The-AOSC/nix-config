@@ -14,6 +14,17 @@
           "wheel"
         ];
       }
+      {
+        keepEnv = true;
+        setEnv = [
+          "-XDG_CACHE_HOME"
+          "SUDO_UID=$EUID"
+        ];
+        groups = [
+          "wheel"
+        ];
+        cmd = "nixos-rebuild";
+      }
     ];
   };
   security.sudo.enable = config.modules.lib.withModuleSystemConfig "doas" false;
