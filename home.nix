@@ -42,4 +42,20 @@
     zathura
     zip
   ];
+  home.persistence."/persist/system/home/vladimir" = {
+    enable = true;
+    directories = [
+    ];
+    files = [
+    ];
+    allowOther = false;
+  };
+  home.persistence."/persist/storage/home/vladimir" = {
+    enable = true;
+    directories = [
+    ];
+    files = [
+    ];
+    allowOther = false;
+  };
 }

@@ -17,7 +17,6 @@
     ./no-default-packages.nix
     ./git-daemon.nix
     ./neovim.nix
-    ./mpv.nix
     ./dbus-broker.nix
     ./fonts.nix
     ./systemd-boot.nix

@@ -31,7 +31,6 @@
     qtile.enable = true;
     #bvi.enable = true;  # home manager
     audio.enable = true;
-    mpv.enable = true;
     neovim.enable = true;
     cava.enable = true;
     wireshark.enable = true;

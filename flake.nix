@@ -40,7 +40,9 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users."${host-config.username}" = {
-                imports = host-config.home-modules;
+                imports = [
+                  impermanence.homeManagerModules.impermanence
+                ] ++ host-config.home-modules;
               };
               extraSpecialArgs = specialArgs;
             };

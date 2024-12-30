@@ -11,6 +11,7 @@
   home-modules = [
     ../home.nix
     ../work-home.nix
+    ../mpv.nix
   ];
   username = "vladimir";
 }
