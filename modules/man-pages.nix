@@ -1,3 +1,0 @@
-{...}: {
-  modules.options.man-pages = {};
-}

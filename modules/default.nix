@@ -4,7 +4,6 @@
     ./samba.nix
     ./autofs.nix
     ./users.nix
-    ./traceroute.nix
     ./kdeconnect.nix
     ./gnupg.nix
     ./qtile.nix
@@ -24,8 +23,6 @@
     ./offline-rebuild.nix
     ./sysrq.nix
     ./vivaldi.nix
-    ./bat.nix
-    ./bvi.nix
     ./ssh.nix
     ./mako.nix
     ./wireshark.nix
@@ -35,53 +32,20 @@
     ./htop.nix
     ./cava.nix
     ./cifs-utils.nix
-    ./clang.nix
-    ./dos2unix.nix
     ./endgame-singularity.nix
-    ./fastfetch.nix
-    ./feh.nix
-    ./ffmpeg.nix
-    ./file.nix
-    ./gimp.nix
-    ./glxinfo.nix
-    ./jq.nix
-    ./killall.nix
     ./lib.nix
     ./libreoffice.nix
-    ./man-pages.nix
-    ./moreutils.nix
-    ./nmap.nix
-    ./pdfarranger.nix
     ./python.nix
     ./qbittorrent.nix
-    ./qrencode.nix
-    ./rlwrap.nix
-    ./rsync.nix
     ./sbcl.nix
-    ./shellcheck.nix
-    ./strace.nix
-    ./termdown.nix
     ./sshd.nix
     ./tor-browser.nix
-    ./translate-shell.nix
-    ./tty-solitaire.nix
-    ./universal-ctags.nix
     ./unp.nix
-    ./vlock.nix
-    ./wev.nix
     ./wezterm.nix
-    ./wget.nix
-    ./wl-clipboard.nix
     ./wtf.nix
-    ./xxd.nix
-    ./yt-dlp.nix
-    ./zathura.nix
-    ./zip.nix
     ./zoxide.nix
     ./git.nix
-    ./ventoy.nix
     ./screenshot.nix
-    ./playerctl.nix
     ./unfree-fonts.nix
     ./wine.nix
     ./pass.nix
