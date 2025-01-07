@@ -19,8 +19,7 @@
   ];
 
   fileSystems."/".options = ["mode=755"];
-  fileSystems."/persist/system".neededForBoot = true;
-  fileSystems."/persist/storage".neededForBoot = true;
+  fileSystems."/persist".neededForBoot = true;
   #fileSystems."/etc/nixos".neededForBoot = true;
   fileSystems."/etc/credentials".neededForBoot = true;
 

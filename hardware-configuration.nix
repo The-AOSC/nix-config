@@ -29,17 +29,7 @@
       fsType = "ext4";
     };
 
-  fileSystems."/persist/system" =
-    { device = "/dev/disk/by-uuid/f4b95452-cddd-47b6-a6f2-490de33f0a6e";
-      fsType = "ext4";
-    };
-
-  fileSystems."/persist/storage" =
-    { device = "/dev/disk/by-uuid/2a828277-020f-4b76-9cc5-4bef985b00e5";
-      fsType = "ext4";
-    };
-
-  fileSystems."/persist/containers" =
+  fileSystems."/persist" =
     { device = "/dev/disk/by-uuid/8a6ea929-ec97-4daf-bb46-3831f322d940";
       fsType = "ext4";
     };
