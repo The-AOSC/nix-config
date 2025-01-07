@@ -15,6 +15,7 @@
     file
     gimp
     glxinfo
+    gparted
     jq
     killall
     man-pages
