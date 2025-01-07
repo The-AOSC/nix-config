@@ -5,6 +5,7 @@
   programs.home-manager.enable = true;
   home.packages = with pkgs; [
     bat
+    binwalk
     bvi
     clang
     dig
