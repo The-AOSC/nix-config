@@ -33,6 +33,12 @@
       in nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
+          ({pkgs-unstable, ...}: {
+            nixpkgs.overlays = [
+              (final: prev: (with pkgs-unstable; {
+              }))
+            ];
+          })
           home-manager.nixosModules.home-manager
           impermanence.nixosModules.impermanence
           {
