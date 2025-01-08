@@ -1,0 +1,620 @@
+commit 6a7121e0420a79b025df2e22987e8ad148ae68bc
+gpg: Signature made Wed 08 Jan 2025 02:38:31 PM +05
+gpg:                using RSA key 1FB2583842B96A6C7B088DBDD99A3BDB95A7FDD4
+gpg: Good signature from "The AOSC <the-aosc@tutamail.com>" [ultimate]
+Author: The AOSC <the-aosc@tutamail.com>
+Date:   Wed Jan 8 14:37:50 2025 +0500
+
+    Revert "Drop support for layer-shell"
+    
+    This reverts commit ac3b49b6571ceda3f8db11a98bfe320106996280.
+
+diff --git a/README.md b/README.md
+index ec345c3..cbdbd83 100644
+--- a/README.md
++++ b/README.md
+@@ -1,8 +1,11 @@
+ # swaylock
+ 
+ swaylock is a screen locking utility for Wayland compositors. It is compatible
+-with any Wayland compositor which implements the ext-session-lock-v1 Wayland
+-protocol.
++with any Wayland compositor which implements one of the following Wayland
++protocols:
++
++- ext-session-lock-v1, or
++- wlr-layer-shell and wlr-input-inhibitor
+ 
+ See the man page, [swaylock(1)](swaylock.1.scd), for instructions on using swaylock.
+ 
+diff --git a/include/swaylock.h b/include/swaylock.h
+index c373fff..1f88cbb 100644
+--- a/include/swaylock.h
++++ b/include/swaylock.h
+@@ -7,6 +7,7 @@
+ #include "cairo.h"
+ #include "pool-buffer.h"
+ #include "seat.h"
++#include "wlr-layer-shell-unstable-v1-client-protocol.h"
+ 
+ // Indicator state: status of authentication attempt
+ enum auth_state {
+@@ -85,6 +86,8 @@ struct swaylock_state {
+ 	struct wl_display *display;
+ 	struct wl_compositor *compositor;
+ 	struct wl_subcompositor *subcompositor;
++	struct zwlr_layer_shell_v1 *layer_shell;
++	struct zwlr_input_inhibit_manager_v1 *input_inhibit_manager;
+ 	struct wl_shm *shm;
+ 	struct wl_list surfaces;
+ 	struct wl_list images;
+@@ -110,6 +113,7 @@ struct swaylock_surface {
+ 	struct wl_surface *surface; // surface for background
+ 	struct wl_surface *child; // indicator surface made into subsurface
+ 	struct wl_subsurface *subsurface;
++	struct zwlr_layer_surface_v1 *layer_surface;
+ 	struct ext_session_lock_surface_v1 *ext_session_lock_surface_v1;
+ 	struct pool_buffer indicator_buffers[2];
+ 	bool created;
+diff --git a/main.c b/main.c
+index 549d6f6..05b7358 100644
+--- a/main.c
++++ b/main.c
+@@ -25,6 +25,8 @@
+ #include "pool-buffer.h"
+ #include "seat.h"
+ #include "swaylock.h"
++#include "wlr-input-inhibitor-unstable-v1-client-protocol.h"
++#include "wlr-layer-shell-unstable-v1-client-protocol.h"
+ #include "ext-session-lock-v1-client-protocol.h"
+ 
+ static uint32_t parse_color(const char *color) {
+@@ -94,6 +96,9 @@ static void daemonize(void) {
+ 
+ static void destroy_surface(struct swaylock_surface *surface) {
+ 	wl_list_remove(&surface->link);
++	if (surface->layer_surface != NULL) {
++		zwlr_layer_surface_v1_destroy(surface->layer_surface);
++	}
+ 	if (surface->ext_session_lock_surface_v1 != NULL) {
+ 		ext_session_lock_surface_v1_destroy(surface->ext_session_lock_surface_v1);
+ 	}
+@@ -112,6 +117,7 @@ static void destroy_surface(struct swaylock_surface *surface) {
+ 	free(surface);
+ }
+ 
++static const struct zwlr_layer_surface_v1_listener layer_surface_listener;
+ static const struct ext_session_lock_surface_v1_listener ext_session_lock_surface_v1_listener;
+ 
+ static cairo_surface_t *select_image(struct swaylock_state *state,
+@@ -138,10 +144,28 @@ static void create_surface(struct swaylock_surface *surface) {
+ 	assert(surface->subsurface);
+ 	wl_subsurface_set_sync(surface->subsurface);
+ 
+-	surface->ext_session_lock_surface_v1 = ext_session_lock_v1_get_lock_surface(
+-		state->ext_session_lock_v1, surface->surface, surface->output);
+-	ext_session_lock_surface_v1_add_listener(surface->ext_session_lock_surface_v1,
+-		&ext_session_lock_surface_v1_listener, surface);
++	if (state->ext_session_lock_v1) {
++		surface->ext_session_lock_surface_v1 = ext_session_lock_v1_get_lock_surface(
++				state->ext_session_lock_v1, surface->surface, surface->output);
++		ext_session_lock_surface_v1_add_listener(surface->ext_session_lock_surface_v1,
++				&ext_session_lock_surface_v1_listener, surface);
++	} else {
++		surface->layer_surface = zwlr_layer_shell_v1_get_layer_surface(
++				state->layer_shell, surface->surface, surface->output,
++				ZWLR_LAYER_SHELL_V1_LAYER_OVERLAY, "lockscreen");
++
++		zwlr_layer_surface_v1_set_size(surface->layer_surface, 0, 0);
++		zwlr_layer_surface_v1_set_anchor(surface->layer_surface,
++				ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP |
++				ZWLR_LAYER_SURFACE_V1_ANCHOR_RIGHT |
++				ZWLR_LAYER_SURFACE_V1_ANCHOR_BOTTOM |
++				ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT);
++		zwlr_layer_surface_v1_set_exclusive_zone(surface->layer_surface, -1);
++		zwlr_layer_surface_v1_set_keyboard_interactivity(
++				surface->layer_surface, true);
++		zwlr_layer_surface_v1_add_listener(surface->layer_surface,
++				&layer_surface_listener, surface);
++	}
+ 
+ 	if (surface_is_opaque(surface) &&
+ 			surface->state->args.mode != BACKGROUND_MODE_CENTER &&
+@@ -153,9 +177,35 @@ static void create_surface(struct swaylock_surface *surface) {
+ 		wl_region_destroy(region);
+ 	}
+ 
++	if (!state->ext_session_lock_v1) {
++		wl_surface_commit(surface->surface);
++	}
++
+ 	surface->created = true;
+ }
+ 
++static void layer_surface_configure(void *data,
++		struct zwlr_layer_surface_v1 *layer_surface,
++		uint32_t serial, uint32_t width, uint32_t height) {
++	struct swaylock_surface *surface = data;
++	surface->width = width;
++	surface->height = height;
++	zwlr_layer_surface_v1_ack_configure(layer_surface, serial);
++	render_frame_background(surface);
++	render_frame(surface);
++}
++
++static void layer_surface_closed(void *data,
++		struct zwlr_layer_surface_v1 *layer_surface) {
++	struct swaylock_surface *surface = data;
++	destroy_surface(surface);
++}
++
++static const struct zwlr_layer_surface_v1_listener layer_surface_listener = {
++	.configure = layer_surface_configure,
++	.closed = layer_surface_closed,
++};
++
+ static void ext_session_lock_surface_v1_handle_configure(void *data,
+ 		struct ext_session_lock_surface_v1 *lock_surface, uint32_t serial,
+ 		uint32_t width, uint32_t height) {
+@@ -306,6 +356,12 @@ static void handle_global(void *data, struct wl_registry *registry,
+ 			calloc(1, sizeof(struct swaylock_seat));
+ 		swaylock_seat->state = state;
+ 		wl_seat_add_listener(seat, &seat_listener, swaylock_seat);
++	} else if (strcmp(interface, zwlr_layer_shell_v1_interface.name) == 0) {
++		state->layer_shell = wl_registry_bind(
++				registry, name, &zwlr_layer_shell_v1_interface, 1);
++	} else if (strcmp(interface, zwlr_input_inhibit_manager_v1_interface.name) == 0) {
++		state->input_inhibit_manager = wl_registry_bind(
++				registry, name, &zwlr_input_inhibit_manager_v1_interface, 1);
+ 	} else if (strcmp(interface, wl_output_interface.name) == 0) {
+ 		struct swaylock_surface *surface =
+ 			calloc(1, sizeof(struct swaylock_surface));
+@@ -1229,17 +1285,27 @@ int main(int argc, char **argv) {
+ 		return 1;
+ 	}
+ 
+-	if (!state.ext_session_lock_manager_v1) {
+-		swaylock_log(LOG_ERROR, "Missing ext-session-lock-v1");
++	if (state.ext_session_lock_manager_v1) {
++		swaylock_log(LOG_DEBUG, "Using ext-session-lock-v1");
++		state.ext_session_lock_v1 = ext_session_lock_manager_v1_lock(state.ext_session_lock_manager_v1);
++		ext_session_lock_v1_add_listener(state.ext_session_lock_v1,
++				&ext_session_lock_v1_listener, &state);
++	} else if (state.layer_shell && state.input_inhibit_manager) {
++		swaylock_log(LOG_DEBUG, "Using wlr-layer-shell + wlr-input-inhibitor");
++		zwlr_input_inhibit_manager_v1_get_inhibitor(state.input_inhibit_manager);
++	} else {
++		swaylock_log(LOG_ERROR, "Missing ext-session-lock-v1, wlr-layer-shell "
++				"and wlr-input-inhibitor");
+ 		return 1;
+ 	}
+ 
+-	state.ext_session_lock_v1 = ext_session_lock_manager_v1_lock(state.ext_session_lock_manager_v1);
+-	ext_session_lock_v1_add_listener(state.ext_session_lock_v1,
+-		&ext_session_lock_v1_listener, &state);
+-
+ 	if (wl_display_roundtrip(state.display) == -1) {
+ 		free(state.args.font);
++		if (state.input_inhibit_manager) {
++			swaylock_log(LOG_ERROR, "Exiting - failed to inhibit input:"
++					" is another lockscreen already running?");
++			return 2;
++		}
+ 		return 1;
+ 	}
+ 
+@@ -1251,11 +1317,19 @@ int main(int argc, char **argv) {
+ 		create_surface(surface);
+ 	}
+ 
+-	while (!state.locked) {
+-		if (wl_display_dispatch(state.display) < 0) {
+-			swaylock_log(LOG_ERROR, "wl_display_dispatch() failed");
++	if (state.ext_session_lock_manager_v1) {
++		while (!state.locked) {
++			if (wl_display_dispatch(state.display) < 0) {
++				swaylock_log(LOG_ERROR, "wl_display_dispatch() failed");
++				return 2;
++			}
++		}
++	} else {
++		if (wl_display_roundtrip(state.display) < 0) {
++			swaylock_log(LOG_ERROR, "wl_display_roundtrip() failed");
+ 			return 2;
+ 		}
++		state.locked = true;
+ 	}
+ 
+ 	if (state.args.ready_fd >= 0) {
+@@ -1292,8 +1366,10 @@ int main(int argc, char **argv) {
+ 		loop_poll(state.eventloop);
+ 	}
+ 
+-	ext_session_lock_v1_unlock_and_destroy(state.ext_session_lock_v1);
+-	wl_display_roundtrip(state.display);
++	if (state.ext_session_lock_v1) {
++		ext_session_lock_v1_unlock_and_destroy(state.ext_session_lock_v1);
++		wl_display_roundtrip(state.display);
++	}
+ 
+ 	free(state.args.font);
+ 	cairo_destroy(state.test_cairo);
+diff --git a/meson.build b/meson.build
+index f69ebfb..8c4cfe0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -68,7 +68,10 @@ wayland_scanner_client = generator(
+ )
+ 
+ client_protocols = [
++	wl_protocol_dir / 'stable/xdg-shell/xdg-shell.xml',
+ 	wl_protocol_dir / 'staging/ext-session-lock/ext-session-lock-v1.xml',
++	'wlr-layer-shell-unstable-v1.xml',
++	'wlr-input-inhibitor-unstable-v1.xml',
+ ]
+ 
+ protos_src = []
+diff --git a/wlr-input-inhibitor-unstable-v1.xml b/wlr-input-inhibitor-unstable-v1.xml
+new file mode 100644
+index 0000000..b62d1bb
+--- /dev/null
++++ b/wlr-input-inhibitor-unstable-v1.xml
+@@ -0,0 +1,67 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<protocol name="wlr_input_inhibit_unstable_v1">
++  <copyright>
++    Copyright © 2018 Drew DeVault
++
++    Permission to use, copy, modify, distribute, and sell this
++    software and its documentation for any purpose is hereby granted
++    without fee, provided that the above copyright notice appear in
++    all copies and that both that copyright notice and this permission
++    notice appear in supporting documentation, and that the name of
++    the copyright holders not be used in advertising or publicity
++    pertaining to distribution of the software without specific,
++    written prior permission.  The copyright holders make no
++    representations about the suitability of this software for any
++    purpose.  It is provided "as is" without express or implied
++    warranty.
++
++    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
++    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
++    FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
++    SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
++    AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
++    ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
++    THIS SOFTWARE.
++  </copyright>
++
++  <interface name="zwlr_input_inhibit_manager_v1" version="1">
++    <description summary="inhibits input events to other clients">
++      Clients can use this interface to prevent input events from being sent to
++      any surfaces but its own, which is useful for example in lock screen
++      software. It is assumed that access to this interface will be locked down
++      to whitelisted clients by the compositor.
++    </description>
++
++    <request name="get_inhibitor">
++      <description summary="inhibit input to other clients">
++        Activates the input inhibitor. As long as the inhibitor is active, the
++        compositor will not send input events to other clients.
++      </description>
++      <arg name="id" type="new_id" interface="zwlr_input_inhibitor_v1"/>
++    </request>
++
++    <enum name="error">
++      <entry name="already_inhibited" value="0" summary="an input inhibitor is already in use on the compositor"/>
++    </enum>
++  </interface>
++
++  <interface name="zwlr_input_inhibitor_v1" version="1">
++    <description summary="inhibits input to other clients">
++      While this resource exists, input to clients other than the owner of the
++      inhibitor resource will not receive input events. The client that owns
++      this resource will receive all input events normally. The compositor will
++      also disable all of its own input processing (such as keyboard shortcuts)
++      while the inhibitor is active.
++
++      The compositor may continue to send input events to selected clients,
++      such as an on-screen keyboard (via the input-method protocol).
++    </description>
++
++    <request name="destroy" type="destructor">
++      <description summary="destroy the input inhibitor object">
++        Destroy the inhibitor and allow other clients to receive input.
++      </description>
++    </request>
++  </interface>
++</protocol>
+diff --git a/wlr-layer-shell-unstable-v1.xml b/wlr-layer-shell-unstable-v1.xml
+new file mode 100644
+index 0000000..f29eb87
+--- /dev/null
++++ b/wlr-layer-shell-unstable-v1.xml
+@@ -0,0 +1,285 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<protocol name="wlr_layer_shell_v1_unstable_v1">
++  <copyright>
++    Copyright © 2017 Drew DeVault
++
++    Permission to use, copy, modify, distribute, and sell this
++    software and its documentation for any purpose is hereby granted
++    without fee, provided that the above copyright notice appear in
++    all copies and that both that copyright notice and this permission
++    notice appear in supporting documentation, and that the name of
++    the copyright holders not be used in advertising or publicity
++    pertaining to distribution of the software without specific,
++    written prior permission.  The copyright holders make no
++    representations about the suitability of this software for any
++    purpose.  It is provided "as is" without express or implied
++    warranty.
++
++    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
++    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
++    FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
++    SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
++    AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
++    ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
++    THIS SOFTWARE.
++  </copyright>
++
++  <interface name="zwlr_layer_shell_v1" version="1">
++    <description summary="create surfaces that are layers of the desktop">
++      Clients can use this interface to assign the surface_layer role to
++      wl_surfaces. Such surfaces are assigned to a "layer" of the output and
++      rendered with a defined z-depth respective to each other. They may also be
++      anchored to the edges and corners of a screen and specify input handling
++      semantics. This interface should be suitable for the implementation of
++      many desktop shell components, and a broad number of other applications
++      that interact with the desktop.
++    </description>
++
++    <request name="get_layer_surface">
++      <description summary="create a layer_surface from a surface">
++        Create a layer surface for an existing surface. This assigns the role of
++        layer_surface, or raises a protocol error if another role is already
++        assigned.
++
++        Creating a layer surface from a wl_surface which has a buffer attached
++        or committed is a client error, and any attempts by a client to attach
++        or manipulate a buffer prior to the first layer_surface.configure call
++        must also be treated as errors.
++
++        You may pass NULL for output to allow the compositor to decide which
++        output to use. Generally this will be the one that the user most
++        recently interacted with.
++
++        Clients can specify a namespace that defines the purpose of the layer
++        surface.
++      </description>
++      <arg name="id" type="new_id" interface="zwlr_layer_surface_v1"/>
++      <arg name="surface" type="object" interface="wl_surface"/>
++      <arg name="output" type="object" interface="wl_output" allow-null="true"/>
++      <arg name="layer" type="uint" enum="layer" summary="layer to add this surface to"/>
++      <arg name="namespace" type="string" summary="namespace for the layer surface"/>
++    </request>
++
++    <enum name="error">
++      <entry name="role" value="0" summary="wl_surface has another role"/>
++      <entry name="invalid_layer" value="1" summary="layer value is invalid"/>
++      <entry name="already_constructed" value="2" summary="wl_surface has a buffer attached or committed"/>
++    </enum>
++
++    <enum name="layer">
++      <description summary="available layers for surfaces">
++        These values indicate which layers a surface can be rendered in. They
++        are ordered by z depth, bottom-most first. Traditional shell surfaces
++        will typically be rendered between the bottom and top layers.
++        Fullscreen shell surfaces are typically rendered at the top layer.
++        Multiple surfaces can share a single layer, and ordering within a
++        single layer is undefined.
++      </description>
++
++      <entry name="background" value="0"/>
++      <entry name="bottom" value="1"/>
++      <entry name="top" value="2"/>
++      <entry name="overlay" value="3"/>
++    </enum>
++  </interface>
++
++  <interface name="zwlr_layer_surface_v1" version="1">
++    <description summary="layer metadata interface">
++      An interface that may be implemented by a wl_surface, for surfaces that
++      are designed to be rendered as a layer of a stacked desktop-like
++      environment.
++
++      Layer surface state (size, anchor, exclusive zone, margin, interactivity)
++      is double-buffered, and will be applied at the time wl_surface.commit of
++      the corresponding wl_surface is called.
++    </description>
++
++    <request name="set_size">
++      <description summary="sets the size of the surface">
++        Sets the size of the surface in surface-local coordinates. The
++        compositor will display the surface centered with respect to its
++        anchors.
++
++        If you pass 0 for either value, the compositor will assign it and
++        inform you of the assignment in the configure event. You must set your
++        anchor to opposite edges in the dimensions you omit; not doing so is a
++        protocol error. Both values are 0 by default.
++
++        Size is double-buffered, see wl_surface.commit.
++      </description>
++      <arg name="width" type="uint"/>
++      <arg name="height" type="uint"/>
++    </request>
++
++    <request name="set_anchor">
++      <description summary="configures the anchor point of the surface">
++        Requests that the compositor anchor the surface to the specified edges
++        and corners. If two orthoginal edges are specified (e.g. 'top' and
++        'left'), then the anchor point will be the intersection of the edges
++        (e.g. the top left corner of the output); otherwise the anchor point
++        will be centered on that edge, or in the center if none is specified.
++
++        Anchor is double-buffered, see wl_surface.commit.
++      </description>
++      <arg name="anchor" type="uint" enum="anchor"/>
++    </request>
++
++    <request name="set_exclusive_zone">
++      <description summary="configures the exclusive geometry of this surface">
++        Requests that the compositor avoids occluding an area of the surface
++        with other surfaces. The compositor's use of this information is
++        implementation-dependent - do not assume that this region will not
++        actually be occluded.
++
++        A positive value is only meaningful if the surface is anchored to an
++        edge, rather than a corner. The zone is the number of surface-local
++        coordinates from the edge that are considered exclusive.
++
++        Surfaces that do not wish to have an exclusive zone may instead specify
++        how they should interact with surfaces that do. If set to zero, the
++        surface indicates that it would like to be moved to avoid occluding
++        surfaces with a positive excluzive zone. If set to -1, the surface
++        indicates that it would not like to be moved to accommodate for other
++        surfaces, and the compositor should extend it all the way to the edges
++        it is anchored to.
++
++        For example, a panel might set its exclusive zone to 10, so that
++        maximized shell surfaces are not shown on top of it. A notification
++        might set its exclusive zone to 0, so that it is moved to avoid
++        occluding the panel, but shell surfaces are shown underneath it. A
++        wallpaper or lock screen might set their exclusive zone to -1, so that
++        they stretch below or over the panel.
++
++        The default value is 0.
++
++        Exclusive zone is double-buffered, see wl_surface.commit.
++      </description>
++      <arg name="zone" type="int"/>
++    </request>
++
++    <request name="set_margin">
++      <description summary="sets a margin from the anchor point">
++        Requests that the surface be placed some distance away from the anchor
++        point on the output, in surface-local coordinates. Setting this value
++        for edges you are not anchored to has no effect.
++
++        The exclusive zone includes the margin.
++
++        Margin is double-buffered, see wl_surface.commit.
++      </description>
++      <arg name="top" type="int"/>
++      <arg name="right" type="int"/>
++      <arg name="bottom" type="int"/>
++      <arg name="left" type="int"/>
++    </request>
++
++    <request name="set_keyboard_interactivity">
++      <description summary="requests keyboard events">
++        Set to 1 to request that the seat send keyboard events to this layer
++        surface. For layers below the shell surface layer, the seat will use
++        normal focus semantics. For layers above the shell surface layers, the
++        seat will always give exclusive keyboard focus to the top-most layer
++        which has keyboard interactivity set to true.
++
++        Layer surfaces receive pointer, touch, and tablet events normally. If
++        you do not want to receive them, set the input region on your surface
++        to an empty region.
++
++        Events is double-buffered, see wl_surface.commit.
++      </description>
++      <arg name="keyboard_interactivity" type="uint"/>
++    </request>
++
++    <request name="get_popup">
++      <description summary="assign this layer_surface as an xdg_popup parent">
++        This assigns an xdg_popup's parent to this layer_surface.  This popup
++        should have been created via xdg_surface::get_popup with the parent set
++        to NULL, and this request must be invoked before committing the popup's
++        initial state.
++
++        See the documentation of xdg_popup for more details about what an
++        xdg_popup is and how it is used.
++      </description>
++      <arg name="popup" type="object" interface="xdg_popup"/>
++    </request>
++
++    <request name="ack_configure">
++      <description summary="ack a configure event">
++        When a configure event is received, if a client commits the
++        surface in response to the configure event, then the client
++        must make an ack_configure request sometime before the commit
++        request, passing along the serial of the configure event.
++
++        If the client receives multiple configure events before it
++        can respond to one, it only has to ack the last configure event.
++
++        A client is not required to commit immediately after sending
++        an ack_configure request - it may even ack_configure several times
++        before its next surface commit.
++
++        A client may send multiple ack_configure requests before committing, but
++        only the last request sent before a commit indicates which configure
++        event the client really is responding to.
++      </description>
++      <arg name="serial" type="uint" summary="the serial from the configure event"/>
++    </request>
++
++    <request name="destroy" type="destructor">
++      <description summary="destroy the layer_surface">
++        This request destroys the layer surface.
++      </description>
++    </request>
++
++    <event name="configure">
++      <description summary="suggest a surface change">
++        The configure event asks the client to resize its surface.
++
++        Clients should arrange their surface for the new states, and then send
++        an ack_configure request with the serial sent in this configure event at
++        some point before committing the new surface.
++
++        The client is free to dismiss all but the last configure event it
++        received.
++
++        The width and height arguments specify the size of the window in
++        surface-local coordinates.
++
++        The size is a hint, in the sense that the client is free to ignore it if
++        it doesn't resize, pick a smaller size (to satisfy aspect ratio or
++        resize in steps of NxM pixels). If the client picks a smaller size and
++        is anchored to two opposite anchors (e.g. 'top' and 'bottom'), the
++        surface will be centered on this axis.
++
++        If the width or height arguments are zero, it means the client should
++        decide its own window dimension.
++      </description>
++      <arg name="serial" type="uint"/>
++      <arg name="width" type="uint"/>
++      <arg name="height" type="uint"/>
++    </event>
++
++    <event name="closed">
++      <description summary="surface should be closed">
++        The closed event is sent by the compositor when the surface will no
++        longer be shown. The output may have been destroyed or the user may
++        have asked for it to be removed. Further changes to the surface will be
++        ignored. The client should destroy the resource after receiving this
++        event, and create a new surface if they so choose.
++      </description>
++    </event>
++
++    <enum name="error">
++      <entry name="invalid_surface_state" value="0" summary="provided surface state is invalid"/>
++      <entry name="invalid_size" value="1" summary="size is invalid"/>
++      <entry name="invalid_anchor" value="2" summary="anchor bitfield is invalid"/>
++    </enum>
++
++    <enum name="anchor" bitfield="true">
++      <entry name="top" value="1" summary="the top edge of the anchor rectangle"/>
++      <entry name="bottom" value="2" summary="the bottom edge of the anchor rectangle"/>
++      <entry name="left" value="4" summary="the left edge of the anchor rectangle"/>
++      <entry name="right" value="8" summary="the right edge of the anchor rectangle"/>
++    </enum>
++  </interface>
++</protocol>
