@@ -1,41 +1,47 @@
 {
   description = "NixOS configuration of The AOSC";
   inputs = {
+    nixpkgs.follows = "nixpkgs-24-05";
+    nixpkgs-24-05.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-24-11.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     impermanence.url = "github:nix-community/impermanence";
   };
   outputs = inputs@{
     home-manager,
     nixpkgs,
+    nixpkgs-24-05,
+    nixpkgs-24-11,
     nixpkgs-unstable,
     impermanence,
     self,
     ...
-  }: let
-    system = "x86_64-linux";
-    pkgs-unstable = import nixpkgs-unstable {
-      inherit system;
-    };
-  in {
+  }: {
     nixosConfigurations = builtins.mapAttrs (host-name: host-config: (
       let
         system = host-config.system;
+        pkgs-24-05 = import nixpkgs-24-05 {
+          inherit system;
+        };
+        pkgs-24-11 = import nixpkgs-24-11 {
+          inherit system;
+        };
         pkgs-unstable = import nixpkgs-unstable {
           inherit system;
         };
         specialArgs = {
-          inherit pkgs-unstable inputs;
+          inherit pkgs-24-05 pkgs-24-11 pkgs-unstable inputs;
         };
       in nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
-          ({pkgs-unstable, ...}: {
+          ({pkgs-24-05, pkgs-24-11, pkgs-unstable, ...}: {
             nixpkgs.overlays = [
-              (final: prev: (with pkgs-unstable; {
+              (final: prev: (with pkgs-24-05; {
+              }) // (with pkgs-24-11; {
+              }) // (with pkgs-unstable; {
               }))
             ];
           })
