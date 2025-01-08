@@ -7,16 +7,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1726989464,
-        "narHash": "sha256-Vl+WVTJwutXkimwGprnEtXc/s/s8sMuXzqXaspIGlwM=",
+        "lastModified": 1736204492,
+        "narHash": "sha256-CoBPRgkUex9Iz6qGSzi/BFVUQjndB0PmME2B6eEyeCs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "2f23fa308a7c067e52dfcc30a0758f47043ec176",
+        "rev": "20665c6efa83d71020c8730f26706258ba5c6b2a",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "ref": "release-24.05",
         "repo": "home-manager",
         "type": "github"
       }
@@ -89,7 +88,7 @@
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "nixpkgs": [
-          "nixpkgs-24-05"
+          "nixpkgs-unstable"
         ],
         "nixpkgs-24-05": "nixpkgs-24-05",
         "nixpkgs-24-11": "nixpkgs-24-11",

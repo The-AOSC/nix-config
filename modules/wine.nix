@@ -7,10 +7,9 @@
       pkgs.winetricks
     ];
   };
-  hardware.opengl = config.modules.lib.withModuleUsersConfig "wine" {
+  hardware.graphics = config.modules.lib.withModuleUsersConfig "wine" {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
   hardware.nvidia = {
     prime = {

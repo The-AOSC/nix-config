@@ -14,10 +14,7 @@ in {
     ];
   };
   services.libinput.enable = with-config true;
-  hardware.opengl = with-config {
-    enable = true;
-    driSupport = true;  # no longer has any effect
-  };
+  hardware.graphics.enable = with-config true;
   users.users = config.modules.lib.withModuleUserConfig "qtile" (user-name: {
     "${user-name}".extraGroups = [
       # TODO: is this necessary?

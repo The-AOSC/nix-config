@@ -1,10 +1,8 @@
 {config, pkgs, ...}: {
   modules.options.kdeconnect = {
-    /*
     userPackages = [
       pkgs.plasma5Packages.kdeconnect-kde
     ];
-    */
     persist.user.data.directories = [
       ".config/kdeconnect"
     ];
