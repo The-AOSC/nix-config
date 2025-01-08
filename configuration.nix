@@ -8,8 +8,7 @@
 
   hardware.graphics.extraPackages = [
     #pkgs.nvidia-vaapi-driver
-    pkgs.intel-vaapi-driver
-    #pkgs.intel-media-driver  # not recomended for older generations (such as Skylake)
+    pkgs.intel-media-driver
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
