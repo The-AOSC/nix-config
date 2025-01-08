@@ -41,6 +41,8 @@
           ({pkgs-24-05, pkgs-24-11, pkgs-unstable, ...}: {
             nixpkgs.overlays = [
               (final: prev: (with pkgs-24-05; {
+                neovim-unwrapped = neovim-unwrapped;
+                wrapNeovim = wrapNeovim;
               }) // (with pkgs-24-11; {
               }) // (with pkgs-unstable; {
               }))
