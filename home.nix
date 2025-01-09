@@ -24,6 +24,7 @@
     nmap
     pdfarranger
     playerctl
+    qpwgraph
     qrencode
     rlwrap
     rsync
