@@ -129,6 +129,8 @@
 
   programs.firejail.enable = true;
 
+  boot.kernel.sysctl."kernel.dmesg_restrict" = 0;
+
   # TODO: migration
   fileSystems."/home/vladimir/gentoo/home".device = "/dev/sda11";
   users.groups."fix" = {gid=1001;members=["vladimir"];};
