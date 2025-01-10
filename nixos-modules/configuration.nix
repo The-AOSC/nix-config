@@ -9,7 +9,6 @@
     pkgs.intel-media-driver
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
   environment.systemPackages = [
     #git  # likely needed (enabled in modules/git.nix)
     #wget  # needed?

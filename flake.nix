@@ -16,7 +16,6 @@
     nixpkgs-24-05,
     nixpkgs-24-11,
     nixpkgs-unstable,
-    impermanence,
     self,
     ...
   }: {
@@ -38,27 +37,20 @@
       in nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
-          ({pkgs-24-05, pkgs-24-11, pkgs-unstable, ...}: {
-            nixpkgs.overlays = [
-              (final: prev: (with pkgs-24-05; {
-                neovim-unwrapped = neovim-unwrapped;
-                wrapNeovim = wrapNeovim;
-              }) // (with pkgs-24-11; {
-              }) // (with pkgs-unstable; {
-              }))
-            ];
-          })
+          {
+            nix.settings.experimental-features = ["nix-command" "flakes"];
+          }
           home-manager.nixosModules.home-manager
-          impermanence.nixosModules.impermanence
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users."${host-config.username}" = {
-                imports = [
-                  impermanence.homeManagerModules.impermanence
-                ] ++ host-config.home-modules;
-              };
+              users = builtins.mapAttrs (user-name: home-config: ({osConfig, ...}: {
+                imports = home-config.modules;
+                home.homeDirectory = osConfig.users.users."${user-name}".home;
+                home.username = user-name;
+                programs.home-manager.enable = true;
+              })) host-config.home;
               extraSpecialArgs = specialArgs;
             };
           }

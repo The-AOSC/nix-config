@@ -1,6 +1,15 @@
-{...}: {
+inputs@{...}: {
   system = "x86_64-linux";
   nixos-modules = [
+    ({pkgs-24-05, ...}: {
+      nixpkgs.overlays = [
+        (final: prev: (with pkgs-24-05; {
+          neovim-unwrapped = neovim-unwrapped;
+          wrapNeovim = wrapNeovim;
+        }))
+      ];
+    })
+    inputs.impermanence.nixosModules.impermanence
     ../nixos-modules/configuration.nix
     ../nixos-modules/gitlab.nix
     ../nixos-modules/hardware-configuration.nix
@@ -10,11 +19,15 @@
     ../nixos-modules/work.nix
     ../nixos-modules/zapret.nix
   ];
-  home-modules = [
-    ../home-modules/home.nix
-    ../home-modules/mpv.nix
-    ../home-modules/wezterm.nix
-    ../home-modules/work-home.nix
-  ];
-  username = "vladimir";
+  home = {
+    "vladimir" = {
+      modules = [
+        inputs.impermanence.homeManagerModules.impermanence
+        ../home-modules/home.nix
+        ../home-modules/mpv.nix
+        ../home-modules/wezterm.nix
+        ../home-modules/work-home.nix
+      ];
+    };
+  };
 }
