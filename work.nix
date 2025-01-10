@@ -66,7 +66,4 @@
       "enp0s20f0u2"
     ];
   };
-  environment.systemPackages = [
-    pkgs.ipset
-  ];
 }
