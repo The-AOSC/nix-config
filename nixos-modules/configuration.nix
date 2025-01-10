@@ -46,7 +46,6 @@
     tor-browser.enable = true;
     sshd.enable = true;
     unp.enable = true;
-    wezterm.enable = true;
     pass.enable = true;
     wtf.enable = true;
     zoxide.enable = true;

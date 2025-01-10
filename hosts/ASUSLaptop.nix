@@ -12,8 +12,9 @@
   ];
   home-modules = [
     ../home-modules/home.nix
-    ../home-modules/work-home.nix
     ../home-modules/mpv.nix
+    ../home-modules/wezterm.nix
+    ../home-modules/work-home.nix
   ];
   username = "vladimir";
 }

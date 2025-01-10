@@ -41,7 +41,6 @@
     ./sshd.nix
     ./tor-browser.nix
     ./unp.nix
-    ./wezterm.nix
     ./wtf.nix
     ./zoxide.nix
     ./git.nix
