@@ -8,8 +8,34 @@
       "ytimg.com"
     ];
     params = [
-      "--dpi-desync=fakeddisorder --dpi-desync-split-pos=2,midsld --dpi-desync-ttl=2"
+      #"--dpi-desync=fakeddisorder --dpi-desync-split-pos=2,midsld --dpi-desync-ttl=2 --dpi-desync-fake-tls=0x00000000"
+      #"--dpi-desync=multisplit --dpi-desync-split-pos=2"
+      #"--dpi-desync=disorder --dpi-desync-split-pos=2,midsld,sniext+4 --dpi-desync-ttl=2"
+      # home 24/01.10 2
       /*
+      "--dpi-desync=multisplit --dpi-desync-split-pos=2"
+      "--dpi-desync=multidisorder --dpi-desync-split-pos=2"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-fake-tls=0x00000000"
+      "--dpi-desync=fake --dpi-desync-fooling=badsum"
+      "--dpi-desync=fake --dpi-desync-fooling=datanoack --dpi-desync-fake-tls=0x00000000"
+      "--dpi-desync=fake --dpi-desync-fooling=md5sig"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=2"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=3 --dpi-desync-fake-tls=0x00000000"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=4"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=5 --dpi-desync-fake-tls=0x00000000"
+      */
+      /*
+      # home 25/01.10
+      "--dpi-desync=multisplit --dpi-desync-split-pos=2"
+      "--dpi-desync=multidisorder --dpi-desync-split-pos=sniext+4"
+      "--dpi-desync=fake --dpi-desync-ttl=2 --dpi-desync-fake-tls=0x00000000"
+      "--dpi-desync=fake --dpi-desync-fooling=badsum"
+      "--dpi-desync=fake --dpi-desync-fooling=md5sig"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=3"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=4"
+      "--dpi-desync=fake --dpi-desync-ttl=1 --dpi-desync-autottl=5"
+      "--dpi-desync=syndata"
+      */
       # home new
       "--dpi-desync=multisplit --dpi-desync-split-pos=2"
       "--dpi-desync=multidisorder --dpi-desync-split-pos=host+1"
@@ -40,7 +66,6 @@
       # example
       #"--dpi-desync=split2 --dpi-desync-ttl=5 --wssize 1:6 --dpi-desync-fooling=md5sig"
       #"--dpi-desync=fake --dpi-desync-any-protocol --dpi-desync-repeats=6"
-      */
     ];
   };
 }
