@@ -8,7 +8,7 @@
       lib.lists.remove pkgs.foot options.programs.sway.extraPackages.default
       )) ++ [(pkgs.swaylock.overrideAttrs (old: {
         patches = (old.patches or []) ++ [
-          ../patches/swaylock/swaylock-1.8.0-revert-drop-support-for-layer-shell.patch
+          ../../patches/swaylock/swaylock-1.8.0-revert-drop-support-for-layer-shell.patch
         ];
       }))]);
   services.libinput.enable = config.modules.lib.withModuleUsersConfig "sway" true;

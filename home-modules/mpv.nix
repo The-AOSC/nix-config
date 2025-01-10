@@ -4,8 +4,8 @@
     package = pkgs.mpv-unwrapped.wrapper {
       mpv = pkgs.mpv-unwrapped.overrideAttrs (old: {
         patches = (old.patches or []) ++ [
-          ./patches/mpv/mpv-0.35.1-always-never-osd-cycle.patch
-          ./patches/mpv/mpv-0.35.1-cut-chapter-list.patch
+          ../patches/mpv/mpv-0.35.1-always-never-osd-cycle.patch
+          ../patches/mpv/mpv-0.35.1-cut-chapter-list.patch
         ];
       });
       scripts = [

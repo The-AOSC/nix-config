@@ -33,7 +33,7 @@
   };
   users.users = config.modules.lib.withModuleUserConfig "sshd" (user-name: {
     "${user-name}".openssh.authorizedKeys.keyFiles = [
-      ./../credentials/${user-name}.authorized_keys
+      ../../credentials/${user-name}.authorized_keys
     ];
   });
 }
