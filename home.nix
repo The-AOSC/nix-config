@@ -9,6 +9,7 @@
     bvi
     clang
     dig
+    dmenu
     dos2unix
     fastfetch
     feh
