@@ -55,7 +55,6 @@
   environment.persistence."/persist/storage".users.vladimir = {
     directories = [
       "Desktop/apps"
-      "zapret"
     ];
   };
   #boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
