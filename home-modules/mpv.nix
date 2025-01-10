@@ -19,6 +19,8 @@
       "Shift+KP3" = "add chapter -1";
       "Shift+q" = "quit";
       "q" = "quit-watch-later";
+      "Alt+KP_ADD" = "add video-zoom 0.1";
+      "Alt+KP_SUBTRACT" = "add video-zoom -0.1";
     };
     config = {
       no-sub-visibility = "";
