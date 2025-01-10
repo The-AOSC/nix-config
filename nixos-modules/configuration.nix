@@ -11,7 +11,6 @@
 
   environment.systemPackages = [
     #git  # likely needed (enabled in modules/git.nix)
-    #wget  # needed?
   ];
 
   fileSystems."/".options = ["mode=755"];
