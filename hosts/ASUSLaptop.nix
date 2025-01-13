@@ -10,12 +10,14 @@ inputs@{...}: {
       ];
     })
     inputs.impermanence.nixosModules.impermanence
+    inputs.nixvirt.nixosModules.default
     ../nixos-modules/configuration.nix
     ../nixos-modules/gitlab.nix
     ../nixos-modules/hardware-configuration.nix
     ../nixos-modules/inst.nix
     ../nixos-modules/persistence.nix
     ../nixos-modules/remote-config.nix
+    ../nixos-modules/virt-manager
     ../nixos-modules/work.nix
     ../nixos-modules/zapret.nix
   ];
