@@ -20,6 +20,7 @@
     man-pages
     moreutils
     nmap
+    pciutils
     pdfarranger
     playerctl
     qpwgraph
@@ -34,6 +35,7 @@
     tty-solitaire
     universal-ctags
     unixtools.xxd
+    usbutils
     ventoy-full
     vlock
     wev
