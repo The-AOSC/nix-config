@@ -12,7 +12,7 @@
       enable = true;
       autoMaster = let
         cyclone = pkgs.writeText "autofs-cyclone" ''
-          /home/vladimir/cyclone-win -fstype=smb3,defaults,username=user,password=1,domainauto,uid=vladimir,gid=users ://192.168.2.146/Users/user/Desktop/cyclone/cyclone_base
+          /home/vladimir/cyclone-win -fstype=smb3,defaults,username=user,password=1,domainauto,uid=vladimir,gid=users ://192.168.2.28/Users/user/Desktop/cyclone
         '';
       in ''
         /- file:${cyclone} browse --timeout 60
