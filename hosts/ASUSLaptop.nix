@@ -17,6 +17,7 @@ inputs@{...}: {
     ../nixos-modules/inst.nix
     ../nixos-modules/persistence.nix
     ../nixos-modules/remote-config.nix
+    ../nixos-modules/tor
     ../nixos-modules/virt-manager
     ../nixos-modules/work.nix
     ../nixos-modules/zapret.nix
