@@ -23,7 +23,6 @@
     mako.enable = true;
     qtile.enable = true;
     audio.enable = true;
-    neovim.enable = true;
     cava.enable = true;
     wireshark.enable = true;
     screenshot.enable = true;
@@ -89,6 +88,8 @@
     };
   };
 
+  programs.nano.enable = false;
+  programs.neovim.enable = true;
   programs.fish.enable = true;
   users.users.vladimir.shell = pkgs.fish;
 

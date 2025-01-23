@@ -1,14 +1,6 @@
 inputs@{...}: {
   system = "x86_64-linux";
   nixos-modules = [
-    ({pkgs-24-05, ...}: {
-      nixpkgs.overlays = [
-        (final: prev: (with pkgs-24-05; {
-          neovim-unwrapped = neovim-unwrapped;
-          wrapNeovim = wrapNeovim;
-        }))
-      ];
-    })
     inputs.impermanence.nixosModules.impermanence
     inputs.nixvirt.nixosModules.default
     ../nixos-modules/configuration.nix
@@ -30,6 +22,7 @@ inputs@{...}: {
         ../home-modules/git
         ../home-modules/home.nix
         ../home-modules/mpv.nix
+        ../home-modules/neovim
         ../home-modules/pass
         ../home-modules/wezterm.nix
         ../home-modules/work-home.nix
