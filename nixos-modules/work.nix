@@ -1,7 +1,6 @@
 {lib, pkgs, ...}: {
   modules.users.vladimir.modules = {
     cifs-utils.enable = true;
-    git.enable = true;
     samba.enable = true;
     net-snmp.enable = true;
     git-daemon.enable = true;

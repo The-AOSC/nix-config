@@ -10,7 +10,7 @@
   ];
 
   environment.systemPackages = [
-    #git  # likely needed (enabled in modules/git.nix)
+    pkgs.git  # TODO: needed?
   ];
 
   fileSystems."/".options = ["mode=755"];
@@ -32,7 +32,6 @@
     endgame-singularity.enable = true;
     vivaldi.enable = true;
     users.enable = true;
-    fish.enable = true;
     libreoffice.enable = true;
     python.enable = true;
     networking.enable = true;
@@ -44,39 +43,8 @@
     tor-browser.enable = true;
     sshd.enable = true;
     unp.enable = true;
-    pass.enable = true;
     wtf.enable = true;
     zoxide.enable = true;
-    git = {
-      enable = true;
-      config = {
-        init = {
-          defaultBranch = "master";
-        };
-        core = {
-          editor = "vim";
-          autocrlf = "input";
-          excludesFile = pkgs.writeText "global-git-ignore" ''
-            tags
-          '';
-          attributesFile = pkgs.writeText "global-git-attributes" ''
-            *.gz diff=gzip
-          '';
-        };
-        log.showSignature = true;
-        push.autoSetupRemote = true;
-        "diff \"gzip\"" = {
-          binary = true;
-          textconv = "zcat";
-        };
-        commit.gpgSign = true;
-        tag.gpgSign = true;
-        user = {
-          name = "The AOSC";
-          email = "the-aosc@tutamail.com";
-        };
-      };
-    };
     htop.enable = true;
   };
   modules.modules = {
@@ -101,7 +69,6 @@
       enable = true;
       ports = [7132];
     };
-    git.enable = true;
     htop.enable = true;
     ssh = {
       enable = true;
@@ -121,6 +88,9 @@
       };
     };
   };
+
+  programs.fish.enable = true;
+  users.users.vladimir.shell = pkgs.fish;
 
   programs.firejail.enable = true;
 

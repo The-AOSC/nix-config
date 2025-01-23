@@ -26,8 +26,11 @@ inputs@{...}: {
     "vladimir" = {
       modules = [
         inputs.impermanence.homeManagerModules.impermanence
+        ../home-modules/fish
+        ../home-modules/git
         ../home-modules/home.nix
         ../home-modules/mpv.nix
+        ../home-modules/pass
         ../home-modules/wezterm.nix
         ../home-modules/work-home.nix
       ];

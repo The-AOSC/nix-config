@@ -19,7 +19,6 @@
     ./dbus-broker.nix
     ./fonts.nix
     ./systemd-boot.nix
-    ./fish.nix
     ./offline-rebuild.nix
     ./sysrq.nix
     ./vivaldi.nix
@@ -43,10 +42,8 @@
     ./unp.nix
     ./wtf.nix
     ./zoxide.nix
-    ./git.nix
     ./screenshot.nix
     ./unfree-fonts.nix
     ./wine.nix
-    ./pass.nix
   ];
 }
