@@ -12,6 +12,7 @@
     enable32Bit = true;
   };
   hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     prime = {
       # 00:02.0 VGA compatible controller: Intel Corporation WhiskeyLake-U GT2 [UHD Graphics 620]
       intelBusId = "PCI:0:2:0";
