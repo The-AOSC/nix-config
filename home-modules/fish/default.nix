@@ -95,8 +95,8 @@
       #alias yt-dlp='yt-dlp --throttled-rate 100K --embed-chapters --sub-langs all,-live_chat --embed-subs'
       #alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestvideo*[format_note!=Premium]+bestaudio/best" --sponsorblock-mark "-all,sponsor"'
       set yt_dlp_opts
-      #alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio[protocol!=https]+bestvideo*[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
-      alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio[protocol!=https]+bestvideo*[protocol!=https]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
+      alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio+bestvideo*[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
+      #alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio[protocol!=https]+bestvideo*[protocol!=https]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
       alias yt-dlp-section='yt-dlp -o "%(title)s [%(section_start)d - %(section_end)d] [%(id)s].%(ext)s" --download-sections'  # format: "*MM:SS-MM:SS"
       alias yt-dlp-playlist='yt-dlp -o "%(playlist_index)i - %(title)s [%(id)s].%(ext)s"'
       function yt-dlp-autonumber
@@ -160,6 +160,7 @@
           end
       end
       #alias yt-dlp-watch='yt-dlp --cookies-from-browser vivaldi:Default --skip-download --mark-watched --'
+      alias yt-dlp-list-history='yt-dlp-list-standard :ythistory $yt_dlp_cookies'
       #alias yt-dlp-uploader='yt-dlp --print "%(uploader)s (https://www.youtube.com/%(uploader_id)s/videos) / (https://www.youtube.com/channel/%(uploader_id)s/videos)" --'
       alias yt-dlp-uploader='yt-dlp --print "%(uploader_url)s" --'
       function yt-dlp-infojson
