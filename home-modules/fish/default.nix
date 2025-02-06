@@ -209,6 +209,8 @@
           feh $link
       end
 
+      alias pwait="command pidwait"
+
       alias work-convert='rename ii ИИ *; rename spec СПЕК *; rename sb СБ *; rename sp СП *; rename e3 Э3 *; #'
       alias work-restore-diff='watch -n0 --color --exec fish -c "diff --color=always (sort want|uniq|psub) (sort have|uniq|psub)" #'
 
