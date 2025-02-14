@@ -40,7 +40,6 @@
     sshd.enable = true;
     wtf.enable = true;
     zoxide.enable = true;
-    htop.enable = true;
   };
   modules.modules = {
     allow-unfree.enable = true;
@@ -63,7 +62,6 @@
       enable = true;
       ports = [7132];
     };
-    htop.enable = true;
     ssh = {
       enable = true;
       knownHosts = {

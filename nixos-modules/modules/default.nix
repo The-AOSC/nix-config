@@ -26,7 +26,6 @@
     ./net-snmp.nix
     ./sway.nix
     ./ignore-power-keys.nix
-    ./htop.nix
     ./cifs-utils.nix
     ./lib.nix
     ./libreoffice.nix

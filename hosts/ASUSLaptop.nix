@@ -23,6 +23,7 @@ inputs@{...}: {
         ../home-modules/fish
         ../home-modules/git
         ../home-modules/home.nix
+        ../home-modules/htop
         ../home-modules/mpv.nix
         ../home-modules/neovim
         ../home-modules/pass
