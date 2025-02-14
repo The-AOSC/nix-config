@@ -27,7 +27,6 @@
     screenshot.enable = true;
     wine.enable = true;
     gnupg.enable = true;
-    endgame-singularity.enable = true;
     vivaldi.enable = true;
     users.enable = true;
     libreoffice.enable = true;

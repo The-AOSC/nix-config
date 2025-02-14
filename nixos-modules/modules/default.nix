@@ -29,7 +29,6 @@
     ./ignore-power-keys.nix
     ./htop.nix
     ./cifs-utils.nix
-    ./endgame-singularity.nix
     ./lib.nix
     ./libreoffice.nix
     ./python.nix

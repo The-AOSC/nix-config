@@ -19,6 +19,7 @@ inputs@{...}: {
       modules = [
         inputs.impermanence.homeManagerModules.impermanence
         ../home-modules/cava
+        ../home-modules/endgame-singularity
         ../home-modules/fish
         ../home-modules/git
         ../home-modules/home.nix
