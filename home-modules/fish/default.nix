@@ -37,7 +37,6 @@
       #alias lynxs='/usr/bin/lynx https://duckduckgo.com/lite/'
 
       alias copy='wezterm start --cwd "$(pwd)" -- fish &> /dev/null & disown'
-      alias copyp='wezterm start --cwd "$(pwd)" -- fish --private &> /dev/null & disown'
       alias disexit='disown && exit'
 
       alias transe='trans -j -b en:ru'
