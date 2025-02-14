@@ -214,9 +214,4 @@
     '';
   };
   xdg.configFile."fish/functions/fish_prompt.fish".source = ./fish_prompt.fish;
-  home.persistence."/persist/storage/home/vladimir" = {
-    directories = [
-      ".local/share/fish"
-    ];
-  };
 }
