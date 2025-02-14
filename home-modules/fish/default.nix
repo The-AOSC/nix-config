@@ -69,8 +69,6 @@
 
       alias ttysolitaire='ttysolitaire --no-background-color'
 
-      alias rlcl='rlwrap --break-chars "()|\\\`\'\",:;" --multi-line --quote-characters \"\| sbcl'
-
       alias rlspell='rlwrap hunspell'
 
       alias weather='curl wttr.in'

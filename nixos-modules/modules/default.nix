@@ -30,7 +30,6 @@
     ./libreoffice.nix
     ./python.nix
     ./qbittorrent.nix
-    ./sbcl.nix
     ./sshd.nix
     ./screenshot.nix
     ./unfree-fonts.nix
