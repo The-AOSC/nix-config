@@ -37,6 +37,7 @@
     extraLuaConfig = ''
       -- require("neorg").setup {
       -- }
+      loadfile("${./colorscheme.lua}")()
     '';
     plugins = with pkgs.vimPlugins; [
       #neorg
@@ -56,6 +57,12 @@
                       \ "wrap",        "nowrap"
                       \ ]
           '';
+      }
+      {
+        plugin = vim-gitgutter;
+        config = ''
+          set updatetime=100
+        '';
       }
       vim-nix
     ];
