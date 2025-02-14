@@ -45,7 +45,6 @@
   modules.modules = {
     allow-unfree.enable = true;
     ignore-power-keys.enable = true;
-    tmux.enable = true;
     dbus-broker.enable = true;
     fonts.enable = true;
     no-default-packages.enable = true;

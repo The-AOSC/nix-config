@@ -26,6 +26,7 @@ inputs@{...}: {
         ../home-modules/mpv.nix
         ../home-modules/neovim
         ../home-modules/pass
+        ../home-modules/tmux
         ../home-modules/tor-browser
         ../home-modules/unp
         ../home-modules/wezterm.nix

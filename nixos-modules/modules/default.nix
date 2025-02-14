@@ -8,7 +8,6 @@
     ./gnupg.nix
     ./qtile.nix
     ./binsh-dash.nix
-    ./tmux.nix
     ./audio.nix
     ./networking.nix
     ./doas.nix
