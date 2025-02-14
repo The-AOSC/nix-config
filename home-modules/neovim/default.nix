@@ -33,20 +33,6 @@
 
       " go to last position in file
       autocmd BufReadPost * silent! normal! g`"zv
-
-      " securemodelines config
-      let g:secure_modelines_allowed_items = [
-                  \ "textwidth",   "tw",
-                  \ "softtabstop", "sts",
-                  \ "tabstop",     "ts",
-                  \ "shiftwidth",  "sw",
-                  \ "expandtab",   "et",   "noexpandtab", "noet",
-                  \ "filetype",    "ft",
-                  \ "foldmethod",  "fdm",
-                  \ "readonly",    "ro",   "noreadonly", "noro",
-                  \ "rightleft",   "rl",   "norightleft", "norl",
-                  \ "wrap",        "nowrap"
-                  \ ]
     '';
     extraLuaConfig = ''
       -- require("neorg").setup {
@@ -54,7 +40,23 @@
     '';
     plugins = with pkgs.vimPlugins; [
       #neorg
-      securemodelines
+      {
+        plugin = securemodelines;
+        config = ''
+          let g:secure_modelines_allowed_items = [
+                      \ "textwidth",   "tw",
+                      \ "softtabstop", "sts",
+                      \ "tabstop",     "ts",
+                      \ "shiftwidth",  "sw",
+                      \ "expandtab",   "et",   "noexpandtab", "noet",
+                      \ "filetype",    "ft",
+                      \ "foldmethod",  "fdm",
+                      \ "readonly",    "ro",   "noreadonly", "noro",
+                      \ "rightleft",   "rl",   "norightleft", "norl",
+                      \ "wrap",        "nowrap"
+                      \ ]
+          '';
+      }
       vim-nix
     ];
   };
