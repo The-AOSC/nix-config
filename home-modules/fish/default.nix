@@ -32,10 +32,6 @@
       alias view="vim -R"
       alias decolor="sed 's|\x1b\[[;0-9]*m||g'"
 
-      set name "iikg6704p8if57wl7kjc33npk6p16zjp-wtf-20230906"
-      export ACRONYMDB="$HOME/.local/share/misc/acronyms /nix/store/$name/share/misc/acronyms /nix/store/$name/share/misc/acronyms-o.real /nix/store/$name/share/misc/acronyms.comp"
-      alias wtf='wtf -o'
-
       alias cal='cal -m'
 
       #alias lynxs='/usr/bin/lynx https://duckduckgo.com/lite/'

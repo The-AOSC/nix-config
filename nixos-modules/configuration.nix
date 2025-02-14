@@ -1,7 +1,6 @@
 {config, lib, pkgs, ...}: {
   imports = [
     ./modules
-    ./packages/wtf.nix
   ];
 
   hardware.graphics.extraPackages = [
@@ -37,7 +36,6 @@
     sway.enable = true;
     kdeconnect.enable = true;
     sshd.enable = true;
-    wtf.enable = true;
   };
   modules.modules = {
     allow-unfree.enable = true;

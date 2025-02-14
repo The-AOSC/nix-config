@@ -32,7 +32,6 @@
     ./qbittorrent.nix
     ./sbcl.nix
     ./sshd.nix
-    ./wtf.nix
     ./screenshot.nix
     ./unfree-fonts.nix
     ./wine.nix
