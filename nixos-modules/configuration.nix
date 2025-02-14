@@ -40,7 +40,6 @@
     sway.enable = true;
     kdeconnect.enable = true;
     sshd.enable = true;
-    unp.enable = true;
     wtf.enable = true;
     zoxide.enable = true;
     htop.enable = true;

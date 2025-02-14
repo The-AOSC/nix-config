@@ -37,7 +37,6 @@
     ./qbittorrent.nix
     ./sbcl.nix
     ./sshd.nix
-    ./unp.nix
     ./wtf.nix
     ./zoxide.nix
     ./screenshot.nix

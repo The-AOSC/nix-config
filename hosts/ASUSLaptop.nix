@@ -25,6 +25,7 @@ inputs@{...}: {
         ../home-modules/neovim
         ../home-modules/pass
         ../home-modules/tor-browser
+        ../home-modules/unp
         ../home-modules/wezterm.nix
         ../home-modules/work-home.nix
       ];
