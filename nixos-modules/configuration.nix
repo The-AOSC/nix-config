@@ -86,7 +86,7 @@
   nix.settings.keep-going = true;
 
   # TODO: migration
-  fileSystems."/home/vladimir/gentoo/home".device = "/dev/sda11";
+  #fileSystems."/home/vladimir/gentoo/home".device = "/dev/sda11";
   users.groups."fix" = {gid=1001;members=["vladimir"];};
   environment.localBinInPath = true;
   # TODO: is this necessary?
@@ -94,6 +94,7 @@
   services.syncthing = {};  # TODO
 
   # old to storage migration
+  /*
   fileSystems."/old-home".device = "/dev/sda11";
   fileSystems."/old-home".neededForBoot = true;
   fileSystems."/persist/storage/home/vladimir/Desktop/Movies".device = "/old-home/vladimir/Desktop/Movies";
@@ -104,6 +105,7 @@
   fileSystems."/persist/storage/home/vladimir/Desktop/games".fsType = "none";
   fileSystems."/persist/storage/home/vladimir/Desktop/games".options = ["bind"];
   fileSystems."/persist/storage/home/vladimir/Desktop/games".neededForBoot = true;
+  */
 
   # Set your time zone.
   time.timeZone = "Asia/Yekaterinburg";
