@@ -27,7 +27,6 @@
     ./ignore-power-keys.nix
     ./cifs-utils.nix
     ./lib.nix
-    ./libreoffice.nix
     ./python.nix
     ./sshd.nix
     ./screenshot.nix

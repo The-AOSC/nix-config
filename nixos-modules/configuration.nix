@@ -27,7 +27,6 @@
     wine.enable = true;
     vivaldi.enable = true;
     users.enable = true;
-    libreoffice.enable = true;
     python.enable = true;
     networking.enable = true;
     samba.enable = true;

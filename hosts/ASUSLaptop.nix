@@ -26,6 +26,8 @@ inputs@{...}: {
         ../home-modules/gpg
         ../home-modules/home.nix
         ../home-modules/htop
+        ../home-modules/hunspell
+        ../home-modules/libreoffice
         ../home-modules/mpv.nix
         ../home-modules/neovim
         ../home-modules/pass

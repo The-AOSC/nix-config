@@ -69,8 +69,6 @@
 
       alias ttysolitaire='ttysolitaire --no-background-color'
 
-      alias rlspell='rlwrap hunspell'
-
       alias weather='curl wttr.in'
 
       alias makestrongpasswd='makepasswd --string " !\\"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"'
