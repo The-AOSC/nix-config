@@ -56,6 +56,7 @@
   home.persistence."/persist/storage/home/vladimir" = {
     enable = true;
     directories = [
+      "migration"
     ];
     files = [
     ];
