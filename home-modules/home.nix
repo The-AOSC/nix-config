@@ -27,6 +27,7 @@
     qrencode
     rlwrap
     rsync
+    screen
     shellcheck
     strace
     termdown
