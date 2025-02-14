@@ -1,4 +1,4 @@
-{inputs, pkgs, ...}: {
+{inputs, config, pkgs, lib, ...}: {
   programs.virt-manager = {
     enable = true;
   };
@@ -89,7 +89,7 @@
     onBoot = "ignore";
     onShutdown = "suspend";
     qemu = {
-      package = pkgs.qemu_kvm;
+      package = if ((lib.length config.boot.binfmt.emulatedSystems) == 0) then pkgs.qemu_kvm else pkgs.qemu;
       runAsRoot = true;
     };
   };
