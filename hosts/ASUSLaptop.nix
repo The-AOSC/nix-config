@@ -33,6 +33,7 @@ inputs@{...}: {
         ../home-modules/pass
         ../home-modules/qbittorrent
         ../home-modules/sbcl
+        ../home-modules/textwrap
         ../home-modules/tmux
         ../home-modules/tor-browser
         ../home-modules/unp
