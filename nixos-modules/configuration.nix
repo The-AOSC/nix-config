@@ -39,7 +39,6 @@
     samba.enable = true;
     sway.enable = true;
     kdeconnect.enable = true;
-    tor-browser.enable = true;
     sshd.enable = true;
     unp.enable = true;
     wtf.enable = true;
