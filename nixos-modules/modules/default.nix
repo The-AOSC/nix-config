@@ -28,7 +28,6 @@
     ./sway.nix
     ./ignore-power-keys.nix
     ./htop.nix
-    ./cava.nix
     ./cifs-utils.nix
     ./endgame-singularity.nix
     ./lib.nix

@@ -18,6 +18,7 @@ inputs@{...}: {
     "vladimir" = {
       modules = [
         inputs.impermanence.homeManagerModules.impermanence
+        ../home-modules/cava
         ../home-modules/fish
         ../home-modules/git
         ../home-modules/home.nix

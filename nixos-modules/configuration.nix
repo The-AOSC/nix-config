@@ -23,7 +23,6 @@
     mako.enable = true;
     qtile.enable = true;
     audio.enable = true;
-    cava.enable = true;
     wireshark.enable = true;
     screenshot.enable = true;
     wine.enable = true;
