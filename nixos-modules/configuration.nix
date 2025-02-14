@@ -26,7 +26,6 @@
     wireshark.enable = true;
     screenshot.enable = true;
     wine.enable = true;
-    gnupg.enable = true;
     vivaldi.enable = true;
     users.enable = true;
     libreoffice.enable = true;

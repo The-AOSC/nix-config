@@ -5,7 +5,6 @@
     ./autofs.nix
     ./users.nix
     ./kdeconnect.nix
-    ./gnupg.nix
     ./qtile.nix
     ./binsh-dash.nix
     ./audio.nix

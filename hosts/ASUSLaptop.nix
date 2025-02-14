@@ -22,6 +22,7 @@ inputs@{...}: {
         ../home-modules/endgame-singularity
         ../home-modules/fish
         ../home-modules/git
+        ../home-modules/gpg
         ../home-modules/home.nix
         ../home-modules/htop
         ../home-modules/mpv.nix
