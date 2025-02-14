@@ -30,7 +30,6 @@
     libreoffice.enable = true;
     python.enable = true;
     networking.enable = true;
-    qbittorrent.enable = true;
     samba.enable = true;
     sway.enable = true;
     kdeconnect.enable = true;

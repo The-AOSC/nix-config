@@ -29,6 +29,7 @@ inputs@{...}: {
         ../home-modules/mpv.nix
         ../home-modules/neovim
         ../home-modules/pass
+        ../home-modules/qbittorrent
         ../home-modules/sbcl
         ../home-modules/tmux
         ../home-modules/tor-browser

@@ -29,7 +29,6 @@
     ./lib.nix
     ./libreoffice.nix
     ./python.nix
-    ./qbittorrent.nix
     ./sshd.nix
     ./screenshot.nix
     ./unfree-fonts.nix
