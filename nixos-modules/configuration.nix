@@ -38,7 +38,6 @@
     kdeconnect.enable = true;
     sshd.enable = true;
     wtf.enable = true;
-    zoxide.enable = true;
   };
   modules.modules = {
     allow-unfree.enable = true;

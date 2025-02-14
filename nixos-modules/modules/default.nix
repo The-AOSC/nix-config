@@ -33,7 +33,6 @@
     ./sbcl.nix
     ./sshd.nix
     ./wtf.nix
-    ./zoxide.nix
     ./screenshot.nix
     ./unfree-fonts.nix
     ./wine.nix

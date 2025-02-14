@@ -7,11 +7,6 @@
     interactiveShellInit = ''
       fish_hybrid_key_bindings
 
-      zoxide init fish --cmd cd | source
-      function __zoxide_hook --on-variable PWD
-          zoxide add -- (__zoxide_pwd)
-      end
-
       # Commands to run in interactive sessions can go here
 
       # fish prompt overide function to late

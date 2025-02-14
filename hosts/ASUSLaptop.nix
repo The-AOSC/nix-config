@@ -33,6 +33,7 @@ inputs@{...}: {
         ../home-modules/unp
         ../home-modules/wezterm.nix
         ../home-modules/work-home.nix
+        ../home-modules/zoxide
       ];
     };
   };
