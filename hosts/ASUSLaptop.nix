@@ -7,6 +7,7 @@ inputs@{...}: {
     ../nixos-modules/gitlab.nix
     ../nixos-modules/hardware-configuration.nix
     ../nixos-modules/inst.nix
+    ../nixos-modules/nvidia
     ../nixos-modules/packages/wtf.nix
     ../nixos-modules/persistence.nix
     ../nixos-modules/remote-config.nix
