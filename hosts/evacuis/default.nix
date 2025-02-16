@@ -3,7 +3,10 @@ inputs@{...}: {
   nixos-modules = [
     inputs.impermanence.nixosModules.impermanence
     ./hardware-configuration.nix
-    {
+    ({pkgs, ...}: {
+      environment.systemPackages = [
+        pkgs.git
+      ];
       networking = {
         hostName = "evacuis";
         networkmanager.enable = true;
@@ -28,7 +31,7 @@ inputs@{...}: {
         ];
       };
       system.stateVersion = "25.05";
-    }
+    })
   ];
   home = {
     /*
