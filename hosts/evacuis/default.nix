@@ -1,48 +1,31 @@
 inputs@{...}: {
   system = "x86_64-linux";
   nixos-modules = [
+    inputs.flake-programs-sqlite.nixosModules.programs-sqlite
     inputs.impermanence.nixosModules.impermanence
+    inputs.nixvirt.nixosModules.default
+    ./configuration.nix
     ./hardware-configuration.nix
-    ({pkgs, ...}: {
-      environment.systemPackages = [
-        pkgs.git
-      ];
-      networking = {
-        hostName = "evacuis";
-        networkmanager.enable = true;
-      };
-      boot.loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
-      };
-      time.timeZone = "Asia/Yekaterinburg";
-      users.mutableUsers = false;
-      users.users.root.hashedPasswordFile = "/etc/credentials/root.hashedpassword";
-      fileSystems."/persist".neededForBoot = true;
-      fileSystems."/etc/credentials".neededForBoot = true;
-      environment.persistence."/persist" = {
-        enable = true;
-        directories = [
-          "/var/lib/nixos"
-          "/var/log/journal"
-        ];
-        files = [
-          "/etc/machine-id"
-        ];
-      };
-      system.stateVersion = "25.05";
-    })
+    ./unfree.nix
+    ../../nixos-modules/desktop.nix
+    ../../nixos-modules/gitlab
+    ../../nixos-modules/sshd
+    ../../nixos-modules/swaylock
+    ../../nixos-modules/tor
+    ../../nixos-modules/virt-manager
+    ../../nixos-modules/zapret
   ];
   home = {
-    /*
-    "AOSC" = {
+    "aosc" = {
       modules = [
         inputs.impermanence.homeManagerModules.impermanence
-        ({osConfig, ...}: {
-          home.stateVersion = osConfig.system.stateVersion;
-        })
+        ./home.nix
+        #./unfree-fonts.nix
+        ../../home-modules/desktop.nix
+        ../../home-modules/rldebugfs
+        ../../home-modules/swaylock
+        ../../home-modules/tor-browser
       ];
     };
-    */
   };
 }

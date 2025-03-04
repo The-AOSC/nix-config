@@ -8,6 +8,6 @@ local hi = function(name, val)
 end
 
 hi('DiffAdd',    { fg = 'DarkGreen',   ctermfg = 'DarkGreen' })
-hi('DiffChange', { fg = 'DarkMagenta', ctermfg = 'DarkMagenta' })
+hi('DiffChange', { fg = 'DarkYellow',  ctermfg = 'DarkYellow' })
 hi('DiffDelete', { fg = 'DarkRed',     ctermfg = 'DarkRed' })
 hi('SignColumn', { fg = 'Cyan',        ctermfg = 'Cyan' })

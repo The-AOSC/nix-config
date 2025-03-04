@@ -8,7 +8,7 @@
       exec -a "$0" ${pkgs.tor-browser}/bin/tor-browser "$@"
     '')
   ];
-  home.persistence."/persist/storage/home/vladimir" = {
+  home.persistence."/persist/home/aosc" = {
     directories = [
       ".tor project"
     ];

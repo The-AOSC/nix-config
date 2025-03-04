@@ -58,6 +58,8 @@
                       \ ]
           '';
       }
+      #vimagit
+      #vim-airline
       {
         plugin = vim-gitgutter;
         config = ''
@@ -67,7 +69,7 @@
       vim-nix
     ];
   };
-  home.persistence."/persist/storage/home/vladimir" = {
+  home.persistence."/persist/home/aosc" = {
     directories = [
       ".local/state/nvim"
     ];

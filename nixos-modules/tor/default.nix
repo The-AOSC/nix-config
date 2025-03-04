@@ -40,7 +40,7 @@
       ];
     };
   };
-  users.users.vladimir.extraGroups = [
+  users.users.aosc.extraGroups = [
     "tor"
   ];
 }

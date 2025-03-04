@@ -1,6 +1,6 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   home.packages = [
     pkgs.htop
   ];
-  xdg.configFile."htop/htoprc".source = ./htoprc;
+  xdg.configFile."htop/htoprc".source = lib.mkDefault ./htoprc;
 }

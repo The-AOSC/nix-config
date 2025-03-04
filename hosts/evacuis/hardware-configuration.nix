@@ -24,12 +24,6 @@
       fsType = "ext4";
     };
 
-  fileSystems."/etc/credentials" =
-    { device = "/persist/etc/credentials";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
   fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/b2052a6b-4118-4f12-9869-131c38a8250c";
       fsType = "ext4";
@@ -41,12 +35,10 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  /*
   fileSystems."/media" =
     { device = "/dev/disk/by-uuid/4d636f2f-4c5e-4716-83d6-a81b1d1f213f";
       fsType = "btrfs";
     };
-  */
 
   swapDevices =
     [ { device = "/dev/disk/by-uuid/d366c8b5-bb2c-43ce-a244-87ef66b072de"; }

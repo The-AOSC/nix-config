@@ -19,7 +19,7 @@
     ];
     pinentryPackage = pkgs.pinentry-qt;
   };
-  home.persistence."/persist/storage/home/vladimir" = {
+  home.persistence."/persist/home/aosc" = {
     directories = [
       ".gnupg/private-keys-v1.d"
     ];

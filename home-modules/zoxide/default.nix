@@ -6,7 +6,7 @@
       "--cmd cd"
     ];
   };
-  home.persistence."/persist/storage/home/vladimir" = {
+  home.persistence."/persist/home/aosc" = {
     directories = [
       ".local/share/zoxide"
     ];

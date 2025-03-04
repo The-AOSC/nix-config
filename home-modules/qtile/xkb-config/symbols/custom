@@ -1,0 +1,63 @@
+default
+xkb_symbols "normal" {
+    include "pc"
+    include "us"
+    include "ru:2"
+
+    include "inet(evdev)"
+
+    include "keypad(pointerkeys)"
+
+    include "capslock(escape)"
+
+    key <RTSH> {[ISO_Level3_Shift]};
+    modifier_map Shift {Shift_L, Shift_R, ISO_Level3_Shift};
+
+    key <LALT> {[Meta_L, Meta_L]};
+
+    key <RALT> {[Hyper_R, Hyper_R]};
+    modifier_map Mod3 {Hyper_L, Hyper_R};
+    //modifier_map Mod4 {Super_L, Super_R};
+
+    key <LCTL> {
+        type[Group1] = "PC_CONTROL_LEVEL2",
+        symbols[Group1] = [Control_L, ISO_Next_Group]
+    };
+    key <RCTL> {[Control_R]};
+
+    key <I255> {
+        type[Group1] = "PC_CONTROL_LEVEL2",
+        symbols[Group1] = [Multi_key, Control_L]
+    };
+
+    key <AE01> {[1,                exclam]};
+    key <AE02> {[2,                at,               quotedbl,         VoidSymbol]};
+    key <AE03> {[3,                numbersign,       numerosign,       VoidSymbol]};
+    key <AE04> {[4,                dollar,           semicolon,        VoidSymbol]};
+    key <AE05> {[5,                percent]};
+    key <AE06> {[6,                asciicircum,      colon,            VoidSymbol]};
+    key <AE07> {[7,                ampersand,        question,         VoidSymbol]};
+    key <AE08> {[8,                asterisk]};
+    key <AE09> {[9,                parenleft]};
+    key <AE10> {[0,                parenright]};
+
+    //key <BKSL> {[backslash,        bar,              slash,            VoidSymbol]};
+
+    //key <AB10> {[slash,            question,         period,           comma]};
+    key <FK21> {[XF86TouchpadToggle]};
+
+    // lets swap meaning of numlock
+    key <KP7>  {[KP_7,       KP_Home]};
+    key <KP8>  {[KP_8,       KP_Up]};
+    key <KP9>  {[KP_9,       KP_Page_Up]};
+    #key <KP4>  {[KP_4,       KP_Page_Down]};
+    key <KP4>  {[KP_4,       KP_Left]};
+    key <KP5>  {[KP_5,       KP_Begin]};
+    key <KP6>  {[KP_6,       KP_Right]};
+    key <KP1>  {[KP_1,       KP_End]};
+    key <KP2>  {[KP_2,       KP_Down]};
+    #key <KP3>  {[KP_3,       KP_Next]};
+    key <KP3>  {[KP_3,       KP_Page_Down]};
+    key <KP0>  {[KP_0,       KP_Insert]};
+    key <KPDL> {[KP_Decimal, KP_Delete]};
+};

@@ -1,8 +1,8 @@
-{...}: {
+{pkgs, ...}: {
   programs.fish = {
     enable = true;
     loginShellInit = ''
-      fastfetch
+      ${pkgs.fastfetch}/bin/fastfetch
     '';
     interactiveShellInit = ''
       fish_hybrid_key_bindings
@@ -27,8 +27,6 @@
       alias doasls='doas ls -lahv --color=always --group-directories-first'
       alias watchls='watch --color --no-title --exec ls -lahv --color=always --group-directories-first --'
       alias watchip='watch --color --no-title --interval=0 --exec ip --color'
-      alias watchdiff='watch --color --no-title --interval=0 --exec diff --color=always'
-
       alias view="vim -R"
       alias decolor="sed 's|\x1b\[[;0-9]*m||g'"
 
@@ -70,7 +68,7 @@
 
       alias weather='curl wttr.in'
 
-      alias makestrongpasswd='makepasswd --string " !\\"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"'
+      #alias makestrongpasswd='makepasswd --string " !\\"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"'
 
       alias feh='feh -.'
 
@@ -81,7 +79,8 @@
       #alias yt-dlp='yt-dlp --throttled-rate 100K --embed-chapters --sub-langs all,-live_chat --embed-subs'
       #alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestvideo*[format_note!=Premium]+bestaudio/best" --sponsorblock-mark "-all,sponsor"'
       set yt_dlp_opts
-      alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio+bestvideo*[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
+      #alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio+bestvideo*[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
+      alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs all,-live_chat --embed-subs --no-write-auto-subs --format "bestaudio+bestvideo*[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
       #alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs en,ru --embed-subs --write-auto-subs --format "bestaudio[protocol!=https]+bestvideo*[protocol!=https]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
       alias yt-dlp-section='yt-dlp -o "%(title)s [%(section_start)d - %(section_end)d] [%(id)s].%(ext)s" --download-sections'  # format: "*MM:SS-MM:SS"
       alias yt-dlp-playlist='yt-dlp -o "%(playlist_index)i - %(title)s [%(id)s].%(ext)s"'
@@ -198,13 +197,13 @@
 
       alias pwait="command pidwait"
 
-      alias work-convert='rename ii ИИ *; rename spec СПЕК *; rename sb СБ *; rename sp СП *; rename e3 Э3 *; #'
-      alias work-restore-diff='watch -n0 --color --exec fish -c "diff --color=always (sort want|uniq|psub) (sort have|uniq|psub)" #'
+      #alias work-convert='rename ii ИИ *; rename spec СПЕК *; rename sb СБ *; rename sp СП *; rename e3 Э3 *; #'
+      #alias work-restore-diff='watch -n0 --color --exec fish -c "diff --color=always (sort want|uniq|psub) (sort have|uniq|psub)" #'
 
       alias mount-usb='doas mount -outf8,uid=(id -u),gid=(id -g)'
 
-      alias pagesearch='nix --extra-experimental-features "nix-command flakes" search nixpkgs $argv | decolor | bat #'
-      alias pagefullsearch='nix --extra-experimental-features "nix-command flakes" search $argv &| decolor | bat #'
+      #alias pagesearch='nix --extra-experimental-features "nix-command flakes" search nixpkgs $argv | decolor | bat #'
+      #alias pagefullsearch='nix --extra-experimental-features "nix-command flakes" search $argv &| decolor | bat #'
 
       #export PASSWORD_STORE_GENERATED_LENGTH="256"
       #export PASSWORD_STORE_CHARACTER_SET="$(for i in (seq 32 126); printf "\x$(printf '%x' $i)"; end)"

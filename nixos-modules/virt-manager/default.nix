@@ -98,10 +98,10 @@
   systemd.tmpfiles.rules = [
     "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware"
   ];
-  users.users.vladimir.extraGroups = [
+  users.users.aosc.extraGroups = [
     "libvirtd"
   ];
-  environment.persistence."/persist/storage" = {
+  environment.persistence."/persist" = {
     directories = [
       "/var/iso"
       "/var/lib/libvirt/images"
