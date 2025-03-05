@@ -24,6 +24,7 @@ inputs@{...}: {
         ../../home-modules/desktop.nix
         ../../home-modules/rldebugfs
         ../../home-modules/swaylock
+        ../../home-modules/tor
         ../../home-modules/tor-browser
       ];
     };
