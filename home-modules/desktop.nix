@@ -39,6 +39,7 @@
   };
   home.packages = with pkgs; [
     bat
+    brightnessctl
     bvi
     dos2unix
     fastfetch
