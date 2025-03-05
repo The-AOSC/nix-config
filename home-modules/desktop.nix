@@ -57,6 +57,7 @@
     rlwrap
     screen
     shellcheck
+    termdown
     translate-shell
     tty-solitaire
     universal-ctags
