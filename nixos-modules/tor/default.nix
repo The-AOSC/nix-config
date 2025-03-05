@@ -40,6 +40,17 @@
       ];
     };
   };
+  networking.networkmanager.dispatcherScripts = [
+    {
+      source = pkgs.writeShellScript "restart-tor" ''
+        if [ "$2" == "connectivity-change" ] && [ "$CONNECTIVITY_STATE" == "FULL" ]; then
+            echo "Restarting Tor..."
+            systemctl restart tor
+        fi
+      '';
+      type = "basic";
+    }
+  ];
   users.users.aosc.extraGroups = [
     "tor"
   ];
