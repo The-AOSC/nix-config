@@ -46,7 +46,9 @@
     feh
     ffmpeg
     file
+    gimp
     helvum
+    imagemagick
     jmtpfs
     jq
     killall
