@@ -21,6 +21,7 @@
     ./qbittorrent
     ./qtile
     ./sbcl
+    ./ssh
     ./textwrap
     ./tmux
     ./unp
