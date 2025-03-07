@@ -1,4 +1,9 @@
-{config, pkgs, lib, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.gpg = {
     enable = true;
     mutableKeys = false;
@@ -15,7 +20,7 @@
     enableFishIntegration = true;
     enableSshSupport = true;
     sshKeys = [
-      "8FEA1239D48FB852123025D0FCFA4475EDCF4912"  # gpg --list-keys --with-keygrip
+      "8FEA1239D48FB852123025D0FCFA4475EDCF4912" # gpg --list-keys --with-keygrip
     ];
     pinentryPackage = pkgs.pinentry-qt;
   };

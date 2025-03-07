@@ -1,4 +1,10 @@
-{osConfig, config, pkgs, lib, ...}: let
+{
+  osConfig,
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   fileSystemsWhitelist = ["/" "/nix"];
   fileSystemsBlacklist = lib.filter (name: !(builtins.elem name fileSystemsWhitelist)) (lib.mapAttrsToList (name: value: name) osConfig.fileSystems);
   firejailBlacklist = lib.concatMapStringsSep " " (path: "--blacklist=${path}") fileSystemsBlacklist;

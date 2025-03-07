@@ -1,7 +1,9 @@
-{pkgs, ...}: let sbcl = pkgs.sbcl.withPackages (subpkgs: with subpkgs; [
-  cffi
-  parse-float
-]);
+{pkgs, ...}: let
+  sbcl = pkgs.sbcl.withPackages (subpkgs:
+    with subpkgs; [
+      cffi
+      parse-float
+    ]);
 in {
   home.packages = [
     (pkgs.writeScriptBin "ffprobe-duration" ''

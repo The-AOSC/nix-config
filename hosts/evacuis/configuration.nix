@@ -1,4 +1,8 @@
-{config, pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   time.timeZone = "Asia/Yekaterinburg";
   users.users.aosc = {
     hashedPasswordFile = "/etc/credentials/aosc.hashedpassword";

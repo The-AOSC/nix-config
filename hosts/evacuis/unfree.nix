@@ -1,7 +1,8 @@
 {lib, ...}: {
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "corefonts"
-    "vista-fonts"
-    "vivaldi"
-  ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "corefonts"
+      "vista-fonts"
+      "vivaldi"
+    ];
 }

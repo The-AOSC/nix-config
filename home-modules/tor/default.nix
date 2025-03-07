@@ -1,4 +1,8 @@
-{pkgs, lib, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   home.packages = [
     (pkgs.nyx.overridePythonAttrs (old: {
       version = "2.1.0+unstable-2022-06-27";

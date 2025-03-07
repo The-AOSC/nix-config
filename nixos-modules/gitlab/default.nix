@@ -1,17 +1,26 @@
-{inputs, config, pkgs, ...}: {
-  users.users = let cfg = config.containers.gitlab.config; in {
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}: {
+  users.users = let
+    cfg = config.containers.gitlab.config;
+  in {
     "${cfg.services.gitlab.user}" = {
-      uid = assert cfg.users.users.gitlab.uid!=null; cfg.users.users.gitlab.uid;
+      uid = assert cfg.users.users.gitlab.uid != null; cfg.users.users.gitlab.uid;
       group = cfg.services.gitlab.group;
     };
     "postgres" = {
-      uid = assert cfg.users.users.postgres.uid!=null; cfg.users.users.postgres.uid;
+      uid = assert cfg.users.users.postgres.uid != null; cfg.users.users.postgres.uid;
       group = "postgres";
     };
   };
-  users.groups = let cfg = config.containers.gitlab.config; in {
-    "${cfg.services.gitlab.group}".gid = assert cfg.users.groups.gitlab.gid!=null; cfg.users.groups.gitlab.gid;
-    "postgres".gid = assert cfg.users.groups.postgres.gid!=null; cfg.users.groups.postgres.gid;
+  users.groups = let
+    cfg = config.containers.gitlab.config;
+  in {
+    "${cfg.services.gitlab.group}".gid = assert cfg.users.groups.gitlab.gid != null; cfg.users.groups.gitlab.gid;
+    "postgres".gid = assert cfg.users.groups.postgres.gid != null; cfg.users.groups.postgres.gid;
   };
   containers.gitlab = {
     autoStart = true;
@@ -40,7 +49,11 @@
       impermanence = inputs.impermanence.nixosModules.impermanence;
     };
     nixpkgs = inputs.nixpkgs;
-    config = {impermanence, config, ...}: {
+    config = {
+      impermanence,
+      config,
+      ...
+    }: {
       imports = [
         impermanence
       ];
@@ -52,7 +65,7 @@
           secretFile = "/etc/credentials/secret";
           dbFile = "/etc/credentials/db";
           otpFile = "/etc/credentials/otp";
-          jwsFile = "/etc/credentials/jws";  # openssl genrsa 4096
+          jwsFile = "/etc/credentials/jws"; # openssl genrsa 4096
         };
         port = 80;
       };

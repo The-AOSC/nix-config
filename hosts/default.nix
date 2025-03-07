@@ -1,3 +1,3 @@
-args@{...}: {
+args @ {...}: {
   evacuis = import ./evacuis args;
 }

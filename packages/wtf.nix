@@ -1,4 +1,8 @@
-{lib, pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   nixpkgs.overlays = [
     (final: prev: {
       wtf = pkgs.stdenv.mkDerivation rec {
@@ -23,7 +27,7 @@
       meta = {
         homepage = "https://netbsd.org/";
         description = "Translates acronyms for you";
-        license = lib.licenses.bsd3;  # probably
+        license = lib.licenses.bsd3; # probably
       };
     })
   ];

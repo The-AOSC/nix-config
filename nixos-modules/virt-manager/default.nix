@@ -1,11 +1,17 @@
-{inputs, config, pkgs, lib, ...}: {
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.virt-manager = {
     enable = true;
   };
   virtualisation.libvirt = {
     enable = true;
     connections."qemu:///system" = {
-      domains = null;  # do not manage
+      domains = null; # do not manage
       networks = [
         {
           definition = inputs.nixvirt.lib.network.writeXML {
@@ -89,7 +95,10 @@
     onBoot = "ignore";
     onShutdown = "suspend";
     qemu = {
-      package = if ((lib.length config.boot.binfmt.emulatedSystems) == 0) then pkgs.qemu_kvm else pkgs.qemu;
+      package =
+        if ((lib.length config.boot.binfmt.emulatedSystems) == 0)
+        then pkgs.qemu_kvm
+        else pkgs.qemu;
       runAsRoot = true;
     };
   };

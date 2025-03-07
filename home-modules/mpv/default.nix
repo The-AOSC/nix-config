@@ -3,10 +3,12 @@
     enable = true;
     package = pkgs.mpv-unwrapped.wrapper {
       mpv = pkgs.mpv-unwrapped.overrideAttrs (old: {
-        patches = (old.patches or []) ++ [
-          ../../patches/mpv/mpv-0.35.1-always-never-osd-cycle.patch
-          ../../patches/mpv/mpv-0.35.1-cut-chapter-list.patch
-        ];
+        patches =
+          (old.patches or [])
+          ++ [
+            ../../patches/mpv/mpv-0.35.1-always-never-osd-cycle.patch
+            ../../patches/mpv/mpv-0.35.1-cut-chapter-list.patch
+          ];
       });
       scripts = [
         pkgs.mpvScripts.mpris
@@ -14,7 +16,7 @@
     };
     bindings = {
       "Shift+F8" = "show-text \${chapter-list}";
-      "DEL" = "script-binding osc/visibility-no-auto";  # see mpv-0.35.1-always-never-osd-cycle.patch
+      "DEL" = "script-binding osc/visibility-no-auto"; # see mpv-0.35.1-always-never-osd-cycle.patch
       "Shift+KP9" = "add chapter 1";
       "Shift+KP3" = "add chapter -1";
       "Shift+q" = "quit";

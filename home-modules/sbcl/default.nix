@@ -1,9 +1,10 @@
 {pkgs, ...}: {
   home.packages = let
-    package = pkgs.sbcl.withPackages (subpkgs: with subpkgs; [
-      cffi
-      parse-float
-    ]);
+    package = pkgs.sbcl.withPackages (subpkgs:
+      with subpkgs; [
+        cffi
+        parse-float
+      ]);
   in [
     package
     (pkgs.writeShellScriptBin "rlcl" ''

@@ -1,4 +1,4 @@
-inputs@{...}: {
+inputs @ {...}: {
   system = "x86_64-linux";
   nixos-modules = [
     inputs.flake-programs-sqlite.nixosModules.programs-sqlite
@@ -20,7 +20,7 @@ inputs@{...}: {
       modules = [
         inputs.impermanence.homeManagerModules.impermanence
         ./home.nix
-        #./unfree-fonts.nix
+        ./unfree-fonts.nix
         ../../home-modules/desktop.nix
         ../../home-modules/rldebugfs
         ../../home-modules/swaylock

@@ -56,7 +56,7 @@
                       \ "rightleft",   "rl",   "norightleft", "norl",
                       \ "wrap",        "nowrap"
                       \ ]
-          '';
+        '';
       }
       #vimagit
       #vim-airline

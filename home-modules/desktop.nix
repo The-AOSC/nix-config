@@ -57,7 +57,7 @@
     moreutils
     nmap
     pciutils
-    pulseaudio  # pactl
+    pulseaudio # pactl
     rlwrap
     screen
     shellcheck

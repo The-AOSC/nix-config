@@ -1,4 +1,8 @@
-{osConfig, pkgs, ...}: {
+{
+  osConfig,
+  pkgs,
+  ...
+}: {
   home.packages = [
     (pkgs.writeShellScriptBin "tor-browser" ''
       export TOR_SKIP_LAUNCH=1
