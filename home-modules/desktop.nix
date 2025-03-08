@@ -58,6 +58,7 @@
     moreutils
     nmap
     pciutils
+    pdfarranger
     pulseaudio # pactl
     rlwrap
     screen
