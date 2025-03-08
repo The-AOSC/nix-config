@@ -367,7 +367,7 @@ def configure_controls():
         #    "xargs xinput set-prop \\\"ELAN1200:00 04F3:309F Touchpad\\\" \\\"Device Enabled\\\"\"")),
 
         #;; SUPER added due to frequent miss-presses
-        #Key([SUPER],        "Print", print_screen()),
+        Key([SUPER],        "Print", lazy.spawn("sh -c 'mkdir -p ~/Screenshots; grim ~/Screenshots/\"$(date +\"Screenshot - %y.%M.%d %H:%M:%S.png\")\"'")),
         Key([SUPER, META],  "c",     lazy.spawn("sh -c 'wl-paste --primary | wl-copy'")),
         Key([SUPER],        "c",     lazy.spawn("sh -c 'wl-paste --primary | wl-copy --primary && wl-paste | wl-copy'")),
 

@@ -48,6 +48,7 @@
     ffmpeg
     file
     gimp
+    grim
     helvum
     imagemagick
     jmtpfs
