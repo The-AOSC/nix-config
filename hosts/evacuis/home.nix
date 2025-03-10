@@ -16,6 +16,9 @@
       "smb"
       "smbro"
     ];
+    files = [
+      "TODO"
+    ];
   };
   home.persistence."/media/aosc" = {
     allowOther = true;
