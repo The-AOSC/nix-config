@@ -6,6 +6,7 @@
     '';
     interactiveShellInit = ''
       fish_hybrid_key_bindings
+      set -g fish_cursor_insert block
 
       # Commands to run in interactive sessions can go here
 
