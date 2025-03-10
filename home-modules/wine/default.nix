@@ -20,7 +20,7 @@ in {
       #!/bin/sh
       dir="$1"
       shift
-      exec firejail --profile=wine ${firejailBlacklist} --private="$dir" -- "$@"
+      exec firejail --profile=wine ${firejailBlacklist} --disable-mnt --private="$dir" -- "$@"
     '';
   };
   home.file."${location}/firejail-run-cwd.sh" = {
