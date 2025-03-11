@@ -1,4 +1,7 @@
 {pkgs, ...}: {
+  imports = [
+    ./colors.nix
+  ];
   programs.fish = {
     enable = true;
     loginShellInit = ''
