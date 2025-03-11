@@ -5,6 +5,7 @@
       "cyclone-linux"
       "Desktop/colledge"
       "Desktop/corrupted-games"
+      "Desktop/Documents"
       "flakes"
       "inst"
       ".local/chromium-extensions"
