@@ -2,6 +2,7 @@
   imports = [
     ./colors.nix
   ];
+  home.shell.enableFishIntegration = true;
   programs.fish = {
     enable = true;
     loginShellInit = ''
