@@ -23,6 +23,7 @@
       "q" = "quit-watch-later";
       "Alt+KP_ADD" = "add video-zoom 0.1";
       "Alt+KP_SUBTRACT" = "add video-zoom -0.1";
+      "$" = "cycle audio -1";
     };
     config = {
       no-sub-visibility = "";
