@@ -11,7 +11,7 @@
   location = "Desktop/games";
 in {
   home.packages = [
-    pkgs.wineWowPackages.staging
+    pkgs.wineWowPackages.stagingFull
     pkgs.winetricks
   ];
   home.file."${location}/firejail-run.sh" = {
