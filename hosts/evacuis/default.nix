@@ -8,6 +8,7 @@ inputs @ {...}: {
     ./hardware-configuration.nix
     ./unfree.nix
     ../../nixos-modules/desktop.nix
+    ../../nixos-modules/amd
     ../../nixos-modules/gitlab
     ../../nixos-modules/sshd
     ../../nixos-modules/swaylock
