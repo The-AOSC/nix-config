@@ -11,7 +11,9 @@
   location = "Desktop/.games";
 in {
   home.packages = [
-    pkgs.wineWowPackages.stagingFull
+    (pkgs.wineWowPackages.stagingFull.override {
+      gstreamerSupport = false;
+    })
     pkgs.winetricks
   ];
   home.file."${location}/firejail-run.sh" = {
