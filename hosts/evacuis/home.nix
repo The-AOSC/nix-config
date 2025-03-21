@@ -24,7 +24,11 @@
   home.persistence."/media/aosc" = {
     allowOther = true;
     directories = [
-      "Desktop/games"
+      {
+        directory = "Desktop/games";
+        method = "symlink";
+      }
+      "Desktop/.games"
       "Desktop/Movies"
       "Desktop/Music"
       "Desktop/Videos"
