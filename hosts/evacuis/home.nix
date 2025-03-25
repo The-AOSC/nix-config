@@ -8,6 +8,7 @@
       "Desktop/Documents"
       "flakes"
       "inst"
+      "lisp"
       ".local/chromium-extensions"
       ".local/HyperSpec"
       "nix-config"
