@@ -1,4 +1,7 @@
 {pkgs, ...}: {
+  imports = [
+    ./neorg.nix
+  ];
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -35,12 +38,9 @@
       autocmd BufReadPost * silent! normal! g`"zv
     '';
     extraLuaConfig = ''
-      -- require("neorg").setup {
-      -- }
       loadfile("${./colorscheme.lua}")()
     '';
     plugins = with pkgs.vimPlugins; [
-      #neorg
       {
         plugin = securemodelines;
         config = ''
@@ -58,8 +58,6 @@
                       \ ]
         '';
       }
-      #vimagit
-      #vim-airline
       {
         plugin = vim-gitgutter;
         config = ''
