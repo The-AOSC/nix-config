@@ -7,6 +7,13 @@
         ++ [
           ../../patches/swaylock/swaylock-1.8.0-revert-drop-support-for-layer-shell.patch
         ];
+      version = "1.8.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "swaywm";
+        repo = "swaylock";
+        tag = "v1.8.0";
+        hash = "sha256-1+AXxw1gH0SKAxUa0JIhSzMbSmsfmBPCBY5IKaYtldg=";
+      };
     });
     settings = {
       color = "3f3f3f";
