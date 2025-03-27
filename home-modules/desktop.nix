@@ -65,6 +65,7 @@
     shellcheck
     termdown
     translate-shell
+    tree
     tty-solitaire
     universal-ctags
     usbutils
