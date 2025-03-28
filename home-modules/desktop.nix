@@ -59,6 +59,7 @@
     nmap
     pciutils
     pdfarranger
+    pipes
     pulseaudio # pactl
     rlwrap
     screen
