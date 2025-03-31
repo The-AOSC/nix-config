@@ -42,6 +42,7 @@
     bat
     brightnessctl
     bvi
+    dig
     dos2unix
     fastfetch
     feh
