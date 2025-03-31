@@ -65,6 +65,7 @@
     rlwrap
     screen
     shellcheck
+    speedtest-cli
     termdown
     translate-shell
     tree
