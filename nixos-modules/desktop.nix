@@ -2,7 +2,6 @@
   imports = [
     ./base.nix
     ./kdeconnect
-    ../packages/wtf.nix
     ./wine
   ];
   nix.settings.allowed-users = ["@wheel"];

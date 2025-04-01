@@ -20,6 +20,18 @@
     self,
     ...
   }: {
+    nixosModules = import ./nixos-modules;
+    homeManagerModules = import ./home-modules;
+    packages = flake-utils.lib.eachDefaultSystemMap (
+      system: let
+        pkgs = import nixpkgs {inherit system;};
+      in {
+        wtf = pkgs.callPackage ./packages/wtf.nix {};
+      }
+    );
+    overlays.wtf = final: prev: {
+      wtf = final.callPackage ./packages/wtf.nix {};
+    };
     nixosConfigurations = builtins.mapAttrs (host-name: host-config: (
       let
         system = host-config.system;
@@ -36,6 +48,9 @@
                 networking.hostName = host-name;
                 nix.settings.experimental-features = ["nix-command" "flakes"];
               })
+              {
+                nixpkgs.overlays = host-config.overlays;
+              }
               home-manager.nixosModules.home-manager
               {
                 home-manager = {
