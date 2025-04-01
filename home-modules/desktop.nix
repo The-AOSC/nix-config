@@ -67,6 +67,7 @@
     shellcheck
     speedtest-cli
     termdown
+    texliveFull
     translate-shell
     tree
     tty-solitaire
