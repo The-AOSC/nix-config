@@ -5,6 +5,7 @@
         load = {
           ["core.defaults"] = {},
           ["core.concealer"] = {},
+          ["core.export"] = {},
         },
       }
       require("nvim-treesitter.configs").setup {
