@@ -1,36 +1,40 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
-    ./cava
-    ./char-names
-    ./endgame-singularity
-    ./ffprobe-duration
-    ./fish
-    ./fonts
-    ./git
-    ./gpg
-    ./htop
-    ./hunspell
-    ./kdeconnect
-    ./libreoffice
-    ./mako
-    ./mpv
-    ./neovim
-    ./nix-sh
-    ./pass
-    ./powerctl
-    ./qbittorrent
-    ./qtile
-    ./sbcl
-    ./ssh
-    ./textwrap
-    ./tmux
-    ./unp
-    ./vivaldi
-    ./wezterm
-    ./wine
-    ./wmenu-history
-    ./wtf
-    ./zoxide
+    inputs.self.homeManagerModules.cava
+    inputs.self.homeManagerModules.char-names
+    inputs.self.homeManagerModules.endgame-singularity
+    inputs.self.homeManagerModules.ffprobe-duration
+    inputs.self.homeManagerModules.fish
+    inputs.self.homeManagerModules.fonts
+    inputs.self.homeManagerModules.git
+    inputs.self.homeManagerModules.gpg
+    inputs.self.homeManagerModules.htop
+    inputs.self.homeManagerModules.hunspell
+    inputs.self.homeManagerModules.kdeconnect
+    inputs.self.homeManagerModules.libreoffice
+    inputs.self.homeManagerModules.mako
+    inputs.self.homeManagerModules.mpv
+    inputs.self.homeManagerModules.neovim
+    inputs.self.homeManagerModules.nix-sh
+    inputs.self.homeManagerModules.pass
+    inputs.self.homeManagerModules.powerctl
+    inputs.self.homeManagerModules.qbittorrent
+    inputs.self.homeManagerModules.qtile
+    inputs.self.homeManagerModules.sbcl
+    inputs.self.homeManagerModules.ssh
+    inputs.self.homeManagerModules.textwrap
+    inputs.self.homeManagerModules.tmux
+    inputs.self.homeManagerModules.unp
+    inputs.self.homeManagerModules.vivaldi
+    inputs.self.homeManagerModules.wezterm
+    inputs.self.homeManagerModules.wine
+    inputs.self.homeManagerModules.wmenu-history
+    inputs.self.homeManagerModules.wtf
+    inputs.self.homeManagerModules.zoxide
   ];
   home.persistence."/persist/home/aosc" = {
     allowOther = true;

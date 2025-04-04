@@ -1,7 +1,11 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
-    ./ntp
-    ./persistence
+    inputs.self.nixosModules.ntp
+    inputs.self.nixosModules.persistence
   ];
   fileSystems."/etc/credentials" = {
     device = "/persist/etc/credentials";

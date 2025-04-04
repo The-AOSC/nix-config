@@ -1,8 +1,12 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
-    ./base.nix
-    ./kdeconnect
-    ./wine
+    inputs.self.nixosModules.base
+    inputs.self.nixosModules.kdeconnect
+    inputs.self.nixosModules.wine
   ];
   nix.settings.allowed-users = ["@wheel"];
   hardware.graphics.enable = true;
