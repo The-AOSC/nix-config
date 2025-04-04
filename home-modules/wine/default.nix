@@ -87,8 +87,8 @@ in {
 
       exec ${config.home.homeDirectory}/${location}/firejail-run.sh "$(realpath "$dir")/$home" \\
       sh << EOF
-      cd .
       #export DXVK_HUD=1
+      cd .
       exec wine explorer
       EOF
       EOF2
