@@ -4,6 +4,18 @@
   pkgs,
   ...
 }: {
+  services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    virtualHosts = {
+      "gitlab" = {
+        locations."/".proxyPass = "http://gitlab.containers";
+      };
+    };
+  };
+  networking.firewall = {
+    allowedTCPPorts = [80];
+  };
   users.users = let
     cfg = config.containers.gitlab.config;
   in {
@@ -32,11 +44,6 @@
         hostPort = 22;
         protocol = "tcp";
       }
-      {
-        containerPort = 80;
-        hostPort = 80;
-        protocol = "tcp";
-      }
     ];
     bindMounts = {
       "/data" = {
@@ -57,6 +64,10 @@
       imports = [
         impermanence
       ];
+      networking.firewall = {
+        enable = true;
+        allowedTCPPorts = [80];
+      };
       services.gitlab = {
         enable = true;
         databasePasswordFile = "/etc/credentials/database";
@@ -114,9 +125,9 @@
           "/etc/ssh/ssh_host_rsa_key.pub"
         ];
       };
-      users.users.root.password = "root";
       services.openssh = {
         enable = true;
+        openFirewall = true;
         settings = {
           AllowUsers = [config.services.gitlab.user "root"];
           AllowGroups = [config.services.gitlab.group "root"];

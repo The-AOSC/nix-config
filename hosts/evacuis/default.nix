@@ -11,6 +11,7 @@ inputs @ {...}: {
     inputs.self.nixosModules.amd
     inputs.self.nixosModules.desktop
     inputs.self.nixosModules.gitlab
+    inputs.self.nixosModules.netConfig
     inputs.self.nixosModules.sshd
     inputs.self.nixosModules.swaylock
     inputs.self.nixosModules.tor

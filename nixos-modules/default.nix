@@ -4,6 +4,7 @@
   desktop = import ./desktop.nix;
   gitlab = import ./gitlab;
   kdeconnect = import ./kdeconnect;
+  netConfig = import ./netConfig;
   ntp = import ./ntp;
   persistence = import ./persistence;
   sshd = import ./sshd;

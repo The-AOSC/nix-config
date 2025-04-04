@@ -3,6 +3,7 @@
   pkgs,
   ...
 }: {
+  netConfig.config = builtins.fromJSON (builtins.readFile ../../netConfig.json);
   time.timeZone = "Asia/Yekaterinburg";
   users.users.aosc = {
     hashedPasswordFile = "/etc/credentials/aosc.hashedpassword";

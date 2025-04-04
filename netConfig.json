@@ -1,0 +1,20 @@
+{
+  "networks": {},
+  "hosts": {
+    "evacuis": {
+      "containers": {
+        "gitlab": {
+          "host": {
+            "ipv4": "10.253.0.1",
+            "ipv6": "fd10::1"
+          },
+          "local": {
+            "ipv4": "10.253.128.1",
+            "ipv6": "fd11::1"
+          }
+        }
+      },
+      "extra-domains": []
+    }
+  }
+}
