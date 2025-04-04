@@ -2,6 +2,7 @@ inputs @ {...}: {
   system = "x86_64-linux";
   overlays = [
     inputs.self.overlays.wtf
+    inputs.self.overlays.downgrade-wine-mono
   ];
   nixos-modules = [
     inputs.flake-programs-sqlite.nixosModules.programs-sqlite

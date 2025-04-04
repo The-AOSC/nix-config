@@ -2,6 +2,7 @@
   description = "NixOS configuration of The AOSC";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-c484bcc5.url = "github:NixOS/nixpkgs?rev=c484bcc5fa3e15f05fa51fa7b1d651f2bcdc97e7"; # bisected (f845bdffe2284508cfe35d1ef5e864e465276c67)
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -29,8 +30,28 @@
         wtf = pkgs.callPackage ./packages/wtf.nix {};
       }
     );
-    overlays.wtf = final: prev: {
-      wtf = final.callPackage ./packages/wtf.nix {};
+    overlays = {
+      wtf = final: prev: {
+        wtf = final.callPackage ./packages/wtf.nix {};
+      };
+      # downgrade wine-mono to 9.4.0
+      downgrade-wine-mono = final: prev: let
+        working-wine = (import inputs.nixpkgs-c484bcc5 {system = final.system;}).wineWowPackages;
+        wine-src = final.callPackage "${inputs.nixpkgs}/pkgs/applications/emulators/wine/sources.nix" {};
+        current-wine-version = wine-src.unstable.version;
+        current-mono-version = wine-src.unstable.mono.version;
+      in {
+        wineWowPackages =
+          if (current-wine-version != "10.4") || (current-mono-version != "10.0.0")
+          then
+            builtins.warn ''
+              wine-unstable and wine-mono got updated to ${current-wine-version} and ${current-mono-version}
+              check that this overlay is still relevant
+              (see https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions)
+            ''
+            working-wine
+          else working-wine;
+      };
     };
     nixosConfigurations = builtins.mapAttrs (host-name: host-config: (
       let
