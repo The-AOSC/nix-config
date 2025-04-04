@@ -24,6 +24,7 @@
   environment.persistence."/persist" = {
     directories = [
       "/var/lib/samba"
+      "/var/lib/systemd/backlight"
     ];
   };
   services.samba = {
