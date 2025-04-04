@@ -13,6 +13,7 @@
       ".local/HyperSpec"
       "nix-config"
       "nixos-arm"
+      "nixpkgs"
       "not-os"
       "rk3328-linux"
       "smb"
