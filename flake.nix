@@ -2,7 +2,6 @@
   description = "NixOS configuration of The AOSC";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-c484bcc5.url = "github:NixOS/nixpkgs?rev=c484bcc5fa3e15f05fa51fa7b1d651f2bcdc97e7"; # bisected (f845bdffe2284508cfe35d1ef5e864e465276c67)
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -34,10 +33,17 @@
       wtf = final: prev: {
         wtf = final.callPackage ./packages/wtf.nix {};
       };
-      # downgrade wine-mono to 9.4.0
       downgrade-wine-mono = final: prev: let
-        working-wine = (import inputs.nixpkgs-c484bcc5 {system = final.system;}).wineWowPackages;
-        wine-src = final.callPackage "${inputs.nixpkgs}/pkgs/applications/emulators/wine/sources.nix" {};
+        working-wine =
+          (import (final.applyPatches {
+            name = "nixpkgs-patched";
+            src = nixpkgs;
+            patches = [
+              ./patches/nixpkgs/nixpkgs-downgrade-wine-mono-to-9.4.0.patch
+            ];
+          }) {system = final.system;})
+          .wineWowPackages;
+        wine-src = final.callPackage "${nixpkgs}/pkgs/applications/emulators/wine/sources.nix" {};
         current-wine-version = wine-src.unstable.version;
         current-mono-version = wine-src.unstable.mono.version;
       in {

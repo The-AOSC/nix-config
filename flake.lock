@@ -90,22 +90,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-c484bcc5": {
-      "locked": {
-        "lastModified": 1743327182,
-        "narHash": "sha256-P52OtgoVOF/rtIjirOPHMC8gt6C7QNYHIY23N7O0xxQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "c484bcc5fa3e15f05fa51fa7b1d651f2bcdc97e7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "c484bcc5fa3e15f05fa51fa7b1d651f2bcdc97e7",
-        "type": "github"
-      }
-    },
     "nixvirt": {
       "inputs": {
         "nixpkgs": [
@@ -135,7 +119,6 @@
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-c484bcc5": "nixpkgs-c484bcc5",
         "nixvirt": "nixvirt"
       }
     },
