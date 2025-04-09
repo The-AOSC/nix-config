@@ -1,5 +1,4 @@
 inputs @ {...}: {
-  system = "x86_64-linux";
   overlays = [
     inputs.self.overlays.wtf
     inputs.self.overlays.downgrade-wine-mono

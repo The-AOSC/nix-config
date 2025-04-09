@@ -63,13 +63,12 @@
     lib = {
       mkNixosSystem = host-name: host-config: (
         let
-          system = host-config.system;
           specialArgs = {
             inherit inputs;
           };
         in
           nixpkgs.lib.nixosSystem {
-            inherit system specialArgs;
+            inherit specialArgs;
             modules =
               [
                 ({pkgs, ...}: {
