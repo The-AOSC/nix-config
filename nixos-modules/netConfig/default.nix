@@ -6,13 +6,17 @@
   cfg = config.netConfig;
 in {
   options.netConfig = {
-    config = lib.mkOption {};
+    config = lib.mkOption {
+      description = "Hosts network configuration";
+    };
     hosts = {
       byHost = lib.mkOption {
+        description = "Map from hostName to its networking.hosts option";
         readOnly = true;
         type = with lib.types; attrsOf (attrsOf (listOf str));
       };
       byNetwork = lib.mkOption {
+        description = "Map from network to networking.hosts option compatible with hosts in that network";
         readOnly = true;
         type = with lib.types; attrsOf (attrsOf (listOf str));
       };

@@ -54,4 +54,5 @@
     package = pkgs.wireshark;
   };
   boot.kernel.sysctl."kernel.dmesg_restrict" = 0;
+  documentation.nixos.includeAllModules = true;
 }
