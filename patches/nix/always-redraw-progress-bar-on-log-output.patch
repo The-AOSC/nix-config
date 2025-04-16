@@ -1,0 +1,14 @@
+diff --git a/src/libmain/progress-bar.cc b/src/libmain/progress-bar.cc
+index 23f5ff8f7..f9c065d38 100644
+--- a/src/libmain/progress-bar.cc
++++ b/src/libmain/progress-bar.cc
+@@ -187,6 +187,9 @@ public:
+     {
+         if (state.active) {
+             writeToStderr("\r\e[K" + filterANSIEscapes(s, !isTTY) + ANSI_NORMAL "\n");
++            {
++                *(lastOutput_.lock()) = "";
++            }
+             draw(state);
+         } else {
+             writeToStderr(filterANSIEscapes(s, !isTTY) + "\n");

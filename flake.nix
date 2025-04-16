@@ -33,30 +33,14 @@
       wtf = final: prev: {
         wtf = final.callPackage ./packages/wtf.nix {};
       };
-      downgrade-wine-mono = final: prev: let
-        working-wine =
-          (import (final.applyPatches {
-            name = "nixpkgs-patched";
-            src = nixpkgs;
-            patches = [
-              ./patches/nixpkgs/nixpkgs-downgrade-wine-mono-to-9.4.0.patch
+      always-redraw-progress-bar-on-log-output = final: prev: {
+        nix = prev.nix.overrideAttrs (old: {
+          patches =
+            (old.patches or [])
+            ++ [
+              ./patches/nix/always-redraw-progress-bar-on-log-output.patch
             ];
-          }) {system = final.system;})
-          .wineWowPackages;
-        wine-src = final.callPackage "${nixpkgs}/pkgs/applications/emulators/wine/sources.nix" {};
-        current-wine-version = wine-src.unstable.version;
-        current-mono-version = wine-src.unstable.mono.version;
-      in {
-        wineWowPackages =
-          if (current-wine-version != "10.4") || (current-mono-version != "10.0.0")
-          then
-            builtins.warn ''
-              wine-unstable and wine-mono got updated to ${current-wine-version} and ${current-mono-version}
-              check that this overlay is still relevant
-              (see https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions)
-            ''
-            working-wine
-          else working-wine;
+        });
       };
     };
     nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (import ./hosts inputs);

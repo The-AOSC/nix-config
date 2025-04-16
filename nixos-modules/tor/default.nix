@@ -17,7 +17,18 @@
     settings = {
       UseBridges = "1";
       #ClientTransportPlugin = "snowflake exec ${pkgs.snowflake}/client";
-      ClientTransportPlugin = "snowflake exec ${pkgs.tor-browser}/share/tor-browser/TorBrowser/Tor/PluggableTransports/snowflake-client";
+      ClientTransportPlugin = "snowflake exec ${pkgs.tor-browser.overrideAttrs rec {
+        version = "14.0.7";
+        src = pkgs.fetchurl {
+          urls = [
+            "https://archive.torproject.org/tor-package-archive/torbrowser/${version}/tor-browser-linux-x86_64-${version}.tar.xz"
+            "https://dist.torproject.org/torbrowser/${version}/tor-browser-linux-x86_64-${version}.tar.xz"
+            "https://tor.eff.org/dist/torbrowser/${version}/tor-browser-linux-x86_64-${version}.tar.xz"
+            "https://tor.calyxinstitute.org/dist/torbrowser/${version}/tor-browser-linux-x86_64-${version}.tar.xz"
+          ];
+          hash = "sha256-CRpW+1BqNeLlBycqMzWp4cWXqah85jf4PLhEbo0UsDo=";
+        };
+      }}/share/tor-browser/TorBrowser/Tor/PluggableTransports/snowflake-client";
       Bridge = [
         "snowflake 192.0.2.5:80 2B280B23E1107BB62ABFC40DDCC8824814F80A72 fingerprint=2B280B23E1107BB62ABFC40DDCC8824814F80A72 url=https://snowflake-broker.torproject.net/ ampcache=https://cdn.ampproject.org/ front=www.google.com ice=stun:stun.antisip.com:3478,stun:stun.epygi.com:3478,stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.mixvoip.com:3478,stun:stun.nextcloud.com:3478,stun:stun.bethesda.net:3478,stun:stun.nextcloud.com:443 utls-imitate=hellorandomizedalpn"
         "snowflake 192.0.2.3:80 2B280B23E1107BB62ABFC40DDCC8824814F80A72 fingerprint=2B280B23E1107BB62ABFC40DDCC8824814F80A72 url=https://1098762253.rsc.cdn77.org fronts=www.phpmyadmin.net,cdn.zk.mk ice=stun:stun.antisip.com:3478,stun:stun.epygi.com:3478,stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.mixvoip.com:3478,stun:stun.nextcloud.com:3478,stun:stun.bethesda.net:3478,stun:stun.nextcloud.com:443 utls-imitate=hellorandomizedalpn"

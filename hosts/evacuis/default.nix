@@ -1,7 +1,7 @@
 inputs @ {...}: {
   overlays = [
+    inputs.self.overlays.always-redraw-progress-bar-on-log-output
     inputs.self.overlays.wtf
-    inputs.self.overlays.downgrade-wine-mono
   ];
   nixos-modules = [
     inputs.flake-programs-sqlite.nixosModules.programs-sqlite
