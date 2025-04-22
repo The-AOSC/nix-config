@@ -4,7 +4,7 @@
   ...
 }: {
   home.packages = [
-    pkgs.htop
+    pkgs.htop-vim
   ];
   xdg.configFile."htop/htoprc".source = lib.mkDefault ./htoprc;
 }
