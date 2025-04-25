@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./colors.nix
+    ./fish-command-timer.nix
   ];
   home.shell.enableFishIntegration = true;
   programs.fish = {
