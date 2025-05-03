@@ -78,4 +78,7 @@
     '';
   };
   services.openssh.ports = [7132];
+  services.kanata.keyboards.default.devices = [
+    "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+  ];
 }

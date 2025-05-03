@@ -8,8 +8,6 @@ xkb_symbols "normal" {
 
     include "keypad(pointerkeys)"
 
-    include "capslock(escape)"
-
     key <RTSH> {[ISO_Level3_Shift]};
     modifier_map Shift {Shift_L, Shift_R, ISO_Level3_Shift};
 

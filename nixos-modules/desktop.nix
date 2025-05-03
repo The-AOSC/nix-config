@@ -5,6 +5,7 @@
 }: {
   imports = [
     inputs.self.nixosModules.base
+    inputs.self.nixosModules.kanata
     inputs.self.nixosModules.kdeconnect
     inputs.self.nixosModules.wine
   ];

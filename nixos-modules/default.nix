@@ -3,6 +3,7 @@
   base = import ./base.nix;
   desktop = import ./desktop.nix;
   gitlab = import ./gitlab;
+  kanata = import ./kanata;
   kdeconnect = import ./kdeconnect;
   netConfig = import ./netConfig;
   ntp = import ./ntp;
