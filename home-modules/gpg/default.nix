@@ -21,7 +21,7 @@
     sshKeys = [
       "8FEA1239D48FB852123025D0FCFA4475EDCF4912" # gpg --list-keys --with-keygrip
     ];
-    pinentryPackage = pkgs.pinentry-qt;
+    pinentry.package = pkgs.pinentry-qt;
   };
   home.activation = {
     force-private-gpg = lib.hm.dag.entryAfter ["writeBoundary" "createAndMountPersistentStoragePaths"] ''
