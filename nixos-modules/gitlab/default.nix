@@ -73,6 +73,9 @@
         databasePasswordFile = "/etc/credentials/database";
         initialRootPasswordFile = "/etc/credentials/root";
         secrets = {
+          activeRecordDeterministicKeyFile = "/etc/credentials/record-deterministic-key";
+          activeRecordPrimaryKeyFile = "/etc/credentials/record-primary-key";
+          activeRecordSaltFile = "/etc/credentials/record-salt";
           secretFile = "/etc/credentials/secret";
           dbFile = "/etc/credentials/db";
           otpFile = "/etc/credentials/otp";
