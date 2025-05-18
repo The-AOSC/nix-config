@@ -20,7 +20,7 @@
       "smbro"
     ];
     files = [
-      "TODO"
+      "TODO.norg"
     ];
   };
   home.persistence."/media/aosc" = {
