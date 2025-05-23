@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   programs.neovim = {
     extraLuaConfig = ''
       require("neorg").setup {
@@ -16,7 +20,7 @@
     '';
     plugins = with pkgs.vimPlugins; [
       neorg
-      nvim-treesitter.withAllGrammars
+      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
     ];
   };
 }
