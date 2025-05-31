@@ -3,6 +3,12 @@
   pkgs,
   ...
 }: {
+  boot.kernelPatches = [
+    {
+      name = "fix-headphones-audio";
+      patch = ../../patches/linux/fix-headphones-audio.patch;
+    }
+  ];
   netConfig.config = builtins.fromJSON (builtins.readFile ../../netConfig.json);
   time.timeZone = "Asia/Yekaterinburg";
   users.users.aosc = {
