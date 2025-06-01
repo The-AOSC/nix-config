@@ -8,7 +8,6 @@
     # https://flakehub.com/flake/AshleyYakeley/NixVirt
     nixvirt.url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
     nixvirt.inputs.nixpkgs.follows = "nixpkgs";
-    nixvirt.inputs.nixpkgs-ovmf.follows = "nixpkgs";
     flake-programs-sqlite.url = "github:wamserma/flake-programs-sqlite";
     flake-programs-sqlite.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";

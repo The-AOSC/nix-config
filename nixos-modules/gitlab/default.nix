@@ -83,6 +83,7 @@
         };
         port = 80;
       };
+      services.postgresql.package = pkgs.postgresql_17;
       services.openssh.authorizedKeysFiles = [
         "${config.users.users."${config.services.gitlab.user}".home}/.ssh/authorized_keys"
       ];
