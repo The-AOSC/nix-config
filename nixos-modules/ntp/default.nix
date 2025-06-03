@@ -19,8 +19,6 @@
       fudge 127.127.1.0 stratum 10
     '';
   };
-  /*
   networking.firewall.allowedTCPPorts = [123];
   networking.firewall.allowedUDPPorts = [123];
-  */
 }
