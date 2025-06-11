@@ -1,17 +1,7 @@
-{
-  amd = import ./amd;
-  base = import ./base.nix;
-  desktop = import ./desktop.nix;
-  gitlab = import ./gitlab;
-  kanata = import ./kanata;
-  kdeconnect = import ./kdeconnect;
-  netConfig = import ./netConfig;
-  ntp = import ./ntp;
-  persistence = import ./persistence;
-  sshd = import ./sshd;
-  swaylock = import ./swaylock;
-  tor = import ./tor;
-  virt-manager = import ./virt-manager;
-  wine = import ./wine;
-  zapret = import ./zapret;
-}
+{nixpkgs, ...}: let
+  inherit (nixpkgs) lib;
+in
+  lib.mapAttrs' (path: type: lib.nameValuePair (lib.removeSuffix ".nix" path) (import (./. + "/${path}")))
+  (lib.filterAttrs
+    (path: type: (type == "directory") || ((path != "default.nix") && (lib.hasSuffix ".nix" path)))
+    (builtins.readDir ./.))

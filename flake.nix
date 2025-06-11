@@ -19,8 +19,8 @@
     self,
     ...
   }: {
-    nixosModules = import ./nixos-modules;
-    homeManagerModules = import ./home-modules;
+    nixosModules = import ./nixos-modules inputs;
+    homeManagerModules = import ./home-modules inputs;
     packages = flake-utils.lib.eachDefaultSystemMap (
       system: let
         pkgs = import nixpkgs {inherit system;};
