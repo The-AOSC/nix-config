@@ -84,7 +84,35 @@
     '';
   };
   services.openssh.ports = [7132];
-  services.kanata.keyboards.default.devices = [
-    "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
-  ];
+  kanata.keyboards.default = with config.lib.kanata; {
+    defaultLayer = "default";
+    extraConfig = ''
+      (defvirtualkeys
+        vkey-layer-mouse (layer-while-held mouse))
+      ${layers.mouse.extra-conf}
+    '';
+    layers = let
+      mode-select = "(layer-while-held mode-select)";
+      with-mode-select = mergeLayers {"ralt" = mode-select;};
+    in {
+      default = layers.withNoDefault (mergeTapHold
+        (mergeLayers layers.homeRowMods.base
+          (layers.passthroughKeys ["left" "right" "up" "down"]))
+        (mergeLayers (layers.homeRowMods.level-mods "level1" "level2" "level3") layers.homeRowMods.mods));
+      level1 = layers.withNoDefault (layers.homeRowMods.withMods layers.homeRowMods.level1);
+      level2 = layers.withNoDefault (layers.homeRowMods.withMods layers.homeRowMods.level2);
+      level3 = layers.withNoDefault (layers.homeRowMods.withMods (with-mode-select layers.homeRowMods.level3));
+      simple = with-mode-select layers.simple;
+      mouse = layers.mouse.default "mouse-hold";
+      mouse-hold = layers.mouse.hold;
+      mode-select = {
+        "caps" = "(multi (on-press release-virtualkey vkey-layer-mouse) (layer-switch default))";
+        "s" = "(multi (on-press release-virtualkey vkey-layer-mouse) (layer-switch simple))";
+        "m" = "(on-press press-virtualkey vkey-layer-mouse)";
+      };
+    };
+    devices = [
+      "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+    ];
+  };
 }

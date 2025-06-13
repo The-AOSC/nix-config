@@ -16,8 +16,6 @@
     bindings = {
       "Shift+F8" = "show-text \${chapter-list}";
       "DEL" = "script-binding osc/visibility-no-auto"; # see mpv-0.35.1-always-never-osd-cycle.patch
-      "Shift+KP9" = "add chapter 1";
-      "Shift+KP3" = "add chapter -1";
       "Shift+q" = "quit";
       "q" = "quit-watch-later";
       "Alt+KP_ADD" = "add video-zoom 0.1";

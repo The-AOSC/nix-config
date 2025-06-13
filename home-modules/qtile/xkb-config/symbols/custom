@@ -6,16 +6,8 @@ xkb_symbols "normal" {
 
     include "inet(evdev)"
 
-    include "keypad(pointerkeys)"
-
-    key <RTSH> {[ISO_Level3_Shift]};
-    modifier_map Shift {Shift_L, Shift_R, ISO_Level3_Shift};
-
     key <LALT> {[Meta_L, Meta_L]};
-
-    key <RALT> {[Hyper_R, Hyper_R]};
-    modifier_map Mod3 {Hyper_L, Hyper_R};
-    //modifier_map Mod4 {Super_L, Super_R};
+    key <RALT> {[Meta_R, Meta_R]};
 
     key <LCTL> {
         type[Group1] = "PC_CONTROL_LEVEL2",
@@ -28,21 +20,7 @@ xkb_symbols "normal" {
         symbols[Group1] = [Multi_key, Control_L]
     };
 
-    key <AE01> {[1,                exclam]};
-    key <AE02> {[2,                at,               quotedbl,         VoidSymbol]};
-    key <AE03> {[3,                numbersign,       numerosign,       VoidSymbol]};
-    key <AE04> {[4,                dollar,           semicolon,        VoidSymbol]};
-    key <AE05> {[5,                percent]};
-    key <AE06> {[6,                asciicircum,      colon,            VoidSymbol]};
-    key <AE07> {[7,                ampersand,        question,         VoidSymbol]};
-    key <AE08> {[8,                asterisk]};
-    key <AE09> {[9,                parenleft]};
-    key <AE10> {[0,                parenright]};
-
-    //key <BKSL> {[backslash,        bar,              slash,            VoidSymbol]};
-
-    //key <AB10> {[slash,            question,         period,           comma]};
-    key <FK21> {[XF86TouchpadToggle]};
+    //key <FK21> {[XF86TouchpadToggle]};
 
     // lets swap meaning of numlock
     key <KP7>  {[KP_7,       KP_Home]};
