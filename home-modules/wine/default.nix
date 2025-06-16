@@ -87,6 +87,7 @@ in {
 
       exec ${config.home.homeDirectory}/${location}/firejail-run.sh "$(realpath "$dir")/$home" \\
       sh << EOF
+      set -e
       #export DXVK_HUD=1
       cd .
       exec wine explorer
@@ -98,6 +99,7 @@ in {
       mkdir -p "$dir/$home"
       if [ ! -d "$dir/$home/.wine" ]; then
           ${config.home.file."${location}/firejail-run.sh".source} "$dir/$home" winetricks --force -q dlls dxvk vcrun2022 #vkd3d
+          ${config.home.file."${location}/firejail-run.sh".source} "$dir/$home" winetricks vd=1920x1080
       fi
     '';
   };
