@@ -56,6 +56,7 @@
     grim
     helvum
     imagemagick
+    inetutils
     jmtpfs
     jq
     killall
@@ -76,6 +77,7 @@
     tree
     tty-solitaire
     universal-ctags
+    unixtools.xxd
     usbutils
     wev
     wget
