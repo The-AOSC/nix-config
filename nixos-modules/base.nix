@@ -30,6 +30,7 @@
   environment.binsh = "${pkgs.dash}/bin/dash";
   nix.settings = {
     keep-derivations = true;
+    keep-failed = true;
     keep-going = true;
     keep-outputs = true;
   };
