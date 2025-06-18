@@ -26,8 +26,8 @@
       (
         ["f1" "f2" "f3" "f4" "f5" "f6" "f7" "f8" "f9" "f10" "f11" "f12"]
         ++ [null null null "end" null null null "[" "]" "grv" "pgup" null]
-        ++ [null "home" null "del" null null "bspc" "ret" null null null null]
-        ++ [null null null null null "pgdn" null null null null]
+        ++ [null "home" null "del" "right" null "bspc" "ret" null null null null]
+        ++ [null null null null "left" "pgdn" null null null null]
         ++ [null]
       )
     ];
