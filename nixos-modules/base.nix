@@ -28,7 +28,12 @@
   programs.nano.enable = false;
   programs.neovim.enable = true;
   environment.binsh = "${pkgs.dash}/bin/dash";
+  systemd.tmpfiles.rules = [
+    "D! /persist/tmp 1777 root root"
+  ];
   nix.settings = {
+    auto-optimise-store = true;
+    build-dir = "/persist/tmp";
     keep-derivations = true;
     keep-failed = true;
     keep-going = true;
