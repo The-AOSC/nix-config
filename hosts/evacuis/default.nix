@@ -4,7 +4,6 @@ inputs @ {...}: {
     inputs.self.overlays.wtf
   ];
   nixos-modules = [
-    inputs.flake-programs-sqlite.nixosModules.programs-sqlite
     inputs.impermanence.nixosModules.impermanence
     inputs.nixvirt.nixosModules.default
     inputs.self.nixosModules.amd
