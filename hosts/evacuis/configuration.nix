@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   boot.kernelPatches = [
@@ -92,23 +93,32 @@
       ${layers.mouse.extra-conf}
     '';
     layers = let
+      base =
+        mergeLayers layers.homeRowMods.base
+        (layers.passthroughKeys ["left" "right" "up" "down"]);
       mode-select = "(layer-while-held mode-select)";
       with-mode-select = mergeLayers {"ralt" = mode-select;};
-    in {
-      default = layers.withNoDefault (mergeTapHold
-        (mergeLayers layers.homeRowMods.base
-          (layers.passthroughKeys ["left" "right" "up" "down"]))
-        (mergeLayers (layers.homeRowMods.level-mods "level1" "level2" "level3") layers.homeRowMods.mods));
-      level1 = layers.withNoDefault (layers.homeRowMods.withMods layers.homeRowMods.level1);
-      level2 = layers.withNoDefault (layers.homeRowMods.withMods layers.homeRowMods.level2);
-      level3 = layers.withNoDefault (layers.homeRowMods.withMods (with-mode-select layers.homeRowMods.level3));
-      simple = with-mode-select layers.simple;
+      with-all-mods = lib.flip mergeTapHold (mergeLayers
+        (layers.homeRowMods.level-mods "level1" "level2" "level3")
+        layers.homeRowMods.mods);
       mouse = layers.mouse.default "mouse-hold";
+    in {
+      default = layers.withNoDefault (with-all-mods base);
+      default-mouse = layers.withNoDefault (with-all-mods (mergeLayers base mouse));
+      level1 = layers.withNoDefault (with-all-mods layers.homeRowMods.level1);
+      level2 = layers.withNoDefault (with-all-mods layers.homeRowMods.level2);
+      level3 = layers.withNoDefault (with-all-mods (with-mode-select layers.homeRowMods.level3));
+      simple = with-mode-select layers.simple;
+      mouse = mouse;
       mouse-hold = layers.mouse.hold;
       mode-select = {
         "caps" = "(multi (on-press release-virtualkey vkey-layer-mouse) (layer-switch default))";
         "s" = "(multi (on-press release-virtualkey vkey-layer-mouse) (layer-switch simple))";
-        "m" = "(on-press press-virtualkey vkey-layer-mouse)";
+        "m" = ''
+          (switch
+            ((base-layer default)) (layer-switch default-mouse) break
+            ((base-layer simple)) (on-press press-virtualkey vkey-layer-mouse) break)
+        '';
       };
     };
     devices = [

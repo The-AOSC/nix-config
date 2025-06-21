@@ -35,8 +35,8 @@
       src-layout
       (
         [null null null "brdn" "bru" null null null null "vold" "volu" null]
-        ++ [null null null null "ins" null null null "up" null null null]
-        ++ [null null "prnt" null null null "ret" "left" "down" "right" null null]
+        ++ [null null null null "ins" null null "kp+" "up" "kp-" null null]
+        ++ [null null "prnt" null null null "spc" "left" "down" "right" "ret" null]
         ++ [null null null null null null "mute" null null null]
         ++ [null]
       )
