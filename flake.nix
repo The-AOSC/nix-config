@@ -2,7 +2,7 @@
   description = "NixOS configuration of The AOSC";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-4c78e34c72dfa32d48fc4d11be1219a9d0ec6210.url = "github:NixOS/nixpkgs?rev=4c78e34c72dfa32d48fc4d11be1219a9d0ec6210";
+    nixpkgs-d139ff7561a884bb88545176546293ccd90ac14c.url = "github:NixOS/nixpkgs?rev=d139ff7561a884bb88545176546293ccd90ac14c";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -42,8 +42,8 @@
             ];
         });
       };
-      fix-rocm = final: prev: {
-        inherit (import inputs.nixpkgs-4c78e34c72dfa32d48fc4d11be1219a9d0ec6210 {inherit (final) system;}) rocmPackages;
+      fix-bindfs = final: prev: {
+        inherit (import inputs.nixpkgs-d139ff7561a884bb88545176546293ccd90ac14c {inherit (final) system;}) bindfs;
       };
     };
     nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (import ./hosts inputs);
@@ -64,7 +64,7 @@
                   nix.settings.experimental-features = ["nix-command" "flakes"];
                 })
                 {
-                  nixpkgs.overlays = host-config.overlays ++ [self.overlays.fix-rocm];
+                  nixpkgs.overlays = host-config.overlays ++ [self.overlays.fix-bindfs];
                 }
                 home-manager.nixosModules.home-manager
                 {
