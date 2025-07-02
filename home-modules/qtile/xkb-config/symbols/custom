@@ -9,18 +9,9 @@ xkb_symbols "normal" {
     key <LALT> {[Meta_L, Meta_L]};
     key <RALT> {[Meta_R, Meta_R]};
 
-    key <LCTL> {
-        type[Group1] = "PC_CONTROL_LEVEL2",
-        symbols[Group1] = [Control_L, ISO_Next_Group]
-    };
-    key <RCTL> {[Control_R]};
-
-    key <I255> {
-        type[Group1] = "PC_CONTROL_LEVEL2",
-        symbols[Group1] = [Multi_key, Control_L]
-    };
-
-    //key <FK21> {[XF86TouchpadToggle]};
+    #key <FK24> {[ISO_Next_Group]};
+    key <FK19> {[ISO_First_Group]};
+    key <FK24> {[ISO_Last_Group]};
 
     // lets swap meaning of numlock
     key <KP7>  {[KP_7,       KP_Home]};
