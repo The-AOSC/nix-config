@@ -2,7 +2,6 @@
   description = "NixOS configuration of The AOSC";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-d139ff7561a884bb88545176546293ccd90ac14c.url = "github:NixOS/nixpkgs?rev=d139ff7561a884bb88545176546293ccd90ac14c";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -42,9 +41,6 @@
             ];
         });
       };
-      fix-bindfs = final: prev: {
-        inherit (import inputs.nixpkgs-d139ff7561a884bb88545176546293ccd90ac14c {inherit (final) system;}) bindfs;
-      };
     };
     nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (import ./hosts inputs);
     lib = {
@@ -64,7 +60,7 @@
                   nix.settings.experimental-features = ["nix-command" "flakes"];
                 })
                 {
-                  nixpkgs.overlays = host-config.overlays ++ [self.overlays.fix-bindfs];
+                  nixpkgs.overlays = host-config.overlays;
                 }
                 home-manager.nixosModules.home-manager
                 {
