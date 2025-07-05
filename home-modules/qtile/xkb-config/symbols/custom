@@ -12,19 +12,4 @@ xkb_symbols "normal" {
     #key <FK24> {[ISO_Next_Group]};
     key <FK19> {[ISO_First_Group]};
     key <FK24> {[ISO_Last_Group]};
-
-    // lets swap meaning of numlock
-    key <KP7>  {[KP_7,       KP_Home]};
-    key <KP8>  {[KP_8,       KP_Up]};
-    key <KP9>  {[KP_9,       KP_Page_Up]};
-    #key <KP4>  {[KP_4,       KP_Page_Down]};
-    key <KP4>  {[KP_4,       KP_Left]};
-    key <KP5>  {[KP_5,       KP_Begin]};
-    key <KP6>  {[KP_6,       KP_Right]};
-    key <KP1>  {[KP_1,       KP_End]};
-    key <KP2>  {[KP_2,       KP_Down]};
-    #key <KP3>  {[KP_3,       KP_Next]};
-    key <KP3>  {[KP_3,       KP_Page_Down]};
-    key <KP0>  {[KP_0,       KP_Insert]};
-    key <KPDL> {[KP_Decimal, KP_Delete]};
 };

@@ -1,0 +1,63 @@
+diff --git a/libqtile/backend/wayland/inputs.py b/libqtile/backend/wayland/inputs.py
+index dc8312e4..09bcad56 100644
+--- a/libqtile/backend/wayland/inputs.py
++++ b/libqtile/backend/wayland/inputs.py
+@@ -117,6 +117,8 @@ class InputConfig(configurable.Configurable):
+         ("kb_variant", None, "Keyboard variant i.e. ``XKB_DEFAULT_VARIANT``"),
+         ("kb_repeat_rate", 25, "Keyboard key repeats made per second"),
+         ("kb_repeat_delay", 600, "Keyboard delay in milliseconds before repeating"),
++        ("kb_numlock", False, "``True`` or ``False`` Enable numlock on startup"),
++        ("kb_capslock", False, "``True`` or ``False`` Enable capslock on startup"),
+     ]
+
+     def __init__(self, **config: Any) -> None:
+#@@ -254,6 +256,7 @@ class Keyboard(_Device):
+#         if event.state == KEY_PRESSED and not self.core.exclusive_client:
+#             # translate libinput keycode -> xkbcommon
+#             keycode = event.keycode + 8
+#+            print(keycode)
+#             layout_index = lib.xkb_state_key_get_layout(self.keyboard._ptr.xkb_state, keycode)
+#             nsyms = lib.xkb_keymap_key_get_syms_by_level(
+#                 self.keyboard._ptr.keymap,
+@@ -275,6 +278,32 @@ class Keyboard(_Device):
+
+         self.seat.keyboard_notify_key(event)
+
++    def set_numlock(self, numlock: bool) -> None:
++        """Set the numlock state of the keyboard."""
++        if numlock:
++            print("numlock")
++            print(self.keyboard._ptr)
++            idx = ffi.new("xkb_mod_index_t *")
++            idx[0] = lib.xkb_keymap_mod_get_index(self.keyboard._ptr.keymap, ffi.new("const char []", "Mod2".encode("ascii")))
++            # error: 4294967295
++            one = ffi.new("uint32_t *", 1)
++            mask = ffi.new("xkb_mod_mask_t *", 0)
++            mask[0] = mask[0] | one[0] << idx[0]
++            print(lib.xkb_state_update_mask(self.keyboard._ptr.xkb_state, ffi.cast("uint32_t", 0), ffi.cast("uint32_t", 0), mask[0], ffi.cast("uint32_t", 0), ffi.cast("uint32_t", 0), ffi.cast("uint32_t", 0)))
++
++
++    def set_capslock(self, capslock: bool) -> None:
++        """Set the capslock state of the keyboard."""
++        if capslock:
++            print("capslock")
++            idx = ffi.new("xkb_mod_index_t *")
++            idx[0] = lib.xkb_keymap_mod_get_index(self.keyboard._ptr.keymap, ffi.new("const char []",  "Lock".encode("ascii")))
++            # error: 4294967295
++            one = ffi.new("uint32_t *", 1)
++            mask = ffi.new("xkb_mod_mask_t *", 0)
++            mask[0] = mask[0] | one[0] << idx[0]
++            print(lib.xkb_state_update_mask(self.keyboard._ptr.xkb_state, ffi.cast("uint32_t", 0), ffi.cast("uint32_t", 0), mask[0], ffi.cast("uint32_t", 0), ffi.cast("uint32_t", 0), ffi.cast("uint32_t", 0)))
++
+     def configure(self, configs: dict[str, InputConfig]) -> None:
+         """Applies ``InputConfig`` rules to this keyboard device."""
+         config = self._match_config(configs)
+@@ -282,6 +311,8 @@ class Keyboard(_Device):
+         if config:
+             self.keyboard.set_repeat_info(config.kb_repeat_rate, config.kb_repeat_delay)
+             self.set_keymap(config.kb_layout, config.kb_options, config.kb_variant)
++            self.set_numlock(config.kb_numlock)
++            self.set_capslock(config.kb_capslock)
+
+
+ class Pointer(_Device):

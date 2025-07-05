@@ -1,6 +1,12 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    qtile-unwrapped
+    (qtile-unwrapped.overrideAttrs (old: {
+      patches =
+        old.patches or []
+        ++ [
+          ./configure-numlock.patch # https://github.com/qtile/qtile/issues/4225
+        ];
+    }))
     #(pkgs.python3.withPackages (p: [qtile-unwrapped] ++ (with p; [
     #  sh
     #])))
