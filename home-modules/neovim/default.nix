@@ -76,6 +76,9 @@
         vim-nix
       ];
     };
+    home.sessionVariables = {
+      MANPAGER = "${config.programs.neovim.finalPackage}/bin/nvim +Man!";
+    };
     home.persistence."/persist/home/aosc" = {
       directories = [
         ".local/state/nvim"
