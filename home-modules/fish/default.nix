@@ -33,8 +33,6 @@
         alias cp='cp -i'
         export TIME_STYLE=long-iso
         alias ls='ls -lahv --color=auto --group-directories-first'
-        alias ll='ls -lahv --color=auto --group-directories-first'
-        alias kk='ls -lahv --color=auto --group-directories-first'
         alias l='ls -lahv --color=auto --group-directories-first'
 
         alias sl='ls $argv | rev #'
@@ -46,22 +44,12 @@
 
         alias cal='cal -m'
 
-        #alias lynxs='/usr/bin/lynx https://duckduckgo.com/lite/'
-
         alias copy='wezterm start --cwd "$(pwd)" -- fish &> /dev/null & disown'
         alias disexit='disown && exit'
 
-        #alias new-year='alacritty -o font.size=20 -e sh -c "sleep 1; ~/new-year.sh" & disown && exit'
-
         alias ttysolitaire='ttysolitaire --no-background-color'
 
-        alias weather='curl wttr.in'
-
-        #alias makestrongpasswd='makepasswd --string " !\\"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"'
-
         alias feh='feh -.'
-
-        alias mypubip='curl -s https://icanhazip.com'  # https://2ip.ru
 
         alias which='alias | command which --tty-only --read-alias'
 
@@ -145,14 +133,8 @@
         end
         alias yt-dlp-comments-infojson='yt-dlp-infojson-comments'
 
-        alias ttyplay='mpv --really-quiet --vo=caca --volume-max=1000'
-        alias ttyfbplay='mpv --really-quiet --vo=gpu --volume-max=1000'
-        alias mpclip='mpv --fs --keep-open (wl-paste)'
         alias yt-dlp-clip-mpv='yt-dlp (wl-paste) --sub-langs -en,-ru --no-embed-subs --no-write-auto-subs --no-playlist --newline --throttled-rate 1K --output - | mpv --fs --keep-open -'
-        #alias mps='mpv --save-position-on-quit'
         alias ffprobe='ffprobe -hide_banner'
-
-        alias test-prog-ls='for pos in (sed resume -e "s/ /\n/g"|grep -P "^[0-9]+\\$"); ls $pos*;echo;end #'
 
         function serialize-event
             echo "$XDG_RUNTIME_DIR"/fish-events/event(echo $argv|sed 's/[- ]//g')
@@ -182,16 +164,7 @@
 
         alias pwait="command pidwait"
 
-        #alias work-convert='rename ii ИИ *; rename spec СПЕК *; rename sb СБ *; rename sp СП *; rename e3 Э3 *; #'
-        #alias work-restore-diff='watch -n0 --color --exec fish -c "diff --color=always (sort want|uniq|psub) (sort have|uniq|psub)" #'
-
         alias mount-usb='doas mount -outf8,uid=(id -u),gid=(id -g)'
-
-        #alias pagesearch='nix --extra-experimental-features "nix-command flakes" search nixpkgs $argv | decolor | bat #'
-        #alias pagefullsearch='nix --extra-experimental-features "nix-command flakes" search $argv &| decolor | bat #'
-
-        #export PASSWORD_STORE_GENERATED_LENGTH="256"
-        #export PASSWORD_STORE_CHARACTER_SET="$(for i in (seq 32 126); printf "\x$(printf '%x' $i)"; end)"
 
         export EUID
       '';
