@@ -10,7 +10,6 @@
       patch = ../../patches/linux/fix-headphones-audio.patch;
     }
   ];
-  netConfig.config = builtins.fromJSON (builtins.readFile ../../netConfig.json);
   time.timeZone = "Asia/Yekaterinburg";
   users.users.aosc = {
     hashedPasswordFile = "/etc/credentials/aosc.hashedpassword";
@@ -85,7 +84,19 @@
     '';
   };
   services.openssh.ports = [7132];
-  kanata.keyboards.default = with config.lib.kanata; {
+  modules.desktop.enable = true;
+  modules.amd.enable = true;
+  modules.gitlab.enable = true;
+  modules.sshd.enable = true;
+  modules.swaylock.enable = true;
+  modules.tor.enable = true;
+  modules.virt-manager.enable = true;
+  modules.zapret.enable = true;
+  modules.netConfig = {
+    enable = true;
+    config = builtins.fromJSON (builtins.readFile ../../netConfig.json);
+  };
+  modules.kanata.keyboards.default = with config.lib.kanata; {
     defaultLayer = "default";
     extraConfig = ''
       (defvirtualkeys

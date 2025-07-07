@@ -6,7 +6,8 @@
 with config.lib.kanata; {
   imports = lib.mapAttrsToList (path: type: ./layouts + "/${path}") (builtins.readDir ./layouts);
   options = {
-    kanata = {
+    modules.kanata = {
+      enable = lib.mkEnableOption "kanata";
       layers = lib.mkOption {
         type = lib.types.attrs;
         visible = false;
@@ -41,9 +42,11 @@ with config.lib.kanata; {
       };
     };
   };
-  config = {
+  config = let
+    enable = config.modules.kanata.enable;
+  in {
     lib.kanata = {
-      layers = config.kanata.layers;
+      layers = config.modules.kanata.layers;
       coerceLayer = list:
         if (lib.isAttrs list)
         then list
@@ -73,7 +76,7 @@ with config.lib.kanata; {
         );
       mergeLayers = l1: l2: (coerceLayer l1) // (coerceLayer l2);
     };
-    services.kanata = {
+    services.kanata = lib.mkIf enable {
       enable = true;
       keyboards =
         lib.mapAttrs (name: conf: {
@@ -94,7 +97,7 @@ with config.lib.kanata; {
             ${lib.concatLines (lib.mapAttrsToList parse-layer (lib.filterAttrs (name: _: name != default) conf.layers))}
           '';
         })
-        config.kanata.keyboards;
+        config.modules.kanata.keyboards;
     };
     /*
     (defvirtualkeys

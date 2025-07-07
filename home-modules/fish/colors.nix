@@ -1,5 +1,9 @@
-{...}: {
-  programs.fish.interactiveShellInit = ''
+{
+  config,
+  lib,
+  ...
+}: {
+  programs.fish.interactiveShellInit = lib.mkIf config.modules.fish.enable ''
     set --universal fish_color_autosuggestion brblack
     set --universal fish_color_cancel -r
     set --universal fish_color_command blue

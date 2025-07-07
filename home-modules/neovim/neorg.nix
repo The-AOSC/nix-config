@@ -1,9 +1,10 @@
 {
+  config,
   pkgs,
   lib,
   ...
 }: {
-  programs.neovim = {
+  programs.neovim = lib.mkIf config.modules.neovim.enable {
     extraLuaConfig = ''
       require("neorg").setup {
         load = {

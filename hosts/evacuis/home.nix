@@ -1,4 +1,16 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  imports = [
+    inputs.impermanence.homeManagerModules.impermanence
+  ];
+  modules.desktop.enable = true;
+  modules.rldebugfs.enable = true;
+  modules.swaylock.enable = true;
+  modules.tor.enable = true;
+  modules.tor-browser.enable = true;
   home.persistence."/persist/home/aosc" = {
     directories = [
       "builder"

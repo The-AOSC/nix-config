@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  kanata.layers.homeRowMods = with config.lib.kanata; let
+  modules.kanata.layers.homeRowMods = with config.lib.kanata; let
     src-layout =
       ["grv" "1" "2" "3" "4" "5" "6" "7" "8" "9" "0" "-"]
       ++ ["tab" "q" "w" "e" "r" "t" "y" "u" "i" "o" "p" "["]

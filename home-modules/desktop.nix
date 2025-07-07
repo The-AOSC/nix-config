@@ -1,88 +1,93 @@
 {
   inputs,
+  config,
   pkgs,
+  lib,
   ...
 }: {
-  imports = [
-    inputs.self.homeManagerModules.cava
-    inputs.self.homeManagerModules.char-names
-    inputs.self.homeManagerModules.endgame-singularity
-    inputs.self.homeManagerModules.ffprobe-duration
-    inputs.self.homeManagerModules.fish
-    inputs.self.homeManagerModules.fonts
-    inputs.self.homeManagerModules.git
-    inputs.self.homeManagerModules.gpg
-    inputs.self.homeManagerModules.htop
-    inputs.self.homeManagerModules.hunspell
-    inputs.self.homeManagerModules.kdeconnect
-    inputs.self.homeManagerModules.libreoffice
-    inputs.self.homeManagerModules.mako
-    inputs.self.homeManagerModules.mpv
-    inputs.self.homeManagerModules.neovim
-    inputs.self.homeManagerModules.nix-sh
-    inputs.self.homeManagerModules.pass
-    inputs.self.homeManagerModules.powerctl
-    inputs.self.homeManagerModules.qbittorrent
-    inputs.self.homeManagerModules.qtile
-    inputs.self.homeManagerModules.sbcl
-    inputs.self.homeManagerModules.ssh
-    inputs.self.homeManagerModules.textwrap
-    inputs.self.homeManagerModules.tmux
-    inputs.self.homeManagerModules.unp
-    inputs.self.homeManagerModules.vivaldi
-    inputs.self.homeManagerModules.wezterm
-    inputs.self.homeManagerModules.wine
-    inputs.self.homeManagerModules.wmenu-history
-    inputs.self.homeManagerModules.wtf
-    inputs.self.homeManagerModules.zoxide
-  ];
-  home.persistence."/persist/home/aosc" = {
-    allowOther = true;
-    directories = [
-      ".local/state/wireplumber"
+  options = {
+    modules.desktop.enable = lib.mkEnableOption "desktop";
+  };
+  config = lib.mkIf config.modules.desktop.enable {
+    modules.cava.enable = true;
+    modules.char-names.enable = true;
+    modules.endgame-singularity.enable = true;
+    modules.ffprobe-duration.enable = true;
+    modules.fish.enable = true;
+    modules.fonts.enable = true;
+    modules.git.enable = true;
+    modules.gpg.enable = true;
+    modules.htop.enable = true;
+    modules.hunspell.enable = true;
+    modules.kdeconnect.enable = true;
+    modules.libreoffice.enable = true;
+    modules.mako.enable = true;
+    modules.mpv.enable = true;
+    modules.neovim.enable = true;
+    modules.nix-sh.enable = true;
+    modules.pass.enable = true;
+    modules.powerctl.enable = true;
+    modules.qbittorrent.enable = true;
+    modules.qtile.enable = true;
+    modules.sbcl.enable = true;
+    modules.ssh.enable = true;
+    modules.textwrap.enable = true;
+    modules.tmux.enable = true;
+    modules.unp.enable = true;
+    modules.vivaldi.enable = true;
+    modules.wezterm.enable = true;
+    modules.wine.enable = true;
+    modules.wmenu-history.enable = true;
+    modules.wtf.enable = true;
+    modules.zoxide.enable = true;
+    home.persistence."/persist/home/aosc" = {
+      allowOther = true;
+      directories = [
+        ".local/state/wireplumber"
+      ];
+    };
+    home.packages = with pkgs; [
+      bat
+      brightnessctl
+      bvi
+      dig
+      dos2unix
+      fastfetch
+      feh
+      ffmpeg
+      file
+      gimp
+      grim
+      helvum
+      imagemagick
+      inetutils
+      jmtpfs
+      jq
+      killall
+      man-pages
+      moreutils
+      nmap
+      pciutils
+      pdfarranger
+      pipes
+      pulseaudio # pactl
+      rlwrap
+      screen
+      shellcheck
+      speedtest-cli
+      termdown
+      texliveFull
+      translate-shell
+      tree
+      tty-solitaire
+      universal-ctags
+      unixtools.xxd
+      usbutils
+      wev
+      wget
+      wl-clipboard
+      yt-dlp
+      zathura
     ];
   };
-  home.packages = with pkgs; [
-    bat
-    brightnessctl
-    bvi
-    dig
-    dos2unix
-    fastfetch
-    feh
-    ffmpeg
-    file
-    gimp
-    grim
-    helvum
-    imagemagick
-    inetutils
-    jmtpfs
-    jq
-    killall
-    man-pages
-    moreutils
-    nmap
-    pciutils
-    pdfarranger
-    pipes
-    pulseaudio # pactl
-    rlwrap
-    screen
-    shellcheck
-    speedtest-cli
-    termdown
-    texliveFull
-    translate-shell
-    tree
-    tty-solitaire
-    universal-ctags
-    unixtools.xxd
-    usbutils
-    wev
-    wget
-    wl-clipboard
-    yt-dlp
-    zathura
-  ];
 }

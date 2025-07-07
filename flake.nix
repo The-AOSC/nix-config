@@ -70,7 +70,7 @@
                     users =
                       builtins.mapAttrs (
                         user-name: home-config: ({osConfig, ...}: {
-                          imports = home-config.modules;
+                          imports = home-config.modules ++ (nixpkgs.lib.attrValues self.homeManagerModules);
                           home.homeDirectory = osConfig.users.users."${user-name}".home;
                           home.stateVersion = osConfig.system.stateVersion;
                           home.username = user-name;
@@ -82,6 +82,7 @@
                   };
                 }
               ]
+              ++ (nixpkgs.lib.attrValues self.nixosModules)
               ++ host-config.nixos-modules;
           }
       );

@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  kanata.layers.mouse = with config.lib.kanata; rec {
+  modules.kanata.layers.mouse = with config.lib.kanata; rec {
     extra-conf = ''
       (defvirtualkeys
         vkey-mlft mlft

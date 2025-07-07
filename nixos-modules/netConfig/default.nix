@@ -3,9 +3,10 @@
   lib,
   ...
 }: let
-  cfg = config.netConfig;
+  cfg = config.modules.netConfig;
 in {
-  options.netConfig = {
+  options.modules.netConfig = {
+    enable = lib.mkEnableOption "netConfig";
     config = lib.mkOption {
       description = "Hosts network configuration";
     };
@@ -22,8 +23,10 @@ in {
       };
     };
   };
-  config = {
-    netConfig.hosts = {
+  config = let
+    enable = cfg.enable;
+  in {
+    modules.netConfig.hosts = {
       byHost = lib.mapAttrs (localhost-name: localhost-config:
         lib.mkMerge ((
             # for every host excluding {host-name} in every reachable {cfg.config.networks}:
@@ -71,8 +74,8 @@ in {
         ))
       cfg.config.networks;
     };
-    networking.hosts = cfg.hosts.byHost."${config.networking.hostName}";
-    containers =
+    networking.hosts = lib.mkIf enable cfg.hosts.byHost."${config.networking.hostName}";
+    containers = lib.mkIf enable (
       lib.mapAttrs (container-name: container-config: {
         privateNetwork = true;
         hostAddress = container-config.host.ipv4;
@@ -80,6 +83,7 @@ in {
         localAddress = container-config.local.ipv4;
         localAddress6 = container-config.local.ipv6;
       })
-      cfg.config.hosts."${config.networking.hostName}".containers;
+      cfg.config.hosts."${config.networking.hostName}".containers
+    );
   };
 }

@@ -1,24 +1,33 @@
-{...}: {
-  services.openssh = {
-    enable = true;
-    allowSFTP = true;
-    authorizedKeysInHomedir = false;
-    openFirewall = true;
-    settings = {
-      AllowGroups = ["users"];
-      PubkeyAuthentication = true;
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      UsePAM = true;
-      PermitRootLogin = "no";
-    };
+{
+  config,
+  lib,
+  ...
+}: {
+  options = {
+    modules.sshd.enable = lib.mkEnableOption "sshd";
   };
-  environment.persistence."/persist" = {
-    files = [
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-      "/etc/ssh/ssh_host_rsa_key"
-      "/etc/ssh/ssh_host_rsa_key.pub"
-    ];
+  config = lib.mkIf config.modules.sshd.enable {
+    services.openssh = {
+      enable = true;
+      allowSFTP = true;
+      authorizedKeysInHomedir = false;
+      openFirewall = true;
+      settings = {
+        AllowGroups = ["users"];
+        PubkeyAuthentication = true;
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        UsePAM = true;
+        PermitRootLogin = "no";
+      };
+    };
+    environment.persistence."/persist" = {
+      files = [
+        "/etc/ssh/ssh_host_ed25519_key"
+        "/etc/ssh/ssh_host_ed25519_key.pub"
+        "/etc/ssh/ssh_host_rsa_key"
+        "/etc/ssh/ssh_host_rsa_key.pub"
+      ];
+    };
   };
 }

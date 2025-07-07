@@ -1,14 +1,24 @@
-{pkgs, ...}: {
-  home.packages = [
-    pkgs.vivaldi
-  ];
-  home.persistence."/persist/home/aosc" = {
-    directories = [
-      ".config/vivaldi"
-      ".local/lib/vivaldi"
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  options = {
+    modules.vivaldi.enable = lib.mkEnableOption "vivaldi";
+  };
+  config = lib.mkIf config.modules.vivaldi.enable {
+    home.packages = [
+      pkgs.vivaldi
     ];
-    files = [
-      ".local/share/.vivaldi_reporting_data"
-    ];
+    home.persistence."/persist/home/aosc" = {
+      directories = [
+        ".config/vivaldi"
+        ".local/lib/vivaldi"
+      ];
+      files = [
+        ".local/share/.vivaldi_reporting_data"
+      ];
+    };
   };
 }
