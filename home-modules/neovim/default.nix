@@ -79,6 +79,11 @@
     home.sessionVariables = {
       MANPAGER = "${config.programs.neovim.finalPackage}/bin/nvim +Man!";
     };
+    home.packages = [
+      (pkgs.writeShellScriptBin "view" ''
+        exec -a "$0" ${config.programs.neovim.finalPackage}/bin/nvim -R "$@"
+      '')
+    ];
     home.persistence."/persist/home/aosc" = {
       directories = [
         ".local/state/nvim"

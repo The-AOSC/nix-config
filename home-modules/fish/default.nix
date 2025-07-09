@@ -42,7 +42,6 @@
         alias doasls='doas ls -lahv --color=always --group-directories-first'
         alias watchls='watch --color --no-title --exec ls -lahv --color=always --group-directories-first --'
         alias watchip='watch --color --no-title --interval=0 --exec ip --color'
-        alias view="vim -R"
         alias decolor="sed 's|\x1b\[[;0-9]*m||g'"
 
         alias cal='cal -m'
@@ -51,31 +50,6 @@
 
         alias copy='wezterm start --cwd "$(pwd)" -- fish &> /dev/null & disown'
         alias disexit='disown && exit'
-
-        alias transe='trans -j -b en:ru'
-        alias transev='trans -j en:ru'
-        alias transed='trans -b en:ru'
-        alias transevd='trans en:ru'
-
-        alias transr='trans -j -b ru:en'
-        alias transrv='trans -j ru:en'
-        alias transrd='trans -b ru:en'
-        alias transrvd='trans ru:en'
-
-        alias transer='trans -j -b ru:en'
-        alias transerv='trans -j ru:en'
-        alias transerd='trans -b ru:en'
-        alias transervd='trans ru:en'
-
-        alias transa='trans -j -b :ru'
-        alias transav='trans -j :ru'
-        alias transad='trans -b :ru'
-        alias transavd='trans :ru'
-
-        alias transae='trans -j -b :en'
-        alias transaev='trans -j :en'
-        alias transaed='trans -b :en'
-        alias transaevd='trans :en'
 
         #alias new-year='alacritty -o font.size=20 -e sh -c "sleep 1; ~/new-year.sh" & disown && exit'
 

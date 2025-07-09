@@ -33,6 +33,7 @@
     modules.ssh.enable = true;
     modules.textwrap.enable = true;
     modules.tmux.enable = true;
+    modules.translate-shell.enable = true;
     modules.unp.enable = true;
     modules.vivaldi.enable = true;
     modules.wezterm.enable = true;
@@ -77,7 +78,6 @@
       speedtest-cli
       termdown
       texliveFull
-      translate-shell
       tree
       tty-solitaire
       universal-ctags
