@@ -443,16 +443,16 @@ def configure_controls():
     mouse.append(Drag([SUPER, META], "Button1", lazy.window.set_size_floating(), start=lazy.window.get_size()))
 
     common_keys.extend([
-        Key([SUPER],        "a", toggle_group(set_major='-', toggle=False)),
-        Key([SUPER],        "s", toggle_group(set_major='+', toggle=False)),
-        Key([SUPER, META],  "a", swap_groups(other_major='-', switch_group=True)),
-        Key([SUPER, META],  "s", swap_groups(other_major='+', switch_group=True)),
-        Key([SUPER, CTRL],  "a", swap_groups(other_major='-', other_minor='=', switch_group=True)),
-        Key([SUPER, CTRL],  "s", swap_groups(other_major='+', other_minor='=', switch_group=True)),
+        Key([SUPER],        "s", toggle_group(set_major='-', toggle=False)),
+        Key([SUPER],        "w", toggle_group(set_major='+', toggle=False)),
+        Key([SUPER, META],  "s", swap_groups(other_major='-', switch_group=True)),
+        Key([SUPER, META],  "w", swap_groups(other_major='+', switch_group=True)),
+        Key([SUPER, CTRL],  "s", swap_groups(other_major='-', other_minor='=', switch_group=True)),
+        Key([SUPER, CTRL],  "w", swap_groups(other_major='+', other_minor='=', switch_group=True)),
     ])
     keys.extend([
-        Key([SUPER, SHIFT], "a", to_group(set_major='-')),
-        Key([SUPER, SHIFT], "s", to_group(set_major='+')),
+        Key([SUPER, SHIFT], "s", to_group(set_major='-')),
+        Key([SUPER, SHIFT], "w", to_group(set_major='+')),
     ])
 
     for minor in range(GROUPS_MAX_INDEXES[1]):
