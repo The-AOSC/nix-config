@@ -20,13 +20,16 @@
         UsePAM = true;
         PermitRootLogin = "no";
       };
-    };
-    environment.persistence."/persist" = {
-      files = [
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_ed25519_key.pub"
-        "/etc/ssh/ssh_host_rsa_key"
-        "/etc/ssh/ssh_host_rsa_key.pub"
+      hostKeys = [
+        {
+          type = "rsa";
+          bits = 4096;
+          path = "/persist/etc/ssh/ssh_host_rsa_key";
+        }
+        {
+          type = "ed25519";
+          path = "/persist/etc/ssh/ssh_host_ed25519_key";
+        }
       ];
     };
   };

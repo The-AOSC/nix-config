@@ -1,0 +1,16 @@
+keys:
+  - &user_aosc 0B22AB0E280F6FD2FDFA6F862DAEF773F14D02E5
+  - &host_evacuis age108qx9xe89tp6wrlptjnezkf4f37nz55a769dkc8f7cx7geve0caqllyp20
+creation_rules:
+  - path_regex: secrets/root-password.yaml
+    key_groups:
+      - pgp:
+        - *user_aosc
+        age:
+        - *host_evacuis
+  - path_regex: secrets/aosc-password.yaml
+    key_groups:
+      - pgp:
+        - *user_aosc
+        age:
+        - *host_evacuis

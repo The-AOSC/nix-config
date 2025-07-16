@@ -17,8 +17,14 @@
     modules.wine.enable = true;
     nix.settings.allowed-users = ["@wheel"];
     hardware.graphics.enable = true;
-    users.mutableUsers = false;
-    users.users.root.hashedPasswordFile = "/etc/credentials/root.hashedpassword";
+    users.users.aosc.hashedPasswordFile = config.sops.secrets.aosc-password.path;
+    sops.secrets = {
+      aosc-password = {
+        key = "hash";
+        sopsFile = ../secrets/aosc-password.yaml;
+        neededForUsers = true;
+      };
+    };
     security.doas = {
       enable = true;
       extraRules = [

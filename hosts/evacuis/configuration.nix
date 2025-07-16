@@ -12,7 +12,6 @@
   ];
   time.timeZone = "Asia/Yekaterinburg";
   users.users.aosc = {
-    hashedPasswordFile = "/etc/credentials/aosc.hashedpassword";
     openssh.authorizedKeys.keyFiles = [
       ../../credentials/aosc.authorized_keys
     ];
@@ -87,7 +86,6 @@
   modules.desktop.enable = true;
   modules.amd.enable = true;
   modules.gitlab.enable = true;
-  modules.sshd.enable = true;
   modules.swaylock.enable = true;
   modules.tor.enable = true;
   modules.virt-manager.enable = true;

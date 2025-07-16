@@ -75,6 +75,7 @@
       rlwrap
       screen
       shellcheck
+      sops
       speedtest-cli
       termdown
       tree

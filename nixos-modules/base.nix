@@ -5,24 +5,29 @@
   lib,
   ...
 }: {
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
   options = {
     modules.base.enable = lib.mkEnableOption "base";
   };
   config = lib.mkIf config.modules.base.enable {
     modules.ntp.enable = true;
     modules.persistence.enable = true;
-    fileSystems."/etc/credentials" = {
-      device = "/persist/etc/credentials";
-      fsType = "none";
-      neededForBoot = true;
-      options = ["bind"];
-    };
+    modules.sshd.enable = true;
     networking = {
       networkmanager.enable = true;
       firewall = {
         enable = true;
         allowPing = true;
       };
+    };
+    users.mutableUsers = false;
+    users.users.root.hashedPasswordFile = config.sops.secrets.root-password.path;
+    sops.secrets.root-password = {
+      key = "hash";
+      sopsFile = ../secrets/root-password.yaml;
+      neededForUsers = true;
     };
     boot.loader = {
       systemd-boot.enable = true;
