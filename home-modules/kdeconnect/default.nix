@@ -11,7 +11,7 @@
     home.packages = [
       pkgs.kdePackages.kdeconnect-kde
     ];
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
         ".config/kdeconnect"
       ];

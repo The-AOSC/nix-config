@@ -11,7 +11,6 @@
     modules.persistence.enable = lib.mkEnableOption "persistence";
   };
   config = lib.mkIf config.modules.persistence.enable {
-    fileSystems."/persist".neededForBoot = true;
     environment.persistence."/persist" = {
       enable = true;
       directories = [

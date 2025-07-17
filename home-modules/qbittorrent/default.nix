@@ -11,7 +11,7 @@
     home.packages = [
       pkgs.qbittorrent
     ];
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
         ".config/qBittorrent"
         ".local/share/qBittorrent"

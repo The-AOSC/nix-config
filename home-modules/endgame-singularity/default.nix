@@ -11,7 +11,7 @@
     home.packages = [
       pkgs.endgame-singularity
     ];
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
         ".config/singularity"
         ".local/share/singularity"

@@ -19,7 +19,7 @@
         "PASSWORD_STORE_GENERATED_LENGTH" = "256";
       };
     };
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
         ".local/share/password-store"
       ];

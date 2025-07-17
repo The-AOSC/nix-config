@@ -5,6 +5,9 @@
   lib,
   ...
 }: {
+  imports = [
+    inputs.impermanence.homeManagerModules.impermanence
+  ];
   options = {
     modules.desktop.enable = lib.mkEnableOption "desktop";
   };
@@ -41,8 +44,7 @@
     modules.wmenu-history.enable = true;
     modules.wtf.enable = true;
     modules.zoxide.enable = true;
-    home.persistence."/persist/home/aosc" = {
-      allowOther = true;
+    home.persistence."/persist" = {
       directories = [
         ".local/state/wireplumber"
       ];

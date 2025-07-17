@@ -26,6 +26,7 @@
   fileSystems."/persist" = {
     device = "/dev/disk/by-uuid/bb986adc-db46-47cf-9809-803a8df94a31";
     fsType = "ext4";
+    neededForBoot = true;
   };
 
   fileSystems."/nix" = {
@@ -42,6 +43,7 @@
   fileSystems."/media" = {
     device = "/dev/disk/by-uuid/4d636f2f-4c5e-4716-83d6-a81b1d1f213f";
     fsType = "btrfs";
+    neededForBoot = true;
   };
 
   swapDevices = [

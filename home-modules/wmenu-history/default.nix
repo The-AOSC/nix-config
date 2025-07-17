@@ -26,7 +26,7 @@
         fi
       '')
     ];
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       files = [
         ".local/share/wmenu-history.dat"
       ];

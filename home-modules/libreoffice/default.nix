@@ -11,7 +11,7 @@
     home.packages = [
       pkgs.libreoffice
     ];
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
         ".config/libreoffice"
       ];

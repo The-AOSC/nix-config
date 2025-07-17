@@ -78,7 +78,7 @@
         '';
       };
     };
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
         ".local/state/mpv/watch_later"
       ];

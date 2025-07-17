@@ -59,12 +59,14 @@
       force-private-gpg = lib.hm.dag.entryAfter ["writeBoundary" "createAndMountPersistentStoragePaths"] ''
         run chmod -077 ${config.home.homeDirectory}/.gnupg
         run chmod -077 /persist/home/aosc/.gnupg
-        run chmod -077 /persist/home/aosc/.gnupg/private-keys-v1.d
       '';
     };
-    home.persistence."/persist/home/aosc" = {
+    home.persistence."/persist" = {
       directories = [
-        ".gnupg/private-keys-v1.d"
+        {
+          directory = ".gnupg/private-keys-v1.d";
+          mode = "700";
+        }
       ];
     };
   };

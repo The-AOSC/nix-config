@@ -12,7 +12,7 @@
     fileSystemsWhitelist = ["/" "/nix"];
     fileSystemsBlacklist = lib.filter (name: !(builtins.elem name fileSystemsWhitelist)) (lib.mapAttrsToList (name: value: name) osConfig.fileSystems);
     firejailBlacklist = lib.concatMapStringsSep " " (path: "--blacklist=${path}") fileSystemsBlacklist;
-    location = "Desktop/.games";
+    location = "Desktop/games";
   in
     lib.mkIf config.modules.wine.enable {
       home.packages = [
