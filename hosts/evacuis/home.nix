@@ -13,21 +13,14 @@
   modules.tor-browser.enable = true;
   home.persistence."/persist/home/aosc" = {
     directories = [
-      "builder"
-      "cyclone-linux"
       "Desktop/colledge"
-      "Desktop/corrupted-games"
       "Desktop/Documents"
-      "flakes"
       "inst"
       "lisp"
       ".local/chromium-extensions"
       ".local/HyperSpec"
       "nix-config"
-      "nixos-arm"
       "nixpkgs"
-      "not-os"
-      "rk3328-linux"
       "smb"
       "smbro"
     ];
@@ -49,7 +42,4 @@
     ];
   };
   xdg.configFile."htop/htoprc".source = ./htoprc;
-  home.packages = with pkgs; [
-    ncurses
-  ];
 }

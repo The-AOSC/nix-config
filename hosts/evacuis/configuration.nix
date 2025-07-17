@@ -72,16 +72,6 @@
     enable = true;
     openFirewall = true;
   };
-  services.autofs = {
-    enable = true;
-    autoMaster = let
-      cyclone = pkgs.writeText "autofs-cyclone" ''
-        /home/aosc/cyclone-win -fstype=smb3,defaults,username=user,password=1,domainauto,uid=aosc,gid=users,actimeo=0 ://192.168.0.180/Users/user/Desktop/cyclone
-      '';
-    in ''
-      /- file:${cyclone} browse --timeout 60
-    '';
-  };
   services.openssh.ports = [7132];
   modules.desktop.enable = true;
   modules.amd.enable = true;
