@@ -106,11 +106,11 @@
         layers.homeRowMods.mods);
       mouse = layers.mouse.default "mouse-hold";
     in {
-      default = layers.withNoDefault (with-all-mods (with-layout-switch base));
-      default-mouse = layers.withNoDefault (with-all-mods (with-layout-switch (mergeLayers base mouse)));
+      default = layers.withNoDefault (with-all-mods base);
+      default-mouse = layers.withNoDefault (with-all-mods (mergeLayers base mouse));
       level1 = layers.withNoDefault (with-all-mods (with-layout-switch layers.homeRowMods.level1));
-      level2 = layers.withNoDefault (with-all-mods (with-layout-switch layers.homeRowMods.level2));
-      level3 = layers.withNoDefault (with-all-mods (with-mode-select (with-layout-switch layers.homeRowMods.level3)));
+      level2 = layers.withNoDefault (with-all-mods layers.homeRowMods.level2);
+      level3 = layers.withNoDefault (with-all-mods (with-mode-select layers.homeRowMods.level3));
       simple = with-mode-select layers.simple;
       mouse = mouse;
       mouse-hold = layers.mouse.hold;
