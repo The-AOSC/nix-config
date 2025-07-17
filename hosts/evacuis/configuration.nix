@@ -72,7 +72,7 @@
     enable = true;
     openFirewall = true;
   };
-  services.openssh.ports = [7132];
+  services.openssh.ports = [2222];
   modules.desktop.enable = true;
   modules.amd.enable = true;
   modules.gitlab.enable = true;
