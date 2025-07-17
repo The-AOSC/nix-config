@@ -51,7 +51,7 @@
         }
       ];
       bindMounts = {
-        "/data" = {
+        "/persist" = {
           hostPath = "/persist/containers/gitlab";
           isReadOnly = false;
         };
@@ -69,6 +69,7 @@
       }: {
         imports = [
           inputs.impermanence.nixosModules.impermanence
+          inputs.self.nixosModules.sshd
           inputs.sops-nix.nixosModules.sops
         ];
         networking.firewall = {
@@ -105,9 +106,17 @@
             "secret"
           ]);
         services.postgresql.package = pkgs.postgresql_17;
-        services.openssh.authorizedKeysFiles = [
-          "${config.users.users."${config.services.gitlab.user}".home}/.ssh/authorized_keys"
-        ];
+        modules.sshd.enable = true;
+        services.openssh = {
+          allowSFTP = lib.mkForce false;
+          settings = {
+            AllowUsers = lib.mkForce [config.services.gitlab.user];
+            AllowGroups = lib.mkForce [config.services.gitlab.group];
+          };
+          authorizedKeysFiles = [
+            "${config.users.users."${config.services.gitlab.user}".home}/.ssh/authorized_keys"
+          ];
+        };
         services.nginx = {
           enable = true;
           recommendedProxySettings = true;
@@ -118,7 +127,7 @@
           };
         };
         systemd.services.gitlab-backup.environment.BACKUP = "dump";
-        environment.persistence."/data" = {
+        environment.persistence."/persist" = {
           enable = true;
           hideMounts = true;
           directories = [
@@ -142,25 +151,6 @@
             }
             "/var/lib/nixos"
           ];
-          files = [
-            "/etc/ssh/ssh_host_ed25519_key"
-            "/etc/ssh/ssh_host_ed25519_key.pub"
-            "/etc/ssh/ssh_host_rsa_key"
-            "/etc/ssh/ssh_host_rsa_key.pub"
-          ];
-        };
-        services.openssh = {
-          enable = true;
-          openFirewall = true;
-          settings = {
-            AllowUsers = [config.services.gitlab.user "root"];
-            AllowGroups = [config.services.gitlab.group "root"];
-            PubkeyAuthentication = true;
-            PasswordAuthentication = false;
-            KbdInteractiveAuthentication = false;
-            UsePAM = true;
-            PermitRootLogin = "no";
-          };
         };
         system.stateVersion = "24.05";
       };
