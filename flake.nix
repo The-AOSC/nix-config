@@ -27,8 +27,8 @@
     self,
     ...
   }: {
-    nixosModules = import ./nixos-modules inputs;
-    homeManagerModules = import ./home-modules inputs;
+    nixosModules = self.lib.import-all ./nixos-modules;
+    homeManagerModules = self.lib.import-all ./home-modules;
     packages = flake-utils.lib.eachDefaultSystemMap (
       system: let
         pkgs = import nixpkgs {inherit system;};
@@ -50,13 +50,15 @@
         });
       };
     };
-    nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (import ./hosts inputs);
+    nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (self.lib.import-all ./hosts);
     lib = {
-      mkNixosSystem = host-name: host-config: (
+      import-all = dir: nixpkgs.lib.mapAttrs (path: type: (import (dir + "/${path}"))) (builtins.readDir dir);
+      mkNixosSystem = host-name: host: (
         let
           specialArgs = {
             inherit inputs;
           };
+          host-config = host inputs;
         in
           nixpkgs.lib.nixosSystem {
             inherit specialArgs;
