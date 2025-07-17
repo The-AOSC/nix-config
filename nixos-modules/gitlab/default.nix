@@ -58,16 +58,18 @@
       };
       ephemeral = true;
       specialArgs = {
-        impermanence = inputs.impermanence.nixosModules.impermanence;
+        inherit inputs;
       };
       nixpkgs = inputs.nixpkgs;
       config = {
-        impermanence,
+        inputs,
         config,
+        lib,
         ...
       }: {
         imports = [
-          impermanence
+          inputs.impermanence.nixosModules.impermanence
+          inputs.sops-nix.nixosModules.sops
         ];
         networking.firewall = {
           enable = true;
@@ -75,19 +77,33 @@
         };
         services.gitlab = {
           enable = true;
-          databasePasswordFile = "/etc/credentials/database";
-          initialRootPasswordFile = "/etc/credentials/root";
+          databasePasswordFile = config.sops.secrets.database-password.path;
+          initialRootPasswordFile = config.sops.secrets.initial-root-password.path;
           secrets = {
-            activeRecordDeterministicKeyFile = "/etc/credentials/record-deterministic-key";
-            activeRecordPrimaryKeyFile = "/etc/credentials/record-primary-key";
-            activeRecordSaltFile = "/etc/credentials/record-salt";
-            secretFile = "/etc/credentials/secret";
-            dbFile = "/etc/credentials/db";
-            otpFile = "/etc/credentials/otp";
-            jwsFile = "/etc/credentials/jws"; # openssl genrsa 4096
+            activeRecordDeterministicKeyFile = config.sops.secrets.active-record-deterministic-key.path;
+            activeRecordPrimaryKeyFile = config.sops.secrets.active-record-primary-key.path;
+            activeRecordSaltFile = config.sops.secrets.active-record-salt.path;
+            dbFile = config.sops.secrets.db.path;
+            jwsFile = config.sops.secrets.jws.path;
+            otpFile = config.sops.secrets.otp.path;
+            secretFile = config.sops.secrets.secret.path;
           };
           port = 80;
         };
+        sops.secrets = lib.listToAttrs (lib.map (lib.flip lib.nameValuePair {
+            sopsFile = ../../secrets/gitlab-secrets.yaml;
+            owner = config.services.gitlab.user;
+          }) [
+            "active-record-deterministic-key"
+            "active-record-primary-key"
+            "active-record-salt"
+            "database-password"
+            "db"
+            "initial-root-password"
+            "jws"
+            "otp"
+            "secret"
+          ]);
         services.postgresql.package = pkgs.postgresql_17;
         services.openssh.authorizedKeysFiles = [
           "${config.users.users."${config.services.gitlab.user}".home}/.ssh/authorized_keys"
@@ -124,7 +140,6 @@
               group = config.services.gitlab.group;
               mode = "0700";
             }
-            "/etc/credentials"
             "/var/lib/nixos"
           ];
           files = [
