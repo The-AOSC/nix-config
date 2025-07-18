@@ -20,7 +20,7 @@
         patches = [
           ./remove-distutils.patch
         ];
-        propagatedBuildInputs = [
+        dependencies = [
           (pkgs.python3Packages.stem.overrideAttrs (old: {
             version = "1.8.3";
             src = pkgs.fetchFromGitHub {
