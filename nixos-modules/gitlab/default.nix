@@ -14,12 +14,22 @@
       recommendedProxySettings = lib.mkDefault true;
       virtualHosts = {
         "gitlab" = {
-          locations."/".proxyPass = "http://gitlab.containers";
+          locations."/".proxyPass = "http://gitlab";
         };
       };
     };
+    services.xinetd = {
+      enable = true;
+      services = [
+        {
+          name = "ssh";
+          server = "${pkgs.coreutils}/bin/false"; # unused
+          extraConfig = "redirect = gitlab 22";
+        }
+      ];
+    };
     networking.firewall = {
-      allowedTCPPorts = [80];
+      allowedTCPPorts = [22 80];
     };
     users.users = let
       cfg = config.containers.gitlab.config;
@@ -43,13 +53,6 @@
       autoStart = true;
       restartIfChanged = true;
       timeoutStartSec = "5min";
-      forwardPorts = [
-        {
-          containerPort = 22;
-          hostPort = 22;
-          protocol = "tcp";
-        }
-      ];
       bindMounts = {
         "/persist" = {
           hostPath = "/persist/containers/gitlab";

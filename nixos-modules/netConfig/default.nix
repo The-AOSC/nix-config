@@ -47,8 +47,8 @@ in {
             # for every container in {localhost-config.containers}:
             #  {<local-address> = <container-name>}
             lib.mapAttrsToList (container-name: container-config: {
-              "${container-config.host.ipv4}" = [container-name];
-              "${container-config.host.ipv6}" = [container-name];
+              "${container-config.local.ipv4}" = [container-name];
+              "${container-config.local.ipv6}" = [container-name];
             })
             localhost-config.containers
           )
