@@ -15,7 +15,6 @@
     modules.kanata.enable = true;
     modules.kdeconnect.enable = true;
     modules.wine.enable = true;
-    nix.settings.allowed-users = ["@wheel"];
     hardware.graphics.enable = true;
     users.users.aosc.hashedPasswordFile = config.sops.secrets.aosc-password.path;
     sops.secrets = {

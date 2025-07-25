@@ -1,0 +1,37 @@
+--- a/nix-mineral.nix
++++ b/nix-mineral.nix
+@@ -614,7 +614,6 @@
+           "vsyscall=none"
+           "debugfs=off"
+           "oops=panic"
+-          "quiet"
+           "loglevel=0"
+           "random.trust_cpu=off"
+           "random.trust_bootloader=off"
+@@ -632,26 +631,6 @@
+         loader.systemd-boot.editor = l.mkDefault false;
+       };
+       environment.etc = {
+-        # Empty /etc/securetty to prevent root login on tty.
+-        securetty.text = ''
+-          # /etc/securetty: list of terminals on which root is allowed to login.
+-          # See securetty(5) and login(1).
+-        '';
+-
+-        # Set machine-id to the Kicksecure machine-id, for privacy reasons.
+-        # /var/lib/dbus/machine-id doesn't exist on dbus enabled NixOS systems,
+-        # so we don't have to worry about that.
+-        machine-id.text = ''
+-          b08dfa6083e7567a1921a715000001fb
+-        '';
+-
+-        # Borrow Kicksecure banner/issue. 
+-        issue.source = (fetchGhFile sources.issue);
+-
+-        # Borrow Kicksecure gitconfig, disabling git symlinks and enabling fsck
+-        # by default for better git security.
+-        gitconfig.source = (fetchGhFile sources.gitconfig);
+-
+         # Borrow Kicksecure bluetooth configuration for better bluetooth privacy
+         # and security. Disables bluetooth automatically when not connected to
+         # any device.
