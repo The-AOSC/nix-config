@@ -68,7 +68,7 @@ with config.lib.kanata; {
         lib.mapAttrs (_: {
           tap ? "XX",
           hold ? "XX",
-        }: "(tap-hold 200 300 ${tap} ${hold})")
+        }: "(tap-hold 200 250 ${tap} ${hold})")
         (
           lib.recursiveUpdate
           (lib.mapAttrs (_: value: {tap = value;}) (coerceLayer tap))
@@ -82,6 +82,7 @@ with config.lib.kanata; {
         lib.mapAttrs (name: conf: {
           inherit (conf) devices;
           extraDefCfg = ''
+            log-layer-changes no
             process-unmapped-keys yes
           '';
           config = let
