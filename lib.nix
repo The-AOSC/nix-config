@@ -19,6 +19,7 @@ inputs @ {
             ({pkgs, ...}: {
               environment.systemPackages = [pkgs.git];
               networking.hostName = host-name;
+              nix.channel.enable = false;
               nix.settings.experimental-features = ["nix-command" "flakes"];
             })
             {
@@ -31,12 +32,21 @@ inputs @ {
                 useUserPackages = true;
                 users =
                   builtins.mapAttrs (
-                    user-name: home-config: ({osConfig, ...}: {
+                    user-name: home-config: (args @ {
+                      osConfig,
+                      config,
+                      lib,
+                      ...
+                    }: {
                       imports = home-config.modules ++ (nixpkgs.lib.attrValues self.homeManagerModules);
                       home.homeDirectory = osConfig.users.users."${user-name}".home;
                       home.stateVersion = osConfig.system.stateVersion;
                       home.username = user-name;
                       programs.home-manager.enable = true;
+                      home.activation.removeChannels = lib.hm.dag.entryAfter ["writeBoundary"] ''
+                        rm -rf ${config.home.homeDirectory}/.nix-defexpr
+                        rm -rf ${config.home.homeDirectory}/.nix-profile
+                      '';
                     })
                   )
                   host-config.home;
