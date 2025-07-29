@@ -33,6 +33,8 @@
         log.showSignature = true;
         push.autoSetupRemote = true;
         pull.ff = "only";
+        gpg.ssh.allowedSignersFile = "${pkgs.writeText "git-ssh-allowed-signers" ''
+          ''}";
         "diff \"gzip\"" = {
           binary = true;
           textconv = "${pkgs.gzip}/bin/zcat";
