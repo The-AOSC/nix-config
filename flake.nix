@@ -41,9 +41,6 @@
           nixosModules = self.lib.import-all ./nixos-modules;
           homeManagerModules = self.lib.import-all ./home-modules;
           overlays = {
-            wtf = final: prev: {
-              wtf = final.callPackage ./packages/wtf.nix {};
-            };
             always-redraw-progress-bar-on-log-output = final: prev: {
               nix = prev.nix.overrideAttrs (old: {
                 patches =
@@ -52,6 +49,12 @@
                     ./patches/nix/always-redraw-progress-bar-on-log-output.patch
                   ];
               });
+            };
+            christbashtree = final: prev: {
+              christbashtree = final.callPackage ./packages/christbashtree.nix {};
+            };
+            wtf = final: prev: {
+              wtf = final.callPackage ./packages/wtf.nix {};
             };
           };
           nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (self.lib.import-all ./hosts);
@@ -73,6 +76,7 @@
             };
           };
           packages = {
+            christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
             wtf = pkgs.callPackage ./packages/wtf.nix {};
           };
           files.files = let

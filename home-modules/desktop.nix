@@ -53,6 +53,7 @@
       bat
       brightnessctl
       bvi
+      christbashtree
       dig
       dos2unix
       fastfetch
