@@ -53,6 +53,9 @@
             christbashtree = final: prev: {
               christbashtree = final.callPackage ./packages/christbashtree.nix {};
             };
+            colorbindiff = final: prev: {
+              colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
+            };
             wtf = final: prev: {
               wtf = final.callPackage ./packages/wtf.nix {};
             };
@@ -77,6 +80,7 @@
           };
           packages = {
             christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
+            colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
             wtf = pkgs.callPackage ./packages/wtf.nix {};
           };
           files.files = let

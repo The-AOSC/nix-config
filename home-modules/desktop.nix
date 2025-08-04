@@ -54,6 +54,7 @@
       brightnessctl
       bvi
       christbashtree
+      colorbindiff
       dig
       dos2unix
       fastfetch
