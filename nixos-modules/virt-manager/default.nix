@@ -117,6 +117,14 @@
     users.users.aosc.extraGroups = [
       "libvirtd"
     ];
+    networking.firewall.interfaces = {
+      "virbr0" = {
+        allowedUDPPorts = [67]; # DHCP
+      };
+      "virbr1" = {
+        allowedUDPPorts = [67]; # DHCP
+      };
+    };
     environment.persistence."/persist" = {
       directories = [
         "/var/iso"

@@ -21,11 +21,13 @@
       "/tmp".enable = false;
       "/var".enable = false;
     };
-    boot.kernel.sysctl."fs.binfmt_misc.status" =
-      lib.mkIf (
-        with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {}))
-      )
-      1;
+    boot.kernel.sysctl = {
+      "net.ipv4.icmp_echo_ignore_all" = false;
+      "fs.binfmt_misc.status" =
+        lib.mkIf
+        (with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {})))
+        true;
+    };
     nix-mineral.overrides = {
       compatibility = {
         allow-busmaster-bit = true; # check if needed, probably not
