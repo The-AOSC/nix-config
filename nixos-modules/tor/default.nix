@@ -62,5 +62,15 @@
     users.users.aosc.extraGroups = [
       "tor"
     ];
+    environment.persistence."/persist" = {
+      directories = [
+        {
+          directory = "/var/lib/tor";
+          mode = "0700";
+          user = "tor";
+          group = "tor";
+        }
+      ];
+    };
   };
 }
