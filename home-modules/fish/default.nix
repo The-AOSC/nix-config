@@ -54,7 +54,7 @@
         alias which='alias | command which --tty-only --read-alias'
 
         set yt_dlp_opts
-        alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs all,-live_chat --embed-subs --no-write-auto-subs --format "bestaudio+bestvideo*[format_note!=Premium]/bestaudio+bestvideo*[protocol*=m3u8]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
+        alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs all,-live_chat --embed-subs --no-write-auto-subs --format "bestaudio+bestvideo[format_note!=Premium]/best[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
         alias yt-dlp-section='yt-dlp -o "%(title)s [%(section_start)d - %(section_end)d] [%(id)s].%(ext)s" --download-sections'  # format: "*MM:SS-MM:SS"
         alias yt-dlp-playlist='yt-dlp -o "%(playlist_index)i - %(title)s [%(id)s].%(ext)s"'
         function yt-dlp-autonumber
