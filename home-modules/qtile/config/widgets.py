@@ -201,7 +201,7 @@ class GroupBox(DefaultGroupBox):
             )
             offset += bw + self.spacing
 
-        self.drawer.draw(offsetx=self.offset, offsety=self.offsety, width=self.width)
+        self.drawer.draw(offsetx=self.offsetx, offsety=self.offsety, width=self.width)
 
 
 re_vol = re.compile(r"(\d+\.\d\d)")
