@@ -109,15 +109,15 @@
                 grep -Po "(?<=\\[).+?(?=\\])" $argv
             end
         end
-        set yt_dlp_cookies --cookies-from-browser vivaldi:Default
+        set yt_dlp_cookies --cookies-from-browser firefox:${config.home.homeDirectory}/${config.programs.librewolf.profilesPath}/${config.programs.librewolf.profiles.default.path}
         function yt-dlp-watch
             if echo -- $argv | grep -Pq "(?<=\\[).+?(?=\\])"
-                yt-dlp --cookies-from-browser vivaldi:Default --skip-download --mark-watched --sub-langs -en,-ru --no-embed-subs --no-write-auto-subs --simulate -- (echo -- $argv | yt-dlp-grep-id)
+                yt-dlp $yt_dlp_cookies --skip-download --mark-watched --sub-langs -en,-ru --no-embed-subs --no-write-auto-subs --simulate -- (echo -- $argv | yt-dlp-grep-id)
             else
-                yt-dlp --cookies-from-browser vivaldi:Default --skip-download --mark-watched --sub-langs -en,-ru --no-embed-subs --no-write-auto-subs --simulate -- $argv
+                yt-dlp $yt_dlp_cookies --skip-download --mark-watched --sub-langs -en,-ru --no-embed-subs --no-write-auto-subs --simulate -- $argv
             end
         end
-        #alias yt-dlp-watch='yt-dlp --cookies-from-browser vivaldi:Default --skip-download --mark-watched --'
+        #alias yt-dlp-watch='yt-dlp $yt_dlp_cookies --skip-download --mark-watched --'
         alias yt-dlp-list-history='yt-dlp-list-standard :ythistory $yt_dlp_cookies'
         #alias yt-dlp-uploader='yt-dlp --print "%(uploader)s (https://www.youtube.com/%(uploader_id)s/videos) / (https://www.youtube.com/channel/%(uploader_id)s/videos)" --'
         alias yt-dlp-uploader='yt-dlp --print "%(uploader_url)s" --'

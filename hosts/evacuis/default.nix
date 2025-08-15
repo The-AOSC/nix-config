@@ -1,5 +1,6 @@
 inputs @ {...}: {
   overlays = [
+    inputs.nur.overlays.default
     inputs.self.overlays.always-redraw-progress-bar-on-log-output
     inputs.self.overlays.christbashtree
     inputs.self.overlays.colorbindiff

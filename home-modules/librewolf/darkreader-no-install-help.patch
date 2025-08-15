@@ -1,0 +1,13 @@
+diff --git a/background/index.js b/background/index.js
+index bc84176..d175a5a 100644
+--- a/background/index.js
++++ b/background/index.js
+@@ -6914,7 +6914,7 @@ Welcome to Dark Reader!`;
+     {
+         chrome.runtime.onInstalled.addListener(({reason}) => {
+             if (reason === "install") {
+-                chrome.tabs.create({url: getHelpURL()});
++                //chrome.tabs.create({url: getHelpURL()});
+             }
+         });
+         chrome.runtime.setUninstallURL(UNINSTALL_URL);

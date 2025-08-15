@@ -469,8 +469,11 @@ def configure_controls():
         Key([SUPER, META],  "n",      lazy.spawn(f"wezterm --config exit_behavior=\\\"Hold\\\" start sh -c 'sleep 0.1; fastfetch'")),  # it's too fast, lol!
         Key([SUPER, SHIFT], "Escape", lazy.spawn(f"{terminal} -e htop")),
         #Key([SUPER, META],  "Escape", lazy.spawn(f"{terminal} -e htop --readonly -t -u portage")),
-        Key([SUPER],        "F2",     lazy.spawn(f"vivaldi --profile-directory=Default")),
-        Key([SUPER, META],  "F2",     lazy.spawn(f"vivaldi --profile-directory=Profile\\ 4")),
+        Key([SUPER, CTRL],  "F2",     lazy.spawn(f"vivaldi --profile-directory=Default")),
+        Key([SUPER, META, CTRL], "F2",     lazy.spawn(f"vivaldi --profile-directory=Profile\\ 4")),
+        Key([SUPER],        "F2",     lazy.spawn(f"sh -c 'librewolf --profile ~/.librewolf/default'")),
+        Key([SUPER, SHIFT], "F2",     lazy.spawn(f"sh -c 'librewolf --profile ~/.librewolf/private'")),
+        Key([SUPER, META],  "F2",     lazy.spawn(f"sh -c 'librewolf --profile ~/.librewolf/tor'")),
         Key([SUPER],        "F3",     lazy.spawn(f"{terminal} -e python")),
         Key([SUPER],        "F4",     lazy.spawn(f"{terminal} -e rlcl")),
         Key([SUPER],        "F6",     lazy.spawn(f"{terminal} -e sh -c 'sleep 0.1; while true; do nmtui; done'")),

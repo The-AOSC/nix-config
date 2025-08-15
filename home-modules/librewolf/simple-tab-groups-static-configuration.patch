@@ -1,0 +1,31 @@
+diff --git a/js/constants.js b/js/constants.js
+index f115d0b..c730fa2 100644
+--- a/js/constants.js
++++ b/js/constants.js
+@@ -293,7 +293,7 @@ export const DEFAULT_OPTIONS = Object.freeze({
+     openManageGroupsInTab: true,
+     showConfirmDialogBeforeGroupArchiving: true,
+     showConfirmDialogBeforeGroupDelete: true,
+-    showNotificationAfterGroupDelete: true,
++    showNotificationAfterGroupDelete: false,
+     showContextMenuOnTabs: true,
+     showContextMenuOnLinks: true,
+     defaultBookmarksParent: DEFAULT_BOOKMARKS_PARENTS[0],
+diff --git a/js/storage.js b/js/storage.js
+index ba82d25..fdf7ff7 100644
+--- a/js/storage.js
++++ b/js/storage.js
+@@ -39,7 +39,12 @@ export async function get(keys) {
+         keysData = keys;
+     }
+ 
+-    const result = await nativeLocalGet(keysData, log);
++    let result = await nativeLocalGet(keysData, log);
++    for (let key in result) {
++        if (Constants.ALL_OPTIONS_KEYS.includes(key)) {
++            result[key] = Constants.DEFAULT_OPTIONS[key];
++        }
++    }
+ 
+     log.stop();
+ 

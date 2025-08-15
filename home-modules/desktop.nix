@@ -17,6 +17,7 @@
     modules.endgame-singularity.enable = true;
     modules.ffprobe-duration.enable = true;
     modules.fish.enable = true;
+    modules.librewolf.enable = true;
     modules.fonts.enable = true;
     modules.git.enable = true;
     modules.gpg.enable = true;

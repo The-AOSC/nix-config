@@ -1,0 +1,72 @@
+diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browser.xhtml b/browser-omni.ja/chrome/browser/content/browser/browser.xhtml
+--- a/browser-omni.ja/chrome/browser/content/browser/browser.xhtml	2025-08-11 12:10:28.867399871 +0500
++++ b/browser-omni.ja/chrome/browser/content/browser/browser.xhtml	2025-08-11 16:28:52.847092220 +0500
+@@ -229,8 +229,9 @@
+          data-l10n-id="window-new-shortcut"
+          command="cmd_newNavigator"
+          modifiers="accel" reserved="true"/>
+-    <key id="key_newNavigatorTab" data-l10n-id="tab-new-shortcut" modifiers="accel"
+-         command="cmd_newNavigatorTabNoEvent" reserved="true"/>
++    <key id="key_newNavigatorTab" key="t" command="cmd_newNavigatorTabNoEvent" reserved="false"/>
++    <key id="key_prevTab" key="k" modifiers="shift" command="Browser:PrevTab" reserved="false"/>
++    <key id="key_nextTab" key="j" modifiers="shift" command="Browser:NextTab" reserved="false"/>
+     <key id="focusURLBar" data-l10n-id="location-open-shortcut" command="Browser:OpenLocation"
+          modifiers="accel"/>
+     <key id="focusURLBar2" data-l10n-id="location-open-shortcut-alt" command="Browser:OpenLocation"
+@@ -249,8 +250,7 @@
+     <key id="openFileKb" data-l10n-id="file-open-shortcut" command="Browser:OpenFile"  modifiers="accel"/>
+     <key id="key_savePage" data-l10n-id="save-page-shortcut" command="Browser:SavePage" modifiers="accel"/>
+     <key id="printKb" data-l10n-id="print-shortcut" command="cmd_print"  modifiers="accel"/>
+-    <key id="key_close" data-l10n-id="close-shortcut" command="cmd_close" modifiers="accel" reserved="true"/>
+-    <key id="key_closeWindow" data-l10n-id="close-shortcut" command="cmd_closeWindow" modifiers="accel,shift" reserved="true"/>
++    <key id="key_close" key="x" command="cmd_close" reserved="false"/>
+     <key id="key_toggleMute" data-l10n-id="mute-toggle-shortcut" command="cmd_toggleMute" modifiers="control"/>
+     <key id="key_undo"
+          data-l10n-id="text-action-undo-shortcut"
+@@ -277,14 +277,10 @@
+ 
+     <key keycode="VK_BACK" command="cmd_handleBackspace" reserved="false"/>
+     <key keycode="VK_BACK" command="cmd_handleShiftBackspace" modifiers="shift" reserved="false"/>
+-    <key id="goBackKb"  keycode="VK_LEFT" command="Browser:Back" modifiers="alt"/>
+-    <key id="goForwardKb"  keycode="VK_RIGHT" command="Browser:Forward" modifiers="alt"/>
+-    <key id="goBackKb2" data-l10n-id="nav-back-shortcut-alt" command="Browser:Back" modifiers="accel"/>
+-    <key id="goForwardKb2" data-l10n-id="nav-fwd-shortcut-alt" command="Browser:Forward" modifiers="accel"/>
++    <key id="goBackKb" key="h" modifiers="shift" command="Browser:Back"/>
++    <key id="goForwardKb" key="l" modifiers="shift" command="Browser:Forward"/>
+     <key id="goHome" keycode="VK_HOME" modifiers="alt"/>
+-    <key keycode="VK_F5" command="Browser:Reload"/>
+     <key id="showAllHistoryKb" data-l10n-id="history-show-all-shortcut" command="Browser:ShowAllHistory" modifiers="accel,shift"/>
+-    <key keycode="VK_F5" command="Browser:ReloadSkipCache" modifiers="accel"/>
+     <key id="key_enterFullScreen" keycode="VK_F11" command="View:FullScreen"/>
+     <key id="key_exitFullScreen" keycode="VK_F11" command="View:FullScreen" reserved="true" disabled="true"/>
+     <key id="key_toggleReaderMode"
+@@ -296,8 +292,8 @@
+     <key id="key_togglePictureInPicture" data-l10n-id="picture-in-picture-toggle-shortcut" command="View:PictureInPicture" modifiers="accel,shift"/>
+     <key                                 data-l10n-id="picture-in-picture-toggle-shortcut-alt" command="View:PictureInPicture" modifiers="accel,shift"/>
+ 
+-    <key data-l10n-id="nav-reload-shortcut" command="Browser:Reload" modifiers="accel" id="key_reload"/>
+-    <key data-l10n-id="nav-reload-shortcut" command="Browser:ReloadSkipCache" modifiers="accel,shift" id="key_reload_skip_cache"/>
++    <key id="key_reload" key="r" command="Browser:Reload"/>
++    <key id="key_reload_skip_cache" key="r" modifiers="shift" command="Browser:ReloadSkipCache"/>
+     <key id="key_aboutProcesses" command="View:AboutProcesses" keycode="VK_ESCAPE" modifiers="shift"/>
+     <key id="key_viewSource" data-l10n-id="page-source-shortcut" command="View:PageSource" modifiers="accel"/>
+     <key id="key_viewInfo" data-l10n-id="page-info-shortcut" command="View:PageInfo"   modifiers="accel"/>
+@@ -357,8 +353,7 @@
+          command="cmd_quitApplication"
+          reserved="true"/>
+ 
+-    <key id="key_restoreLastClosedTabOrWindowOrSession" command="History:RestoreLastClosedTabOrWindowOrSession" data-l10n-id="tab-new-shortcut" modifiers="accel,shift"/>
+-    <key id="key_undoCloseWindow" command="History:UndoCloseWindow" data-l10n-id="window-new-shortcut" modifiers="accel,shift"/>
++    <key id="key_restoreLastClosedTabOrWindowOrSession" key="x" modifiers="shift" command="History:RestoreLastClosedTabOrWindowOrSession" reserved="false"/>
+ 
+ 
+ <key id="key_selectTab1" key="1" modifiers="alt"/>
+@@ -5083,7 +5078,7 @@
+                         command="View:PageInfo" data-l10n-id="menu-tools-page-info"/>
+               </menupopup>
+             </menu>
+-            <menu id="helpMenu" data-l10n-id="menu-help">
++            <menu id="helpMenu">
+               <menupopup id="menu_HelpPopup">
+ <!-- Note: Items under here are cloned to the AppMenu Help submenu. The cloned items
+      have their strings defined by appmenu-data-l10n-id. -->
