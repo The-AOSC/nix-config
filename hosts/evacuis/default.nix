@@ -4,6 +4,7 @@ inputs @ {...}: {
     inputs.self.overlays.always-redraw-progress-bar-on-log-output
     inputs.self.overlays.christbashtree
     inputs.self.overlays.colorbindiff
+    inputs.self.overlays.update-mindustry
     inputs.self.overlays.wtf
     inputs.sops-nix.overlays.default
   ];

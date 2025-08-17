@@ -64,6 +64,16 @@
             colorbindiff = final: prev: {
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
             };
+            update-mindustry = final: prev: {
+              mindustry = final.callPackage ./packages/mindustry/package.nix {};
+              mindustry-wayland = final.callPackage ./packages/mindustry/package.nix {
+                enableWayland = true;
+              };
+              mindustry-server = final.callPackage ./packages/mindustry/package.nix {
+                enableClient = false;
+                enableServer = true;
+              };
+            };
             wtf = final: prev: {
               wtf = final.callPackage ./packages/wtf.nix {};
             };
@@ -89,6 +99,7 @@
           packages = {
             christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
             colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
+            mindustry = pkgs.callPackage ./packages/mindustry/package.nix {};
             wtf = pkgs.callPackage ./packages/wtf.nix {};
           };
           files.files = let
