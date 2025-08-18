@@ -72,6 +72,12 @@
             ${pkgs.zip}/bin/zip $out/lib/librewolf/browser/omni.ja -0DXr -- *
           '';
         });
+        policies = {
+          DisableAccounts = true;
+          DisableFirefoxAccounts = true;
+          DisableTelemetry = true;
+          ExtensionUpdate = false;
+        };
         profiles = let
           global-config = {
             settings = {
@@ -213,9 +219,6 @@
               # force declarative settings
               "compatibility.ini" = "";
               "prefs.js" = "";
-              "storage-sync-v2.sqlite" = "";
-              "storage-sync-v2.sqlite-shm" = "";
-              "storage-sync-v2.sqlite-wal" = "";
               # extensions settings
               "extension-settings.json" = builtins.toJSON {
                 version = 3;
