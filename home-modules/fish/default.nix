@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    ./colors.nix
     ./fish-command-timer.nix
   ];
   options = {

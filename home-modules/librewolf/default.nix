@@ -52,6 +52,7 @@
     ] {};
   in
     lib.mkIf config.modules.librewolf.enable {
+      catppuccin.librewolf.force = true;
       programs.librewolf = {
         enable = true;
         package = pkgs.librewolf.overrideAttrs (old: {
@@ -87,7 +88,6 @@
               "browser.toolbars.bookmarks.visibility" = "never";
               "browser.translations.automaticallyPopup" = false;
               "devtools.toolbox.host" = "window"; # display in separate window
-              "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org"; # dark theme
               "extensions.autoDisableScopes" = 0; # automatically enable declarative extensions
               "privacy.resistFingerprinting" = false; # has many issues with extensions
               "svg.context-properties.content.enabled" = true; # fix Simple Tab Groups icons in dark mode
@@ -96,7 +96,9 @@
             };
             extensions = {
               force = true;
-              packages = [
+              packages = lib.optionals config.catppuccin.librewolf.enable [
+                addons.firefox-color
+              ] ++ [
                 addons.tree-style-tab
                 darkreader-patched
                 simple-tab-groups-patched

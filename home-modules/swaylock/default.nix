@@ -25,7 +25,6 @@
         };
       });
       settings = {
-        color = "3f3f3f";
         show-failed-attempts = true;
         ignore-empty-password = true;
       };

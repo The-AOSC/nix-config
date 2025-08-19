@@ -10,11 +10,11 @@
     programs.wezterm = {
       enable = true;
       extraConfig = ''
-        local wezterm = require "wezterm"
         local config = {}
 
-        --config.color_scheme = "farmhouse-dark"
-        config.color_scheme = "Thayer Bright"
+        ${lib.optionalString config.catppuccin.wezterm.enable ''
+          config.color_scheme = "${config.programs.wezterm.colorSchemes."catppuccin-${config.catppuccin.wezterm.flavor}".metadata.name}"
+        ''}
 
         --config.front_end = "OpenGL"
         --config.front_end = "WebGpu"

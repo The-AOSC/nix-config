@@ -21,10 +21,6 @@
         set number relativenumber
         set nowrap
 
-        " use terminal color scheme
-        set notermguicolors
-        color vim
-
         " highlight trailing spaces
         highlight ExtraWhitespace ctermbg=red guibg=red
         match ExtraWhitespace /\s\+$/
@@ -47,7 +43,10 @@
         autocmd BufReadPost * silent! normal! g`"zv
       '';
       extraLuaConfig = ''
-        loadfile("${./colorscheme.lua}")()
+        vim.api.nvim_set_hl(0, "DiffAdd",    { fg = "LightGreen" })
+        vim.api.nvim_set_hl(0, "DiffChange", { fg = "Yellow" })
+        vim.api.nvim_set_hl(0, "DiffDelete", { fg = "Red" })
+        vim.api.nvim_set_hl(0, "LineNr",     { fg = "Yellow" })
       '';
       plugins = with pkgs.vimPlugins; [
         {

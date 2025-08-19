@@ -37,6 +37,7 @@
     modules.sbcl.enable = true;
     modules.ssh.enable = true;
     modules.textwrap.enable = true;
+    modules.theme.enable = true;
     modules.tmux.enable = true;
     modules.translate-shell.enable = true;
     modules.unp.enable = true;
