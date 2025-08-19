@@ -14,6 +14,7 @@
   config = lib.mkIf config.modules.desktop.enable {
     modules.cava.enable = true;
     modules.char-names.enable = true;
+    modules.dunst.enable = true;
     modules.endgame-singularity.enable = true;
     modules.ffprobe-duration.enable = true;
     modules.fish.enable = true;
@@ -25,7 +26,6 @@
     modules.kdeconnect.enable = true;
     modules.libreoffice.enable = true;
     modules.librewolf.enable = true;
-    modules.mako.enable = true;
     modules.mindustry.enable = true;
     modules.mpv.enable = true;
     modules.neovim.enable = true;
