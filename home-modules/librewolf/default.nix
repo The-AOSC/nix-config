@@ -112,7 +112,9 @@
                   notifiedFeaturesVersion = 9;
                   syncAvailableNotified = true;
                 };
-                "${darkreader-patched.addonId}" = settings {};
+                "${darkreader-patched.addonId}" = settings {
+                  enabledByDefault = true;
+                };
                 "${simple-tab-groups-patched.addonId}" = {
                   force = lib.mkForce false; # stores tab group data
                 };
