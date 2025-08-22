@@ -39,6 +39,9 @@
       gtk.enable = true;
       size = 24;
     };
+    modules.librewolf.globalConfig.extensions.packages = lib.mkIf config.catppuccin.librewolf.enable [
+      pkgs.nur.repos.rycee.firefox-addons.firefox-color
+    ];
     gtk = {
       enable = true;
       theme = {
