@@ -479,10 +479,10 @@ def configure_controls():
         Key([SUPER],        "F6",     lazy.spawn(f"{terminal} -e sh -c 'sleep 0.1; while true; do nmtui; done'")),
         Key([SUPER],        "F7",     spawn_pings()),
         Key([SUPER],        "F8",     lazy.spawn(f"{terminal} -e nix repl")),
-        Key([SUPER, META],        "c", lazy.spawn("dustctl context")),
-        Key([SUPER, META, SHIFT], "c", lazy.spawn("dustctl history-pop")),
-        Key([SUPER, META],        "d", lazy.spawn("dustctl close")),
-        Key([SUPER, META, SHIFT], "d", lazy.spawn("dustctl history-clear")),
+        Key([SUPER, META],        "c", lazy.spawn("dunstctl context")),
+        Key([SUPER, META, SHIFT], "c", lazy.spawn("dunstctl history-pop")),
+        Key([SUPER, META],        "d", lazy.spawn("dunstctl close")),
+        Key([SUPER, META, SHIFT], "d", lazy.spawn("dunstctl history-clear")),
         #Key([SUPER],        "F12",    spawn_update()),
     ])
 
