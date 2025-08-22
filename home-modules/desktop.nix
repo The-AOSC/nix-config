@@ -77,10 +77,10 @@
       nmap
       pciutils
       pdfarranger
+      picocom
       pipes
       pulseaudio # pactl
       rlwrap
-      screen
       shellcheck
       sops
       speedtest-cli
