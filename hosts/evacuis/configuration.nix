@@ -79,7 +79,6 @@
   modules.swaylock.enable = true;
   modules.tor.enable = true;
   modules.virt-manager.enable = true;
-  modules.zapret.enable = true;
   modules.netConfig = {
     enable = true;
     config = builtins.fromJSON (builtins.readFile ../../netConfig.json);
