@@ -15,7 +15,9 @@
     modules.kanata.enable = true;
     modules.kdeconnect.enable = true;
     modules.theme.enable = true;
+    modules.u2f.enable = true;
     modules.wine.enable = true;
+    modules.yubikey.enable = true;
     hardware.graphics.enable = true;
     users.users.aosc.hashedPasswordFile = config.sops.secrets.aosc-password.path;
     sops.secrets = {

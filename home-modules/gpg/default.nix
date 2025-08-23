@@ -18,6 +18,9 @@
           trust = "ultimate";
         }
       ];
+      scdaemonSettings = {
+        disable-ccid = true; # use pcscd instead of fighting with it over device
+      };
     };
     services.gpg-agent = {
       enable = true;
@@ -54,20 +57,12 @@
             done
           ) > $out
         '';
+      "${config.programs.gpg.homedir}/private-keys-v1.d".source = ./shadowed-private-keys;
     };
     home.activation = {
-      force-private-gpg = lib.hm.dag.entryAfter ["writeBoundary" "createAndMountPersistentStoragePaths"] ''
+      force-private-gpg = lib.hm.dag.entryAfter ["writeBoundary"] ''
         run chmod -077 ${config.home.homeDirectory}/.gnupg
-        run chmod -077 /persist/home/aosc/.gnupg
       '';
-    };
-    home.persistence."/persist" = {
-      directories = [
-        {
-          directory = ".gnupg/private-keys-v1.d";
-          mode = "700";
-        }
-      ];
     };
   };
 }
