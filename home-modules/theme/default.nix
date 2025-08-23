@@ -32,6 +32,11 @@
       inherit (config.modules.theme.catppuccin) accent flavor;
       enable = true;
       cursors.enable = false;
+      librewolf.profiles = lib.mkIf config.modules.librewolf.enable {
+        default = {};
+        private.accent = "blue";
+        tor.accent = "red";
+      };
     };
     home.pointerCursor = {
       name = "phinger-cursors-dark";
