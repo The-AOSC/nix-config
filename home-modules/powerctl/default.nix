@@ -76,7 +76,7 @@
                     #".Lock": "i3lock -c 3f3f3f -f -e",
                     #".Lock-nofork": "{.Lock} --nofork",
                     ".Lock": "{.Lock-nofork} --daemonize",
-                    ".Lock-nofork": "swaylock -c 3f3f3f --show-failed-attempts --ignore-empty-password",
+                    ".Lock-nofork": "swaylock",
 
                     ".Xtrlock": "{.Lock}",
                     ".Xtrlock-nofork": "{.Lock-nofork}",
