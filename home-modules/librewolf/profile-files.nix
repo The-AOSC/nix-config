@@ -11,8 +11,26 @@ in {
       type = attrsOf (submodule ({config, ...}: {
         options = {
           file = lib.mkOption {
-            description = "Content of files in profile directory";
-            type = attrsOf lines;
+            description = "Attribute set of files to link into profile directory";
+            type = attrsOf (
+              submodule (
+                {config, ...}: {
+                  options = {
+                    text = lib.mkOption {
+                      description = "Text of the file";
+                      type = nullOr lines;
+                    };
+                    json = lib.mkOption {
+                      description = "JSON content of";
+                      type = nullOr (pkgs.formats.json {}).type;
+                    };
+                  };
+                  config = {
+                    text = lib.mkDefault (builtins.toJSON config.json);
+                  };
+                }
+              )
+            );
           };
           # TODO: can't define this under `extensions` as it's wrapped in coercedTo for legacy support
           extensions'.settings = lib.mkOption {
@@ -25,38 +43,28 @@ in {
                   type = attrsOf str;
                   default = {};
                 };
-                tabHideNotification = lib.mkOption {
-                  description = "Silence tab hide notification";
-                  type = bool;
-                  default = false;
-                };
               };
             });
           };
         };
         config = {
-          file = lib.mkIf config.extensions.force {
-            "extension-settings.json" = builtins.toJSON {
-              version = 3;
-              commands = lib.zipAttrsWith (_: commands: {precedenceList = commands;}) (lib.mapAttrsToList (addonId: extensionSettings:
-                lib.mapAttrs (_: shortcut: {
-                  enabled = true;
-                  id = addonId;
-                  value.shortcut = shortcut;
-                })
-                extensionSettings.shortcuts)
-              config.extensions'.settings);
-              tabHideNotification = lib.mapAttrs (addonId: _: {
-                precedenceList = [
-                  {
-                    id = addonId;
-                    value = true;
-                    enabled = true;
-                  }
-                ];
-              }) (lib.filterAttrs (_: extensionSettings: extensionSettings.tabHideNotification) config.extensions'.settings);
+          file = let
+            commands = lib.zipAttrsWith (_: commands: {precedenceList = commands;}) (lib.mapAttrsToList (addonId: extensionSettings:
+              lib.mapAttrs (_: shortcut: {
+                enabled = true;
+                id = addonId;
+                value.shortcut = shortcut;
+              })
+              extensionSettings.shortcuts)
+            config.extensions'.settings);
+          in
+            lib.mkIf (config.extensions.force && (commands != {})) {
+              "extension-settings.json".json = let
+              in {
+                version = 3;
+                inherit commands;
+              };
             };
-          };
         };
       }));
     };
@@ -68,7 +76,7 @@ in {
             fileName: content:
               lib.nameValuePair "${config.programs.librewolf.profilesPath}/${profileConfig.path}/${fileName}" {
                 force = true;
-                text = content;
+                inherit (content) text;
               }
           )
           profileConfig.file

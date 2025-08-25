@@ -17,10 +17,6 @@
   options = {
     modules.librewolf = {
       enable = lib.mkEnableOption "librewolf";
-      globalConfig = lib.mkOption {
-        type = with lib.types; coercedTo attrs lib.singleton (listOf attrs);
-        description = "Config shared between profiles";
-      };
     };
   };
   config = lib.mkIf config.modules.librewolf.enable {
@@ -51,7 +47,7 @@
         DisableTelemetry = true;
         ExtensionUpdate = false;
       };
-      profiles = lib.mapAttrs (name: profileConfig: lib.mkMerge (config.modules.librewolf.globalConfig ++ [profileConfig])) {
+      profiles = {
         default = {
           settings = {
             "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
