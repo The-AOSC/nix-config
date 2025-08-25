@@ -36,6 +36,10 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin-vimium = {
+      url = "github:/catppuccin/vimium";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     flake-parts,

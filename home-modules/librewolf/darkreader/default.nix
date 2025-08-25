@@ -20,6 +20,7 @@
         force = true;
         settings = {
           enabledByDefault = true;
+          syncSettings = false;
         };
       };
     };
