@@ -20,6 +20,22 @@
         "type": "github"
       }
     },
+    "catppuccin-userstyles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755805463,
+        "narHash": "sha256-vNMh8YC1ZmmyFstZqOF1pHAVZ/utgAicEx6gnF7ILbg=",
+        "owner": "catppuccin",
+        "repo": "userstyles",
+        "rev": "183d521e8f5dfe53cc0af4af1bcbd44c87d61d73",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "userstyles",
+        "type": "github"
+      }
+    },
     "catppuccin-vimium": {
       "flake": false,
       "locked": {
@@ -168,6 +184,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-buildDenoPackage": {
+      "locked": {
+        "lastModified": 1754933362,
+        "narHash": "sha256-AU5CHx9Llj+5hEyXUY8HJ6jwa7ZkKmYAV+G3b5GMPhs=",
+        "owner": "aMOPel",
+        "repo": "nixpkgs",
+        "rev": "1cf477cbd3f5a2846ef75a2737a1e494234eca06",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aMOPel",
+        "ref": "feat/buildDenoPackage-second",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixvirt": {
       "inputs": {
         "nixpkgs": [
@@ -213,6 +245,7 @@
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
+        "catppuccin-userstyles": "catppuccin-userstyles",
         "catppuccin-vimium": "catppuccin-vimium",
         "files": "files",
         "flake-parts": "flake-parts",
@@ -221,6 +254,7 @@
         "impermanence": "impermanence",
         "nix-mineral": "nix-mineral",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-buildDenoPackage": "nixpkgs-buildDenoPackage",
         "nixvirt": "nixvirt",
         "nur": "nur",
         "sops-nix": "sops-nix"

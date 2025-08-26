@@ -1,0 +1,36 @@
+diff --git a/src/background/db.js b/src/background/db.js
+index 24ffe513..0bef61ea 100644
+--- a/src/background/db.js
++++ b/src/background/db.js
+@@ -13,9 +13,11 @@ import ChromeStorageDB from './db-chrome-storage';
+  https://www.reddit.com/r/firefox/comments/7ijuaq/firefox_59_webextensions_can_use_indexeddb_when/
+ */
+ 
+-let exec = __.BUILD === 'chrome' || CHROME
+-  ? dbExecIndexedDB
+-  : tryUsingIndexedDB;
++let exec = [
++  useChromeStorage(),
++  CHROME,             //    5:9   error  'CHROME' is defined but never used             no-unused-vars
++  tryUsingIndexedDB,  //   90:16  error  'tryUsingIndexedDB' is defined but never used  no-unused-vars
++][0];
+ const FALLBACK = 'dbInChromeStorage';
+ const REASON = FALLBACK + 'Reason';
+ const DRAFTS_DB = 'drafts';
+diff --git a/src/background/style-manager/init.js b/src/background/style-manager/init.js
+index 7afeb67c..073a7a05 100644
+--- a/src/background/style-manager/init.js
++++ b/src/background/style-manager/init.js
+@@ -90,10 +90,8 @@ async function initStyleMap(styles, mirrored) {
+     console[mirrored ? 'log' : 'warn'](`Fixed ${fixed.size} styles, ids:`, ...fixed.keys());
+     fixed = await Promise.all([...fixed.values(), bgBusy]);
+     fixed.pop();
+-    if (mirrored) {
+-      styles.push(...fixed);
+-      fixed.forEach(storeInMap);
+-    }
++    styles.push(...fixed);
++    fixed.forEach(storeInMap);
+   }
+   if (styles.length)
+     setTimeout(db.putMany, 100, styles);

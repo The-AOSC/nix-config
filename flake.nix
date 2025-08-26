@@ -40,6 +40,11 @@
       url = "github:/catppuccin/vimium";
       flake = false;
     };
+    catppuccin-userstyles = {
+      url = "github:catppuccin/userstyles";
+      flake = false;
+    };
+    nixpkgs-buildDenoPackage.url = "github:aMOPel/nixpkgs/feat/buildDenoPackage-second";
   };
   outputs = inputs @ {
     flake-parts,
@@ -66,11 +71,27 @@
                   ];
               });
             };
+            catppuccin-userstyles = final: prev: {
+              catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
+                src = inputs.catppuccin-userstyles;
+                inherit
+                  (import inputs.nixpkgs-buildDenoPackage {
+                    inherit (final) system;
+                  })
+                  buildDenoPackage
+                  ;
+              };
+            };
             christbashtree = final: prev: {
               christbashtree = final.callPackage ./packages/christbashtree.nix {};
             };
             colorbindiff = final: prev: {
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
+            };
+            stylus = final: prev: {
+              stylus = final.callPackage ./packages/stylus {
+                stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
+              };
             };
             update-mindustry = final: prev: {
               mindustry = final.callPackage ./packages/mindustry/package.nix {};
@@ -93,6 +114,7 @@
         ];
         perSystem = {
           config,
+          system,
           pkgs,
           ...
         }: {
@@ -105,9 +127,21 @@
             };
           };
           packages = {
+            catppuccin-userstyles = pkgs.callPackage ./packages/catppuccin-userstyles.nix {
+              src = inputs.catppuccin-userstyles;
+              inherit
+                (import inputs.nixpkgs-buildDenoPackage {
+                  inherit system;
+                })
+                buildDenoPackage
+                ;
+            };
             christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
             colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
             mindustry = pkgs.callPackage ./packages/mindustry/package.nix {};
+            stylus = pkgs.callPackage ./packages/stylus {
+              stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
+            };
             wtf = pkgs.callPackage ./packages/wtf.nix {};
           };
           files.files = let
