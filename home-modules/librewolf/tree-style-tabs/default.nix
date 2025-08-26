@@ -24,6 +24,7 @@ in {
             extensions' = {
               settings."${tree-style-tab.addonId}" = {
                 shortcuts = {
+                  closeTree = "Alt+Shift+X";
                   newChildTab = "Ctrl+T";
                   newIndependentTab = "Ctrl+Alt+T";
                   newSiblingTab = "Ctrl+Shift+T";
