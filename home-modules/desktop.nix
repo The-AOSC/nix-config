@@ -74,6 +74,7 @@
       killall
       man-pages
       moreutils
+      nix-diff
       nmap
       pciutils
       pdfarranger
