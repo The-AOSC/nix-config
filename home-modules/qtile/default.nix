@@ -19,6 +19,7 @@
       #(pkgs.python3.withPackages (p: [qtile-unwrapped] ++ (with p; [
       #  sh
       #])))
+      swayidle
     ];
     xdg.portal = {
       enable = true;
