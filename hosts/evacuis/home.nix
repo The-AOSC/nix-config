@@ -10,7 +10,6 @@
       "Desktop/Documents"
       "inst"
       "lisp"
-      ".local/chromium-extensions"
       ".local/HyperSpec"
       "nix-config"
       "nixpkgs"
