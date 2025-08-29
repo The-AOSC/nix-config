@@ -53,12 +53,12 @@
       ];
     };
     programs.fuse.userAllowOther = true;
-    services.logind = {
-      hibernateKey = "ignore";
-      lidSwitch = "ignore";
-      powerKey = "ignore";
-      rebootKey = "ignore";
-      suspendKey = "ignore";
+    services.logind.settings.Login = {
+      HandleHibernateKey = "ignore";
+      HandleLidSwitch = "ignore";
+      HandlePowerKey = "ignore";
+      HandleRebootKey = "ignore";
+      HandleSuspendKey = "ignore";
     };
     services.pipewire = {
       enable = true;
