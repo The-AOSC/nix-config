@@ -87,7 +87,7 @@ def startup_once():
         os.system("kdeconnect-cli --refresh &")
         qtile.call_later(5*60, refresh_kdeconnect)
     refresh_kdeconnect()
-    os.system("swayidle lock swaylock &")
+    os.system("swayidle before-sleep 'swaylock --daemonize' lock 'swaylock --daemonize' unlock 'killall swaylock' &")
 
 @lazy.function
 def spawn_pings(_):
@@ -337,13 +337,7 @@ def configure_controls():
         #Key([SUPER],        "r",            lazy.spawncmd()),
         Key([SUPER],        "d",            lazy.spawn("wmenu-history")),
 
-        Key([SUPER],        "XF86PowerOff", lazy.spawn("powerctl")),  # doesn't work!
-        Key([HYPER],        "XF86PowerOff", lazy.spawn("powerctl")),  # doesn't work!
-        Key([],        "XF86PowerOff", lazy.spawn("powerctl")),
-        Key([SUPER, META],  "F9",           lazy.spawn("powerctl .Lock")),
-        Key([SUPER, SHIFT], "F9",           lazy.spawn("powerctl .Xtrlock-s")),
-        Key([SUPER, CTRL],  "F9",           lazy.spawn("powerctl .Xtrlock")),
-        Key([HYPER],        "F9",           lazy.spawn("powerctl .Xtrlock")),
+        Key([],             "XF86PowerOff", lazy.spawn("powerctl")),
 
         Key([],             "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +2.5db")),
         Key([],             "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2.5db")),
