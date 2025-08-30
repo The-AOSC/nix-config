@@ -184,6 +184,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-3ecd031b66320e5ca9837b3b994fca8292967112": {
+      "locked": {
+        "lastModified": 1755718261,
+        "narHash": "sha256-iHdfSkpVJAbs3eI8OOQQmYsgysxnoX3T6TN2l5UkYBU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3ecd031b66320e5ca9837b3b994fca8292967112",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3ecd031b66320e5ca9837b3b994fca8292967112",
+        "type": "github"
+      }
+    },
     "nixpkgs-buildDenoPackage": {
       "locked": {
         "lastModified": 1754933362,
@@ -254,6 +270,7 @@
         "impermanence": "impermanence",
         "nix-mineral": "nix-mineral",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-3ecd031b66320e5ca9837b3b994fca8292967112": "nixpkgs-3ecd031b66320e5ca9837b3b994fca8292967112",
         "nixpkgs-buildDenoPackage": "nixpkgs-buildDenoPackage",
         "nixvirt": "nixvirt",
         "nur": "nur",

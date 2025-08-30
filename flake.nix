@@ -2,6 +2,7 @@
   description = "NixOS configuration of The AOSC";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-3ecd031b66320e5ca9837b3b994fca8292967112.url = "github:NixOS/nixpkgs?rev=3ecd031b66320e5ca9837b3b994fca8292967112"; # incompatible versions of wine-staging & wine-mono in bfeebf7b5c669ff3a7998214f9f649fcd2e5b1e7
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence = {

@@ -1,5 +1,6 @@
 {
   osConfig,
+  inputs,
   config,
   pkgs,
   lib,
@@ -16,7 +17,7 @@
   in
     lib.mkIf config.modules.wine.enable {
       home.packages = [
-        (pkgs.wineWowPackages.stagingFull.override {
+        (inputs.nixpkgs-3ecd031b66320e5ca9837b3b994fca8292967112.legacyPackages."${pkgs.system}".wineWowPackages.stagingFull.override {
           gstreamerSupport = false;
         })
         pkgs.winetricks
