@@ -15,7 +15,7 @@
 
         [ -e "$DATA_FILE" ] || :>"$DATA_FILE"
 
-        name="$(${pkgs.dmenu}/bin/dmenu_path | ${pkgs.moreutils}/bin/combine - not "$DATA_FILE" | cat "$DATA_FILE" - | ${pkgs.wmenu}/bin/wmenu)"
+        name="$(${pkgs.dmenu}/bin/dmenu_path | ${pkgs.moreutils}/bin/combine - not "$DATA_FILE" | cat "$DATA_FILE" - | ${pkgs.wmenu}/bin/wmenu -i)"
 
         if [ -n "$name" ]; then
             (
