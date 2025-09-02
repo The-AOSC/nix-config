@@ -46,6 +46,7 @@
     modules.wine.enable = true;
     modules.wmenu-history.enable = true;
     modules.wtf.enable = true;
+    modules.zathura.enable = true;
     modules.zoxide.enable = true;
     home.persistence."/persist" = {
       directories = [
@@ -96,7 +97,6 @@
       wget
       wl-clipboard
       yt-dlp
-      zathura
     ];
   };
 }
