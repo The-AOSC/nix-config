@@ -87,7 +87,7 @@ def startup_once():
         os.system("kdeconnect-cli --refresh &")
         qtile.call_later(5*60, refresh_kdeconnect)
     refresh_kdeconnect()
-    os.system("swayidle before-sleep 'swaylock --daemonize' lock 'swaylock --daemonize' unlock 'killall swaylock' &")
+    os.system("swayidle -w before-sleep 'swaylock --daemonize' lock 'swaylock --daemonize' unlock 'killall .swaylock-wrapper' &")
 
 @lazy.function
 def spawn_pings(_):
