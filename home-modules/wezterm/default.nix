@@ -16,10 +16,6 @@
           config.color_scheme = "${config.programs.wezterm.colorSchemes."catppuccin-${config.catppuccin.wezterm.flavor}".metadata.name}"
         ''}
 
-        --config.front_end = "OpenGL"
-        --config.front_end = "WebGpu"
-        config.enable_wayland = false
-
         config.font = wezterm.font("Source Code Pro", {weight="Regular", stretch="Normal", style="Normal"})
         config.font_size = 10.0
 
