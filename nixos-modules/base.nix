@@ -12,6 +12,7 @@
     modules.base.enable = lib.mkEnableOption "base";
   };
   config = lib.mkIf config.modules.base.enable {
+    modules.build-vm.enable = true;
     modules.hardening.enable = true;
     modules.ntp.enable = true;
     modules.persistence.enable = true;
