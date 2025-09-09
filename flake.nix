@@ -106,6 +106,11 @@
                   ];
               });
             };
+            multi-dimensional-workspaces = final: prev: {
+              multi-dimensional-workspaces = final.callPackage ./packages/multi-dimensional-workspaces {
+                inherit (final.hyprlandPlugins) mkHyprlandPlugin;
+              };
+            };
             stylus = final: prev: {
               stylus = final.callPackage ./packages/stylus {
                 stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
@@ -157,6 +162,9 @@
             christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
             colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
             mindustry = pkgs.callPackage ./packages/mindustry/package.nix {};
+            multi-dimensional-workspaces = pkgs.callPackage ./packages/multi-dimensional-workspaces {
+              inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
+            };
             stylus = pkgs.callPackage ./packages/stylus {
               stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
             };
