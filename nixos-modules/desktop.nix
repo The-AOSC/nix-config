@@ -12,6 +12,7 @@
     modules.base.enable = true;
     modules.command-not-found.enable = true;
     modules.enableNumlock.enable = true;
+    modules.hyprland.enable = true;
     modules.kanata.enable = true;
     modules.kdeconnect.enable = true;
     modules.theme.enable = true;

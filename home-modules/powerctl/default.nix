@@ -14,7 +14,7 @@
           ["Suspend" "sync; systemctl suspend"]
           ["Hibernate" "sync; systemctl hibernate"]
           ["Hybrid-sleep" "sync; systemctl hybrid-sleep"]
-          ["Log-out" "qtile cmd-obj -o cmd -f shutdown"]
+          ["Log-out" "uwsm stop"]
           ["Shutdown" "sync; systemctl poweroff"]
           ["Reboot" "sync; systemctl reboot"]
         ];

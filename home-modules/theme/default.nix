@@ -45,6 +45,10 @@
       gtk.enable = true;
       size = 24;
     };
+    home.sessionVariables = {
+      HYPRCURSOR_SIZE = config.home.pointerCursor.size;
+      HYPRCURSOR_THEME = config.home.pointerCursor.name;
+    };
     gtk = {
       enable = true;
       theme = {

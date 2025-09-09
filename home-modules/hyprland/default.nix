@@ -1,0 +1,145 @@
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  debug = true;
+in {
+  options = {
+    modules.hyprland.enable = lib.mkEnableOption "hyprland";
+  };
+  config = lib.mkIf config.modules.hyprland.enable {
+    programs.fish.loginShellInit = ''
+      if uwsm check may-start
+        exec uwsm start ${config.wayland.windowManager.hyprland.finalPackage}/bin/Hyprland
+      end
+    '';
+    services.hyprpolkitagent.enable = true;
+    wayland.systemd.target = "hyprland-session.target";
+    wayland.windowManager.hyprland = let
+      terminal = "${config.programs.wezterm.package}/bin/wezterm";
+      terminalStart = "${terminal} start --";
+      terminalStartHold = ''${terminal} --config 'exit_behavior="Hold"' start --'';
+    in {
+      enable = true;
+      plugins = [
+        pkgs.multi-dimensional-workspaces
+      ];
+      settings = {
+        misc = {
+          new_window_takes_over_fullscreen = 2; # unfullscreen
+          force_default_wallpaper = 0;
+        };
+        input = {
+          numlock_by_default = true;
+          touchpad = {
+            disable_while_typing = false;
+            natural_scroll = true;
+          };
+        };
+        binds = {
+          workspace_center_on = 1; # center the cursor on last active window
+          focus_preferred_method = 1; # prefer longest shared edge
+          disable_keybind_grabbing = true;
+        };
+        cursor = {
+          inactive_timeout = 10;
+          warp_on_change_workspace = 1;
+        };
+        ecosystem = {
+          no_update_news = true;
+          no_donation_nag = true;
+        };
+        dwindle = {
+          force_split = 2; # bottom/right
+        };
+        bind = [
+          "SUPER,                Return,                exec, ${terminalStart} fish"
+          "SUPER SHIFT,          Escape,                exec, ${terminalStart} htop"
+          "SUPER ALT,            n,                     exec, ${terminalStartHold} sh -c 'sleep 0.1; fastfetch'"
+          "SUPER,                F2,                    exec, librewolf --profile ~/.librewolf/default"
+          "SUPER SHIFT,          F2,                    exec, librewolf --profile ~/.librewolf/private"
+          "SUPER ALT,            F2,                    exec, librewolf --profile ~/.librewolf/tor"
+          "SUPER,                F4,                    exec, ${terminalStart} rlcl"
+          "SUPER,                F6,                    exec, ${terminalStart} sh -c 'sleep 0.1; while true; do nmtui; done'"
+          "SUPER,                d,                     exec, wmenu-history"
+          ",                     XF86PowerOff,          exec, powerctl"
+          ",                     XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +2.5db"
+          ",                     XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -2.5db"
+          ",                     XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          "SHIFT,                XF86AudioMute,         exec, wpctl set-sink-volume @DEFAULT_AUDIO_SINK@ 100%"
+          "SHIFT,                XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
+          #",                     XF86AudioMicMute,      exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          ",                     XF86MonBrightnessUp,   exec, brightnessctl -e4 -n2 set 5%+"
+          ",                     XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
+          "SUPER SHIFT,          q,                     killactive"
+          "SUPER SHIFT,          Space,                 togglefloating"
+          "SUPER,                f,                     fullscreen, 0"
+          "SUPER,                h,                     movefocus, l"
+          "SUPER,                j,                     movefocus, d"
+          "SUPER,                k,                     movefocus, u"
+          "SUPER,                l,                     movefocus, r"
+          "SUPER SHIFT,          h,                     movewindow, l"
+          "SUPER SHIFT,          j,                     movewindow, d"
+          "SUPER SHIFT,          k,                     movewindow, u"
+          "SUPER SHIFT,          l,                     movewindow, r"
+          "SUPER ALT,            h,                     swapwindow, l"
+          "SUPER ALT,            j,                     swapwindow, d"
+          "SUPER ALT,            k,                     swapwindow, u"
+          "SUPER ALT,            l,                     swapwindow, r"
+          "SUPER,                1,                     workspace, 1"
+          "SUPER,                2,                     workspace, 2"
+          "SUPER,                3,                     workspace, 3"
+          "SUPER,                4,                     workspace, 4"
+          "SUPER,                5,                     workspace, 5"
+          "SUPER,                6,                     workspace, 6"
+          "SUPER,                7,                     workspace, 7"
+          "SUPER,                8,                     workspace, 8"
+          "SUPER,                9,                     workspace, 9"
+          "SUPER,                0,                     workspace, 10"
+          "SUPER SHIFT,          1,                     movetoworkspacesilent, 1"
+          "SUPER SHIFT,          2,                     movetoworkspacesilent, 2"
+          "SUPER SHIFT,          3,                     movetoworkspacesilent, 3"
+          "SUPER SHIFT,          4,                     movetoworkspacesilent, 4"
+          "SUPER SHIFT,          5,                     movetoworkspacesilent, 5"
+          "SUPER SHIFT,          6,                     movetoworkspacesilent, 6"
+          "SUPER SHIFT,          7,                     movetoworkspacesilent, 7"
+          "SUPER SHIFT,          8,                     movetoworkspacesilent, 8"
+          "SUPER SHIFT,          9,                     movetoworkspacesilent, 9"
+          "SUPER SHIFT,          0,                     movetoworkspacesilent, 10"
+          "SUPER ALT SHIFT CTRL, Return,                submap, escape"
+        ];
+        debug.disable_logs = !debug;
+      };
+      submaps = {
+        escape.settings = {
+          bind = ["SUPER ALT SHIFT CTRL, Escape, submap, reset"];
+        };
+      };
+      systemd = {
+        enable = true;
+        variables = ["--all"];
+      };
+    };
+    xdg.configFile."hypr/hyprland.conf".text = lib.mkIf (!debug) (lib.mkMerge [
+      # https://wiki.hypr.land/Hypr-Ecosystem/hyprlang/#escaping-errors
+      (lib.mkBefore ''
+        # hyprlang noerror true
+      '')
+      (lib.mkAfter ''
+        # hyprlang noerror false
+      '')
+    ]);
+    services.hypridle = {
+      enable = true;
+      settings = {
+        general = {
+          before_sleep_cmd = "loginctl lock-session";
+          lock_cmd = "swaylock";
+          unlock_cmd = "killall -SIGUSR1 .swaylock-wrapper";
+        };
+      };
+    };
+  };
+}
