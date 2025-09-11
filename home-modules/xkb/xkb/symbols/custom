@@ -6,10 +6,7 @@ xkb_symbols "normal" {
 
     include "inet(evdev)"
 
-    key <LALT> {[Meta_L, Meta_L]};
-    key <RALT> {[Meta_R, Meta_R]};
-
-    #key <FK24> {[ISO_Next_Group]};
+    //key <FK24> {[ISO_Next_Group]};
     key <FK19> {[ISO_First_Group]};
     key <FK24> {[ISO_Last_Group]};
 };

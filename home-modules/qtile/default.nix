@@ -41,10 +41,6 @@
         source = ./config;
         recursive = true;
       };
-      "xkb" = {
-        source = ./xkb-config;
-        recursive = true;
-      };
     };
   };
 }

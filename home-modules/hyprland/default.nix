@@ -32,7 +32,10 @@ in {
           force_default_wallpaper = 0;
         };
         input = {
+          kb_layout = "custom"; # see xkb module
           numlock_by_default = true;
+          repeat_rate = 50;
+          repeat_delay = 500;
           touchpad = {
             disable_while_typing = false;
             natural_scroll = true;

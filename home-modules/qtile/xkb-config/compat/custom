@@ -1,5 +1,0 @@
-default
-xkb_compat {
-    include "complete"
-    include "ledcaps(group_lock)"
-};
