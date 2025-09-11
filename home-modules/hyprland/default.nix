@@ -54,6 +54,35 @@ in {
         dwindle = {
           force_split = 2; # bottom/right
         };
+        # binds, allowed on lockscreen
+        bindl = [
+          ",                     XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          "SHIFT,                XF86AudioMute,         exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%"
+          "SHIFT,                XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
+          "ALT,                  XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          "SHIFT ALT,            XF86AudioMute,         exec, wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 100%"
+          "SHIFT ALT,            XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0"
+          "ALT CTRL,             XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0"
+        ];
+        # release binds, allowed on lockscreen
+        bindlr = [
+          "ALT CTRL,             XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
+        ];
+        # repeating binds, allowed on lockscreen
+        bindle = [
+          ",                     XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +2.5db"
+          ",                     XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -2.5db"
+          "ALT,                  XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ +2.5db"
+          "ALT,                  XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ -2.5db"
+          ",                     XF86MonBrightnessUp,   exec, brightnessctl -e4 -n2 set 5%+"
+          ",                     XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
+        ];
+        # repeating binds
+        binde = [
+          "SUPER,                s,                     workspace, plugin:mdw:+0:-1"
+          "SUPER,                w,                     workspace, plugin:mdw:+0:+1"
+        ];
+        # regular binds
         bind = [
           "SUPER,                Return,                exec, ${terminalStart} fish"
           "SUPER SHIFT,          Escape,                exec, ${terminalStart} htop"
@@ -65,14 +94,6 @@ in {
           "SUPER,                F6,                    exec, ${terminalStart} sh -c 'sleep 0.1; while true; do nmtui; done'"
           "SUPER,                d,                     exec, wmenu-history"
           ",                     XF86PowerOff,          exec, powerctl"
-          ",                     XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +2.5db"
-          ",                     XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -2.5db"
-          ",                     XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          "SHIFT,                XF86AudioMute,         exec, wpctl set-sink-volume @DEFAULT_AUDIO_SINK@ 100%"
-          "SHIFT,                XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
-          #",                     XF86AudioMicMute,      exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-          ",                     XF86MonBrightnessUp,   exec, brightnessctl -e4 -n2 set 5%+"
-          ",                     XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
           "SUPER SHIFT,          q,                     killactive"
           "SUPER SHIFT,          Space,                 togglefloating"
           "SUPER,                f,                     fullscreen, 0"
@@ -93,8 +114,6 @@ in {
           "SUPER,                3,                     workspace, plugin:mdw:3"
           "SUPER,                4,                     workspace, plugin:mdw:4"
           "SUPER,                5,                     workspace, plugin:mdw:5"
-          "SUPER,                s,                     workspace, plugin:mdw:+0:-1"
-          "SUPER,                w,                     workspace, plugin:mdw:+0:+1"
           "SUPER SHIFT,          1,                     movetoworkspacesilent, plugin:mdw:1"
           "SUPER SHIFT,          2,                     movetoworkspacesilent, plugin:mdw:2"
           "SUPER SHIFT,          3,                     movetoworkspacesilent, plugin:mdw:3"
