@@ -57,7 +57,13 @@ in {
         dwindle = {
           force_split = 2; # bottom/right
         };
-        # binds, allowed on lockscreen
+        /*
+        bind flags:
+        l - allow on lockscreen
+        e - repeat
+        r - trigger on release
+        m - mouse specific binds
+        */
         bindl = [
           ",                     XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
           "SHIFT,                XF86AudioMute,         exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%"
@@ -67,11 +73,9 @@ in {
           "SHIFT ALT,            XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0"
           "ALT CTRL,             XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0"
         ];
-        # release binds, allowed on lockscreen
         bindlr = [
           "ALT CTRL,             XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
         ];
-        # repeating binds, allowed on lockscreen
         bindle = [
           ",                     XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +2.5db"
           ",                     XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -2.5db"
@@ -80,12 +84,10 @@ in {
           ",                     XF86MonBrightnessUp,   exec, brightnessctl -e4 -n2 set 5%+"
           ",                     XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
         ];
-        # repeating binds
         binde = [
           "SUPER,                s,                     workspace, plugin:mdw:+0:-1"
           "SUPER,                w,                     workspace, plugin:mdw:+0:+1"
         ];
-        # regular binds
         bind = [
           "SUPER,                Return,                exec, ${terminalStart} fish"
           "SUPER SHIFT,          Escape,                exec, ${terminalStart} htop"
@@ -125,6 +127,12 @@ in {
           "SUPER SHIFT,          s,                     movetoworkspacesilent, plugin:mdw:+0:-1"
           "SUPER SHIFT,          w,                     movetoworkspacesilent, plugin:mdw:+0:+1"
           "SUPER ALT SHIFT CTRL, Return,                submap, escape"
+        ];
+        bindm = [
+          "SUPER,                m,                     movewindow"
+          "SUPER,                mouse:272,             movewindow"
+          "SUPER ALT,            m,                     resizewindow"
+          "SUPER ALT,            mouse:272,             resizewindow"
         ];
         plugin.mdw = {
           array_sizes = "5:10";
