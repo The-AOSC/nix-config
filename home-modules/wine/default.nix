@@ -54,7 +54,7 @@
           executable = true;
           text = ''
             #!/bin/sh
-            exec ${config.home.file."${location}/firejail-run-cwd.sh".source} winetricks --force "$@"
+            ${config.home.file."${location}/firejail-run-cwd.sh".source} winetricks --force "$@" 2>&1 | grep --color=auto -i 'warning\|$'
           '';
         };
         "${location}/init.sh" = {
@@ -95,8 +95,7 @@
             sh << EOF
             set -e
             #export DXVK_HUD=1
-            cd .
-            exec wine explorer
+            exec wine start explorer
             EOF
             EOF2
                 chmod +x "$dir/$run"
@@ -104,8 +103,10 @@
 
             mkdir -p "$dir/$home"
             if [ ! -d "$dir/$home/.wine" ]; then
-                ${config.home.file."${location}/firejail-run.sh".source} "$dir/$home" winetricks --force -q dlls dxvk vcrun2022 #vkd3d
-                ${config.home.file."${location}/firejail-run.sh".source} "$dir/$home" winetricks vd=1920x1080
+                cd "$dir/$home"
+                mkdir .wine
+                ${config.home.file."${location}/winetricks.sh".source} -q dlls dxvk vcrun2022 #vkd3d
+                ${config.home.file."${location}/winetricks.sh".source} vd=1920x1080
             fi
           '';
         };
