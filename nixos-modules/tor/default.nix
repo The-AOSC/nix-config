@@ -10,6 +10,7 @@
   config = lib.mkIf config.modules.tor.enable {
     services.tor = {
       enable = true;
+      torsocks.enable = true;
       client = {
         enable = true;
         dns.enable = true;

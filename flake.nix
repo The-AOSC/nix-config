@@ -41,7 +41,7 @@
       flake = false;
     };
     catppuccin-userstyles = {
-      url = "github:catppuccin/userstyles";
+      url = "github:catppuccin/userstyles?rev=c9b357f2c40b1eea88e73c071b5d5587598f5206";
       flake = false;
     };
     nixpkgs-buildDenoPackage.url = "github:aMOPel/nixpkgs/feat/buildDenoPackage-second";
@@ -87,24 +87,6 @@
             };
             colorbindiff = final: prev: {
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
-            };
-            fix-feh = final: prev: {
-              feh = prev.feh.overrideAttrs (old: {
-                patches =
-                  old.patches or []
-                  ++ [
-                    (final.fetchpatch2 {
-                      name = "fix-fullscreen-check.patch";
-                      url = "https://github.com/derf/feh/commit/fdb5cd74ef64a67cf14470939182454b14df10d2.patch";
-                      hash = "sha256-SAKbrPiFVK7ENRHAODC4j6kWqWwKZ49tzS8Zt3yENsM=";
-                    })
-                    (final.fetchpatch2 {
-                      name = "fix-images-not-being-centered-when-fully-shown.patch";
-                      url = "https://github.com/derf/feh/pull/797/commits/4f3dbe00fd45ac09dc48987023a7cf89b70a19b7.patch";
-                      hash = "sha256-DOBmJyLbDiJyyohlkEoGwJobfKK66eYnUzAz/VnqoEY=";
-                    })
-                  ];
-              });
             };
             multi-dimensional-workspaces = final: prev: {
               multi-dimensional-workspaces = final.callPackage ./packages/multi-dimensional-workspaces {
