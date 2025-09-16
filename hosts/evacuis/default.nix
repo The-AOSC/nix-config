@@ -1,5 +1,6 @@
 inputs @ {...}: {
   overlays = [
+    inputs.nix-gaming.overlays.default
     inputs.nur.overlays.default
     inputs.self.overlays.always-redraw-progress-bar-on-log-output
     inputs.self.overlays.catppuccin-userstyles
@@ -8,6 +9,7 @@ inputs @ {...}: {
     inputs.self.overlays.multi-dimensional-workspaces
     inputs.self.overlays.stylus
     inputs.self.overlays.update-mindustry
+    inputs.self.overlays.wine-fixes
     inputs.self.overlays.wtf
     inputs.sops-nix.overlays.default
   ];

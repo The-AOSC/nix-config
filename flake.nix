@@ -44,6 +44,11 @@
       url = "github:catppuccin/userstyles?rev=c9b357f2c40b1eea88e73c071b5d5587598f5206";
       flake = false;
     };
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs-buildDenoPackage.url = "github:aMOPel/nixpkgs/feat/buildDenoPackage-second";
   };
   outputs = inputs @ {
@@ -107,6 +112,49 @@
                 enableClient = false;
                 enableServer = true;
               };
+            };
+            wine-fixes = final: prev: {
+              wine-ge-fixed = final.wine-ge.overrideAttrs (old: {
+                patches =
+                  old.patches or []
+                  ++ [
+                    # See https://gitlab.winehq.org/wine/wine/-/merge_requests/7328
+                    (final.fetchpatch2 {
+                      url = "https://gitlab.winehq.org/wine/wine/-/commit/c9519f68ea04915a60704534ab3afec5ec1b8fd7.patch";
+                      hash = "sha256-b36pa0EdJnOeuZ8+21QfS30WMSEHKTPQpnXsTvmtw30=";
+                    })
+                    (final.fetchpatch2 {
+                      url = "https://gitlab.winehq.org/wine/wine/-/commit/fd59962827a715d321f91c9bdb43f3e61f9ebbcb.patch";
+                      hash = "sha256-ssPEdzjE+R4KbLFrasf279bX++bhzC+K/LXxhAL5liI=";
+                    })
+                  ];
+                postInstall = let
+                  wine-mono = final.fetchurl rec {
+                    # https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions
+                    hash = "sha256-DtPsUzrvebLzEhVZMc97EIAAmsDFtMK8/rZ4rJSOCBA=";
+                    version = "wine-mono-8.1.0";
+                    url = "https://github.com/wine-mono/wine-mono/releases/download/${version}/${version}-x86.msi";
+                  };
+                in ''
+                  ${old.postInstall or ""}
+                  ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
+                '';
+              });
+              wine-staging-fixed = final.wineWowPackages.stagingFull.overrideAttrs (old: {
+                /*
+                postInstall = let
+                  wine-mono = final.fetchurl rec {
+                    # https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions
+                    hash = "";
+                    version = "wine-mono-...";
+                    url = "https://github.com/wine-mono/wine-mono/releases/download/${version}/${version}-x86.msi";
+                  };
+                in ''
+                  ${old.postInstall or ""}
+                  ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
+                '';
+                */
+              });
             };
             wtf = final: prev: {
               wtf = final.callPackage ./packages/wtf.nix {};

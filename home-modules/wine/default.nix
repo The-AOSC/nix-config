@@ -15,11 +15,13 @@
     location = "Desktop/games";
   in
     lib.mkIf config.modules.wine.enable {
-      home.packages = [
-        (pkgs.wineWowPackages.stagingFull.override {
-          gstreamerSupport = false;
-        })
-        pkgs.winetricks
+      home.packages = with pkgs; [
+        (pkgs.writeShellScriptBin "with-wine-ge" ''
+          PATH=${pkgs.wine-ge-fixed}/bin:$PATH
+          exec "$@"
+        '')
+        wine-staging-fixed
+        winetricks
       ];
       home.file = {
         "${location}/firejail-run.sh" = {
@@ -105,6 +107,7 @@
             if [ ! -d "$dir/$home/.wine" ]; then
                 cd "$dir/$home"
                 mkdir .wine
+                #${config.home.homeDirectory}/${location}/firejail-run.sh "$dir/$home" ${pkgs.wineprefix-preparer}/bin/wineprefix-preparer
                 ${config.home.file."${location}/winetricks.sh".source} -q dlls dxvk vcrun2022 #vkd3d
                 ${config.home.file."${location}/winetricks.sh".source} vd=1920x1080
             fi
