@@ -4,7 +4,7 @@
   lib,
   ...
 }:
-mkHyprlandPlugin hyprland {
+mkHyprlandPlugin {
   pluginName = "multi-dimensional-workspaces";
   version = "1.0";
   src = ./src;
