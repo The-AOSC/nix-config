@@ -10,6 +10,12 @@
       mode = "1920x1080@60";
     }
     {
+      output = "Virtual-1";
+      mode = "prefered";
+      position = "auto";
+      scale = 1;
+    }
+    {
       output = "";
       mode = "highres";
       position = "auto";
