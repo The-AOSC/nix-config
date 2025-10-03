@@ -35,7 +35,6 @@
     modules.pass.enable = true;
     modules.powerctl.enable = true;
     modules.qbittorrent.enable = true;
-    modules.qtile.enable = true;
     modules.sbcl.enable = true;
     modules.ssh.enable = true;
     modules.textwrap.enable = true;
