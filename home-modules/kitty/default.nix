@@ -38,5 +38,12 @@
         touch_scroll_multiplier = 10.0;
       };
     };
+    programs.fish.functions.clear = ''
+      if [ $TERM = xterm-kitty ]
+        TERM=xterm command clear $argv
+      else
+        command clear $argv
+      end
+    '';
   };
 }
