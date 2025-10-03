@@ -43,7 +43,6 @@
     modules.translate-shell.enable = true;
     modules.unp.enable = true;
     modules.vivaldi.enable = true;
-    modules.wezterm.enable = true;
     modules.wine.enable = true;
     modules.wmenu-history.enable = true;
     modules.wtf.enable = true;

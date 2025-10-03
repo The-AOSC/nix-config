@@ -43,7 +43,6 @@
 
         alias cal='cal -m'
 
-        alias copy='wezterm start --cwd "$(pwd)" -- fish &> /dev/null & disown'
         alias disexit='disown && exit'
 
         alias ttysolitaire='ttysolitaire --no-background-color'
