@@ -140,21 +140,24 @@
                   ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
                 '';
               });
-              wine-staging-fixed = final.wineWowPackages.stagingFull.overrideAttrs (old: {
-                /*
-                postInstall = let
-                  wine-mono = final.fetchurl rec {
-                    # https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions
-                    hash = "";
-                    version = "wine-mono-...";
-                    url = "https://github.com/wine-mono/wine-mono/releases/download/${version}/${version}-x86.msi";
-                  };
-                in ''
-                  ${old.postInstall or ""}
-                  ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
-                '';
-                */
-              });
+              wine-staging-fixed =
+                (final.wineWowPackages.stagingFull.overrideAttrs (old: {
+                  /*
+                  postInstall = let
+                    wine-mono = final.fetchurl rec {
+                      # https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions
+                      hash = "";
+                      version = "wine-mono-...";
+                      url = "https://github.com/wine-mono/wine-mono/releases/download/${version}/${version}-x86.msi";
+                    };
+                  in ''
+                    ${old.postInstall or ""}
+                    ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
+                  '';
+                  */
+                })).override {
+                  gstreamerSupport = false;
+                };
             };
             wtf = final: prev: {
               wtf = final.callPackage ./packages/wtf.nix {};
