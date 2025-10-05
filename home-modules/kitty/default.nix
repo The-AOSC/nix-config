@@ -6,6 +6,9 @@
   options = {
     modules.kitty.enable = lib.mkEnableOption "kitty";
   };
+  imports = [
+    ./scrollback-neovim.nix
+  ];
   config = lib.mkIf config.modules.kitty.enable {
     programs.kitty = {
       enable = true;
@@ -23,9 +26,8 @@
         "ctrl+equal" = "change_font_size current *1.1";
         "ctrl+minus" = "change_font_size current /1.1";
         "ctrl+shift+n" = "new_os_window_with_cwd";
-        "ctrl+shift+Space" = "launch_scrollback_overlay nvim -R +";
+        "ctrl+shift+Space" = "kitty_scrollback_nvim";
         "ctrl+shift+alt+Space" = "launch_scrollback_overlay --stdin-add-formatting nvim -R +";
-        "ctrl+alt+Space" = "show_scrollback";
       };
       settings = {
         clear_all_shortcuts = true;
