@@ -78,6 +78,7 @@
       man-pages
       moreutils
       nix-diff
+      nix-flake-add-roots
       nmap
       pciutils
       pdfarranger

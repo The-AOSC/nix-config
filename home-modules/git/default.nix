@@ -14,6 +14,7 @@
         "*.gz diff=gzip merge=gzip"
       ];
       ignores = [
+        ".flake-roots"
         "result"
         "tags"
       ];

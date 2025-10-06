@@ -7,6 +7,7 @@ inputs @ {...}: {
     inputs.self.overlays.christbashtree
     inputs.self.overlays.colorbindiff
     inputs.self.overlays.multi-dimensional-workspaces
+    inputs.self.overlays.nix-flake-add-roots
     inputs.self.overlays.stylus
     inputs.self.overlays.update-mindustry
     inputs.self.overlays.wine-fixes

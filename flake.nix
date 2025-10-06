@@ -98,6 +98,9 @@
                 inherit (final.hyprlandPlugins) mkHyprlandPlugin;
               };
             };
+            nix-flake-add-roots = final: prev: {
+              nix-flake-add-roots = final.callPackage ./packages/nix-flake-add-roots {};
+            };
             stylus = final: prev: {
               stylus = final.callPackage ./packages/stylus {
                 stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
@@ -198,6 +201,7 @@
             multi-dimensional-workspaces = pkgs.callPackage ./packages/multi-dimensional-workspaces {
               inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
             };
+            nix-flake-add-roots = pkgs.callPackage ./packages/nix-flake-add-roots {};
             stylus = pkgs.callPackage ./packages/stylus {
               stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
             };
