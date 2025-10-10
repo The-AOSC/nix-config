@@ -120,6 +120,11 @@ in {
           "SUPER,                3,                     workspace, plugin:mdw:3"
           "SUPER,                4,                     workspace, plugin:mdw:4"
           "SUPER,                5,                     workspace, plugin:mdw:5"
+          "SUPER,                6,                     workspace, plugin:mdw:+0:+0:1"
+          "SUPER,                7,                     workspace, plugin:mdw:+0:+0:2"
+          "SUPER,                8,                     workspace, plugin:mdw:+0:+0:3"
+          "SUPER,                9,                     workspace, plugin:mdw:+0:+0:4"
+          "SUPER,                0,                     workspace, plugin:mdw:+0:+0:5"
           "SUPER SHIFT,          1,                     movetoworkspacesilent, plugin:mdw:1"
           "SUPER SHIFT,          2,                     movetoworkspacesilent, plugin:mdw:2"
           "SUPER SHIFT,          3,                     movetoworkspacesilent, plugin:mdw:3"
@@ -127,6 +132,11 @@ in {
           "SUPER SHIFT,          5,                     movetoworkspacesilent, plugin:mdw:5"
           "SUPER SHIFT,          s,                     movetoworkspacesilent, plugin:mdw:+0:-1"
           "SUPER SHIFT,          w,                     movetoworkspacesilent, plugin:mdw:+0:+1"
+          "SUPER SHIFT,          6,                     movetoworkspacesilent, plugin:mdw:+0:+0:1"
+          "SUPER SHIFT,          7,                     movetoworkspacesilent, plugin:mdw:+0:+0:2"
+          "SUPER SHIFT,          8,                     movetoworkspacesilent, plugin:mdw:+0:+0:3"
+          "SUPER SHIFT,          9,                     movetoworkspacesilent, plugin:mdw:+0:+0:4"
+          "SUPER SHIFT,          0,                     movetoworkspacesilent, plugin:mdw:+0:+0:5"
           "SUPER ALT SHIFT CTRL, Return,                submap, escape"
         ];
         bindm = [
@@ -136,7 +146,7 @@ in {
           "SUPER ALT,            mouse:272,             resizewindow"
         ];
         plugin.mdw = {
-          array_sizes = "5:10";
+          array_sizes = "5:5:5";
         };
         debug.disable_logs = !debug;
       };

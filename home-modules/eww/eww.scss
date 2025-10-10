@@ -7,6 +7,9 @@
   background-color: transparent;
   color: $text;
 }
+button {
+  color: $text;
+}
 .bar {
   margin-top: 5px;
 }
@@ -25,6 +28,13 @@
   padding: 0;
   background-color: transparent;
 }
+.workspace-group-level2 > * {
+  border-radius: 1rem;
+  margin-right: 0.5rem;
+}
+.workspace-group-level2:last-child > * {
+  margin-right: 0;
+}
 .workspace-group-level1 > * {
   margin-right: 0.5rem;
   border-radius: 1rem;
@@ -40,6 +50,12 @@
   margin-right: 0.5rem;
 }
 
+.workspace-group-level2 > button {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding: 0 0.6rem;
+  background-color: $surface1;
+}
 .workspace-group-level1 > box {
   background-color: $surface0;
 }
