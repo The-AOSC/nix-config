@@ -78,10 +78,10 @@ in {
           "ALT CTRL,             XF86AudioMute,         exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1"
         ];
         bindle = [
-          ",                     XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +2.5db"
-          ",                     XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -2.5db"
-          "ALT,                  XF86AudioRaiseVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ +2.5db"
-          "ALT,                  XF86AudioLowerVolume,  exec, ${pkgs.pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ -2.5db"
+          ",                     XF86AudioRaiseVolume,  exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5db+"
+          ",                     XF86AudioLowerVolume,  exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5db-"
+          "ALT,                  XF86AudioRaiseVolume,  exec, wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2.5db+"
+          "ALT,                  XF86AudioLowerVolume,  exec, wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2.5db-"
           ",                     XF86MonBrightnessUp,   exec, brightnessctl -e4 -n2 set 5%+"
           ",                     XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
         ];

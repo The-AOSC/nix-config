@@ -162,6 +162,15 @@
                   gstreamerSupport = false;
                 };
             };
+            wpctl-add-db-gain-change-support = final: prev: {
+              wireplumber = prev.wireplumber.overrideAttrs (old: {
+                patches =
+                  old.patches or []
+                  ++ [
+                    ./patches/wireplumber/wpctl-add-db-gain-change-support.patch
+                  ];
+              });
+            };
             wtf = final: prev: {
               wtf = final.callPackage ./packages/wtf.nix {};
             };

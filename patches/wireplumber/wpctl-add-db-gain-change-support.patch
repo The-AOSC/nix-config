@@ -1,0 +1,78 @@
+--- a/src/tools/meson.build
++++ b/src/tools/meson.build
+@@ -1,7 +1,7 @@
+ executable('wpctl',
+   'wpctl.c',
+   install: true,
+-  dependencies : [gobject_dep, gio_dep, wp_dep, pipewire_dep, libintl_dep],
++  dependencies : [gobject_dep, gio_dep, wp_dep, pipewire_dep, libintl_dep, mathlib],
+ )
+ 
+ install_data('shell-completion/wpctl.zsh',
+diff '--color=auto' -ruN a/src/tools/wpctl.c b/src/tools/wpctl.c
+--- a/src/tools/wpctl.c	2025-10-10 15:03:03.102029233 +0500
++++ b/src/tools/wpctl.c	2025-10-10 16:07:25.926741878 +0500
+@@ -913,7 +913,7 @@
+     return FALSE;
+   }
+ 
+-  regex = g_regex_new ("^(\\d*\\.?\\d*)(%?)([-+]?)$", 0, 0, NULL);
++  regex = g_regex_new ("^(\\d*\\.?\\d*)(%|db|)([-+]?)$", 0, 0, NULL);
+ 
+   if (g_regex_match(regex, argv[3], 0, &info)) {
+     gchar *str = g_match_info_fetch (info, 1);
+@@ -922,16 +922,30 @@
+     g_free (str);
+ 
+     str = g_match_info_fetch (info, 2);
+-    if (g_strcmp0 (str, "%") == 0)
++    gboolean decibels = FALSE;
++    if (g_strcmp0 (str, "%") == 0) {
+       cmdline.set_volume.volume /= 100;
++    } else if (g_strcmp0 (str, "db") == 0) {
++      cmdline.set_volume.volume = lround(cbrt(pow(10, cmdline.set_volume.volume / 20))*10000)/10000.0;
++      decibels = TRUE;
++    }
+     g_free (str);
+ 
+     str = g_match_info_fetch (info, 3);
+-    if (g_strcmp0 (str, "-") == 0) {
+-      cmdline.set_volume.volume = -(cmdline.set_volume.volume);
+-      cmdline.set_volume.type = 's';
+-    } else if (g_strcmp0 (str, "+") == 0) {
+-      cmdline.set_volume.type = 's';
++    if (decibels) {
++      if (g_strcmp0 (str, "-") == 0) {
++        cmdline.set_volume.volume = 1/cmdline.set_volume.volume;
++        cmdline.set_volume.type = 'r';
++      } else if (g_strcmp0 (str, "+") == 0) {
++        cmdline.set_volume.type = 'r';
++      }
++    } else {
++      if (g_strcmp0 (str, "-") == 0) {
++        cmdline.set_volume.volume = -(cmdline.set_volume.volume);
++        cmdline.set_volume.type = 's';
++      } else if (g_strcmp0 (str, "+") == 0) {
++        cmdline.set_volume.type = 's';
++      }
+     }
+     g_free (str);
+   } else {
+@@ -975,6 +989,17 @@
+     g_clear_pointer (&variant, g_variant_unref);
+ 
+     cmdline.set_volume.volume = (cmdline.set_volume.volume + curr_volume);
++  } else if (cmdline.set_volume.type == 'r' ) {
++    g_signal_emit_by_name (mixer_api, "get-volume", id, &variant);
++      if (!variant) {
++      fprintf (stderr, "Node %d does not support volume\n", id);
++      g_clear_pointer (&variant, g_variant_unref);
++      return FALSE;
++    }
++    g_variant_lookup (variant, "volume", "d", &curr_volume);
++    g_clear_pointer (&variant, g_variant_unref);
++
++    cmdline.set_volume.volume = (cmdline.set_volume.volume * curr_volume);
+   }
+   if (cmdline.set_volume.volume < 0) {
+     cmdline.set_volume.volume = 0.0;

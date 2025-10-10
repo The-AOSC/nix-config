@@ -11,6 +11,7 @@ inputs @ {...}: {
     inputs.self.overlays.stylus
     inputs.self.overlays.update-mindustry
     inputs.self.overlays.wine-fixes
+    inputs.self.overlays.wpctl-add-db-gain-change-support
     inputs.self.overlays.wtf
     inputs.sops-nix.overlays.default
   ];
