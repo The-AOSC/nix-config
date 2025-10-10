@@ -40,7 +40,7 @@
     programs.neovim.enable = true;
     environment.binsh = "${pkgs.dash}/bin/dash";
     systemd.tmpfiles.rules = [
-      "D! /persist/tmp 1777 root root"
+      "D! /persist/tmp 0755 root root"
     ];
     nix.settings = {
       auto-optimise-store = true;

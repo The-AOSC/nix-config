@@ -68,13 +68,9 @@
           homeManagerModules = self.lib.import-all ./home-modules;
           overlays = {
             always-redraw-progress-bar-on-log-output = final: prev: {
-              nix = prev.nix.overrideAttrs (old: {
-                patches =
-                  (old.patches or [])
-                  ++ [
-                    ./patches/nix/always-redraw-progress-bar-on-log-output.patch
-                  ];
-              });
+              nix = prev.nix.appendPatches [
+                ./patches/nix/always-redraw-progress-bar-on-log-output.patch
+              ];
             };
             catppuccin-userstyles = final: prev: {
               catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
