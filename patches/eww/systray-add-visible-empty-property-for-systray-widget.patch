@@ -1,0 +1,88 @@
+--- a/crates/eww/src/widgets/systray.rs
++++ b/crates/eww/src/widgets/systray.rs
+@@ -37,12 +37,13 @@
+ pub struct Props {
+     icon_size_tx: tokio::sync::watch::Sender<i32>,
+     pub prepend_new: Rc<RefCell<bool>>,
++    pub visible_empty: Rc<RefCell<bool>>,
+ }
+ 
+ impl Props {
+     pub fn new() -> Self {
+         let (icon_size_tx, _) = tokio::sync::watch::channel(24);
+-        Self { icon_size_tx, prepend_new: Rc::new(RefCell::new(false)) }
++        Self { icon_size_tx, prepend_new: Rc::new(RefCell::new(false)), visible_empty: Rc::new(RefCell::new(true)) }
+     }
+ 
+     pub fn icon_size(&self, value: i32) {
+@@ -63,6 +64,7 @@
+ 
+     icon_size: tokio::sync::watch::Receiver<i32>,
+     prepend_new: Rc<RefCell<bool>>,
++    visible_empty: Rc<RefCell<bool>>,
+ }
+ 
+ pub fn spawn_systray(container: &gtk::Box, props: &Props) {
+@@ -71,6 +73,7 @@
+         items: Default::default(),
+         icon_size: props.icon_size_tx.subscribe(),
+         prepend_new: props.prepend_new.clone(),
++        visible_empty: props.visible_empty.clone(),
+     };
+ 
+     let task = glib::MainContext::default().spawn_local(async move {
+@@ -82,7 +85,10 @@
+             }
+         };
+ 
+-        systray.container.show();
++        if !*systray.visible_empty.borrow() {
++            systray.container.hide();
++        }
++
+         let e = notifier_host::run_host(&mut systray, &s.snw).await;
+         log::error!("notifier host error: {}", e);
+     });
+@@ -104,6 +110,9 @@
+         if let Some(old_item) = self.items.insert(id.to_string(), item) {
+             self.container.remove(&old_item.widget);
+         }
++        if !*self.visible_empty.borrow() && !self.container.is_visible() && self.items.len() > 0 {
++            self.container.show();
++        }
+     }
+ 
+     fn remove_item(&mut self, id: &str) {
+@@ -113,6 +122,9 @@
+         } else {
+             log::warn!("Tried to remove nonexistent item {:?} from systray", id);
+         }
++        if !*self.visible_empty.borrow() && self.container.is_visible() && self.items.len() == 0 {
++            self.container.hide();
++        }
+     }
+ }
+ 
+--- a/crates/eww/src/widgets/widget_definitions.rs
++++ b/crates/eww/src/widgets/widget_definitions.rs
+@@ -1298,6 +1298,7 @@
+     let props = Rc::new(systray::Props::new());
+     let props_clone = props.clone(); // copies for def_widget
+     let props_clone2 = props.clone(); // copies for def_widget
++    let props_clone3 = props.clone(); // copies for def_widget
+ 
+     def_widget!(bargs, _g, gtk_widget, {
+         // @prop spacing - spacing between elements
+@@ -1316,7 +1317,11 @@
+         },
+         // @prop prepend-new - prepend new icons.
+         prop(prepend_new: as_bool = true) {
+-            *props_clone2.prepend_new.borrow_mut() = prepend_new;
++            *props_clone2.prepend_new.borrow_mut() = prepend_new;
++        },
++        // @prop visible-empty - visibility of the widget when the systray is empty
++        prop(visible_empty: as_bool = true) {
++            *props_clone3.visible_empty.borrow_mut() = visible_empty;
+         },
+     });
+ 

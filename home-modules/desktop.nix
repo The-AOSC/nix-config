@@ -16,6 +16,7 @@
     modules.char-names.enable = true;
     modules.dunst.enable = true;
     modules.endgame-singularity.enable = true;
+    modules.eww.enable = true;
     modules.ffprobe-duration.enable = true;
     modules.fish.enable = true;
     modules.fonts.enable = true;

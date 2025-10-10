@@ -1,0 +1,109 @@
+* {
+  font-family: SymbolsNerdFontMono;
+  font-size: 13px;
+}
+
+.background {
+  background-color: transparent;
+  color: $text;
+}
+.bar {
+  margin-top: 5px;
+}
+.bar > * > * {
+  margin-left: 1rem;
+  border-radius: 1rem;
+  padding: 0 0.5rem;
+  background-color: $surface0;
+}
+.bar > *:last-child > *:last-child {
+  margin-right: 1rem;
+}
+
+.workspaces {
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+}
+.workspace-group-level1 > * {
+  margin-right: 0.5rem;
+  border-radius: 1rem;
+}
+.workspace-group-level1:last-child > * {
+  margin-right: 0;
+}
+.workspace {
+  margin-left: 0.5rem;
+  border-radius: 1rem;
+}
+.workspace:last-child {
+  margin-right: 0.5rem;
+}
+
+.workspace-group-level1 > box {
+  background-color: $surface0;
+}
+.workspace,
+.workspace-group-level1 > button {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  padding: 0 0.4rem;
+  background-color: $surface1;
+}
+
+.workspace.active {
+  color: $accent;
+}
+
+.meters {
+  padding: 0;
+}
+.meters > * {
+  padding: 0.5rem;
+}
+
+.wireplumber {
+  color: $maroon;
+}
+
+.network {
+  color: $blue;
+}
+.network.disconnected {
+  color: $red;
+}
+
+.cpu {
+  color: $green;
+}
+
+.memory {
+  color: $mauve;
+}
+
+.temperature {
+  color: $peach;
+}
+.temperature.critical {
+  color: $red;
+}
+
+.backlight {
+  color: $rosewater;
+}
+
+.battery {
+  color: $yellow;
+}
+/* critical specified twice to increase specifity */
+.battery.critical.critical {
+  color: $red;
+}
+.battery.Charging,
+.battery.Full {
+  color: $green;
+}
+
+.time {
+  color: $sapphire;
+}

@@ -1,0 +1,170 @@
+(defwidget bar []
+  (centerbox :orientation "h"
+    (bar-left)
+    (bar-center)
+    (bar-right)))
+
+(defwidget bar-left []
+  (box :orientation "h"
+       :halign "start"
+       :space-evenly false
+    (workspaces)))
+
+(defwidget bar-center []
+  (box :orientation "h"
+       :halign "center"
+       :space-evenly false
+    (window)))
+
+(defwidget bar-right []
+   (box :orientation "h"
+        :halign "end"
+        :space-evenly false
+     (meters
+       (wireplumber)
+       (network)
+       (cpu)
+       (memory)
+       (temperature :name "ACPITZ_TEMP1"
+                    :critical 90
+                    :icons '["", "", "", "", ""]')
+       (backlight :icons '["", "", "", "", "", "", "", "", ""]')
+       (battery :name "BAT1"
+                :critical 15
+                :icons '["", "", "", "", ""]')
+       (time))
+     (systray :orientation "h"
+              :spacing 10
+              :icon-size 16
+              :visible-empty false)))
+
+(defwidget workspace-group [level from to]
+  (stack :class "workspace-group workspace-group-level${level} ${
+           ((from<=activeworkspace) && (activeworkspace<to)) ? "active" : ""
+         } ${
+           jq(workspaces.nonempty, "any((${from} <= .) and (. < ${to}))") ? "" : "empty"
+         }"
+         :selected "${((from<=activeworkspace) && (activeworkspace<to)) ? 1 : 0}"
+         :transition "none"
+         :same-size false
+    (button :onclick "hyprctl dispatch workspace ${from + ((activeworkspace - 1) % (to - from))}"
+      "${jq(workspaces.nonempty, "any((${from} <= .) and (. < ${to}))") ? "" : ""}")
+    (box :orientation "h"
+         :space-evenly false
+      (children))))
+
+(defwidget workspace [id]
+  (button :onclick "hyprctl dispatch workspace ${id}"
+          :class "workspace ${
+            activeworkspace==id ? "active" : ""
+          } ${
+            jq(workspaces.nonempty, "any(. == ${id})") ? "" : "empty"
+          }"
+    "${jq(workspaces.nonempty, "any(. == ${id})") ? "" : ""}"))
+
+(defwidget window []
+  (label :class "window"
+         :visible "${current-window != ""}"
+         :truncate true
+         :text current-window))
+
+(defwidget meters []
+  (box :orientation "h"
+       :class "meters"
+       :space-evenly false
+    (children)))
+
+(defwidget wireplumber []
+  (label :class "wireplumber"
+         :text "${
+           wireplumber[1]=="" ? "${round(wireplumber[0]*100, 0)}% " : ""
+         } ${
+           wireplumber[3]=="" ? "${round(wireplumber[2]*100, 0)}% " : ""
+         }"))
+
+(defwidget network []
+  (label :class "network ${network.interface != "" ? "connected" : "disconnected"} ${network.type != "" ? "connected-${network.type}" : ""}"
+         :text "${
+           network.interface != "" ? (
+             network.connection != "" ? (
+               network.type == "802-3-ethernet" ? "${network.connection} (${network.interface}) " :
+               network.type == "802-11-wireless" ? "${network.connection} (${network.interface}) " :
+               "${network.connection} (${network.interface}) [${network.type}]"
+             ) : network.interface
+           ) : "Disconnected ⚠"
+         }"))
+
+(defpoll cpu-load :interval "2s"
+                  :initial "0"
+  "head -n1 /proc/loadavg|cut -d' ' -f1")
+(defwidget cpu []
+  (label :class "cpu"
+         :text "${cpu-usage}% (${cpu-load}) "))
+
+(defwidget memory []
+  (label :class "memory"
+         :text "${round(EWW_RAM.used_mem / 1024 / 1024 / 1024, 1)}G ${round((EWW_RAM.total_swap - EWW_RAM.free_swap) / 1024 / 1024 / 1024, 1)}G "))
+
+(defwidget temperature [name critical icons]
+  (label :class "temperature ${EWW_TEMPS[name] >= critical ? "critical" : ""}"
+         :text "${EWW_TEMPS[name]}°C ${icons[max(0, min(floor(EWW_TEMPS[name] / critical * arraylength(icons)), arraylength(icons)-1))]}"))
+
+(defwidget backlight [icons]
+  (label :class "backlight"
+         :text "${backlight}% ${icons[max(0, min(floor(backlight / 100 * arraylength(icons)), arraylength(icons)-1))]}"))
+
+(defwidget battery [name critical icons]
+  (label :class "battery ${
+           (battery-info[name] != "null") ? "${
+             (battery-info[name].capacity*100 <= critical) ? "critical" : ""
+           } ${
+             battery-info[name].status
+           }" : ""
+         }"
+         :text "${
+           (battery-info[name] != "null") ? "${
+             battery-info[name].status == "Charging" ? "^ " : (battery-info[name].status == "Discharging" ? "v " : "")
+           }${
+             round(battery-info[name].capacity*100, 1)
+           }% ${
+             (battery-info[name].status == "Charging") || (battery-info[name].status == "Discharging") ? "${battery-info[name].remaining} " : ""
+           }${
+             icons[max(0, min(floor(battery-info[name].capacity * arraylength(icons)), arraylength(icons)-1))]
+           }" : ""
+         }"))
+
+(defwidget time []
+  (label :class "time"
+         :text "${formattime(EWW_TIME, "%y/%m.%d(%u) %H:%M:%S")}"))
+
+(defwidget metric [label value onchange]
+  (box :orientation "h"
+       :class "metric"
+       :space-evenly false
+    (box :class "label" label)
+    (scale :min 0
+           :max 101
+           :active {onchange != ""}
+           :value value
+           :onchange onchange)))
+
+(defwidget sidestuff []
+  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+    (metric :label "mem"
+            :value {EWW_RAM.used_mem_perc}
+            :onchange "")
+    (metric :label "💾"
+            :value {round((1 - (EWW_DISK["/persist"].free / EWW_DISK["/persist"].total)) * 100, 0)}
+            :onchange "")))
+
+(defwindow bar [screen]
+  :monitor screen
+  :stacking "bottom"
+  :namespace "eww"
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :anchor "top center")
+  (bar))
+
