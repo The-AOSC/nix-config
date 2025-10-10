@@ -41,7 +41,7 @@
     handle() {
       case $1 in
         "activewindow>>"*)
-          echo "$1" | cut -d '>' -f 3- | cut -d , -f 2
+          echo "$1" | cut -d '>' -f 3- | cut -d , -f 2 | ${pkgs.gnused}/bin/sed -e 's/\\/\\\\/g'
           ;;
       esac
     }
