@@ -2,14 +2,14 @@
   network-listener = pkgs.writeShellScript "network-listener" ''
     set -e -o pipefail
     nmcli monitor | while read line; do
-      interface="$(ip route show default | grep -Po '(?<=\bdev )[^ ]+' | head -n1)"
+      interface="$(ip route show default | grep -Po '(?<=\bdev )[^ ]+' | head -n1 || true)"
       if [ -n "$interface" ]; then
-        connection="$(nmcli -t device status | grep "^$interface:" | head -n1 | cut -d: -f4)"
+        connection="$(nmcli -t device status | grep "^$interface:" | head -n1 | cut -d: -f4 || true)"
       else
         connection=""
       fi
       if [ -n "$connection" ]; then
-        type="$(nmcli -t connection show "$connection" | grep -Po '(?<=^connection.type:).+$' | head -n1)"
+        type="$(nmcli -t connection show "$connection" | grep -Po '(?<=^connection.type:).+$' | head -n1 || true)"
       else
         type=""
       fi
