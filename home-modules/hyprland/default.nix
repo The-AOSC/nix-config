@@ -30,6 +30,7 @@ in {
       settings = {
         misc = {
           new_window_takes_over_fullscreen = 2; # unfullscreen
+          session_lock_xray = true;
           force_default_wallpaper = 0;
         };
         input = {
@@ -174,8 +175,9 @@ in {
       settings = {
         general = {
           before_sleep_cmd = "loginctl lock-session";
-          lock_cmd = "swaylock";
-          unlock_cmd = "killall -SIGUSR1 .swaylock-wrapper";
+          lock_cmd = "${config.programs.hyprlock.package}/bin/hyprlock -c ${config.lib.hyprlock.config-opaque}";
+          unlock_cmd = "killall -SIGUSR1 hyprlock";
+          inhibit_sleep = 3; # wait for session lock
         };
       };
     };

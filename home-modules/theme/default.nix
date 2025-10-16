@@ -39,6 +39,7 @@
         private.accent = "blue";
         tor.accent = "red";
       };
+      hyprlock.useDefaultConfig = false;
     };
     home.pointerCursor = {
       name = "phinger-cursors-dark";

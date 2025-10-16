@@ -49,10 +49,10 @@
           };
         };
       in {
-        hyprlock = serviceConfig "swaylock";
+        hyprlock = serviceConfig "hyprlock";
         login = serviceConfig "login";
         swaylock = serviceConfig "swaylock";
-        vlock = serviceConfig "swaylock";
+        vlock = serviceConfig "vlock";
       };
     };
   };
