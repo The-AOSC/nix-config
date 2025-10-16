@@ -148,6 +148,7 @@ in {
         ];
         plugin.mdw = {
           array_sizes = "5:5:5";
+          animations = "slide left|slide right:slide bottom|slide top:fade";
         };
         debug.disable_logs = !debug;
       };
