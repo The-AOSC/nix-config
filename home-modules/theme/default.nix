@@ -69,5 +69,9 @@
       platformTheme.name = "kvantum";
       style.name = "kvantum";
     };
+    wayland.windowManager.hyprland.settings.general = {
+      "col.inactive_border" = "$surface0";
+      "col.active_border" = "$accent";
+    };
   };
 }
