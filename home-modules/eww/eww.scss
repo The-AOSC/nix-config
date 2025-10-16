@@ -70,6 +70,10 @@ button {
 .workspace.active {
   color: $accent;
 }
+.workspace.urgent,
+.workspace-group.urgent > button {
+  color: $red;
+}
 
 .meters {
   padding: 0;

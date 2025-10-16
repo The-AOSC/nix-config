@@ -41,14 +41,16 @@
 
 (defwidget workspace-group [level from to]
   (stack :class "workspace-group workspace-group-level${level} ${
-           ((from<=active-workspace) && (active-workspace<to)) ? "active" : ""
+           ((from<=workspace-state.active) && (workspace-state.active<to)) ? "active" : ""
+         } ${
+           ((from<=workspace-state.urgent) && (workspace-state.urgent<to)) ? "urgent" : ""
          } ${
            jq(workspaces.nonempty, "any((${from} <= .) and (. < ${to}))") ? "" : "empty"
          }"
-         :selected "${((from<=active-workspace) && (active-workspace<to)) ? 1 : 0}"
+         :selected "${((from<=workspace-state.active) && (workspace-state.active<to)) ? 1 : 0}"
          :transition "none"
          :same-size false
-    (button :onclick "hyprctl dispatch workspace ${from + ((active-workspace - 1) % (to - from))}"
+    (button :onclick "hyprctl dispatch workspace ${from + ((workspace-state.active - 1) % (to - from))}"
       "${jq(workspaces.nonempty, "any((${from} <= .) and (. < ${to}))") ? "" : ""}")
     (box :orientation "h"
          :space-evenly false
@@ -57,7 +59,9 @@
 (defwidget workspace [id]
   (button :onclick "hyprctl dispatch workspace ${id}"
           :class "workspace ${
-            active-workspace==id ? "active" : ""
+            workspace-state.active==id ? "active" : ""
+          } ${
+            workspace-state.urgent==id ? "urgent" : ""
           } ${
             jq(workspaces.nonempty, "any(. == ${id})") ? "" : "empty"
           }"

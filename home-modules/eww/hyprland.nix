@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-  # hyprctl clients -j | jq '.[]|select(.address == "0x2706d5c0").workspace.id' # activewindowv2>>2706d5c0 # 15
   hyprctl = "${config.wayland.windowManager.hyprland.finalPackage}/bin/hyprctl";
   hyprlisten = ''${pkgs.socat}/bin/socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done'';
   workspaces-listener = pkgs.writeShellScript "hyprland-workspaces-listener" ''
@@ -21,19 +20,36 @@
     handle "openwindow>>" # generate initial value
     ${hyprlisten}
   '';
-  active-workspace-listener = pkgs.writeShellScript "active-workspace-listener" ''
+  workspace-state-listener = pkgs.writeShellScript "workspace-state-listener" ''
     set -e
     handle() {
       case $1 in
+        "urgent>>"*)
+          urgent="$(hyprctl clients -j | jq ".[]|select(.address == \"0x$(echo "$1" | cut -d '>' -f 3- | cut -d , -f 1)\").workspace.id")"
+          if [ "$urgent" -eq "$active" ]; then
+            urgent=0
+          fi
+          printf '{"active": %d, "urgent": %d}\n' "$active" "$urgent"
+          ;;
         "workspacev2>>"*)
-          echo "$1" | cut -d '>' -f 3- | cut -d , -f 1
+          active="$(echo "$1" | cut -d '>' -f 3- | cut -d , -f 1)"
+          if [ "$urgent" -eq "$active" ]; then
+            urgent=0
+          fi
+          printf '{"active": %d, "urgent": %d}\n' "$active" "$urgent"
           ;;
         "focusedmonv2>>"*)
-          echo "$1" | cut -d '>' -f 3- | cut -d , -f 2
+          active="$(echo "$1" | cut -d '>' -f 3- | cut -d , -f 2)"
+          if [ "$urgent" -eq "$active" ]; then
+            urgent=0
+          fi
+          printf '{"active": %d, "urgent": %d}\n' "$active" "$urgent"
           ;;
       esac
     }
-    ${hyprctl} activeworkspace -j | jq -c '.id? // 0'
+    urgent=0
+    active="$(${hyprctl} activeworkspace -j | jq -c '.id')"
+    printf '{"active": %d, "urgent": %d}\n' "$active" "$urgent"
     ${hyprlisten}
   '';
   current-window-listener = pkgs.writeShellScript "hyprland-current-window-listener" ''
@@ -52,8 +68,8 @@ in {
   modules.eww.config = ''
     (deflisten workspaces :initial "{\"nonempty\":[]}"
       "${workspaces-listener}")
-    (deflisten active-workspace :initial "0"
-      "${active-workspace-listener}")
+    (deflisten workspace-state :initial '{"active":0,"urgent":0}'
+      "${workspace-state-listener}")
     (deflisten current-window :initial ""
       "${current-window-listener}")
     (defwidget workspaces []
