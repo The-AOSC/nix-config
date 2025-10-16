@@ -52,7 +52,7 @@ in {
   modules.eww.config = ''
     (deflisten workspaces :initial "{\"nonempty\":[]}"
       "${workspaces-listener}")
-    (deflisten activeworkspace :initial "0"
+    (deflisten active-workspace :initial "0"
       "${active-workspace-listener}")
     (deflisten current-window :initial ""
       "${current-window-listener}")
