@@ -32,6 +32,7 @@
       settings = {
         clear_all_shortcuts = true;
         clear_selection_on_clipboard_loss = true;
+        close_on_child_death = true;
         confirm_os_window_close = 0;
         disable_ligatures = "cursor";
         scrollback_fill_enlarged_window = true;
