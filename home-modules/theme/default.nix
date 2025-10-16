@@ -69,14 +69,5 @@
       platformTheme.name = "kvantum";
       style.name = "kvantum";
     };
-    programs.wezterm = let
-      cfg = config.catppuccin.wezterm;
-    in
-      lib.mkIf cfg.enable {
-        colorSchemes."catppuccin-${cfg.flavor}" = let
-          colors = lib.importTOML "${config.catppuccin.sources.wezterm}/dist/catppuccin-${cfg.flavor}.toml";
-        in
-          lib.mkForce (colors.colors // {inherit (colors) metadata;});
-      };
   };
 }
