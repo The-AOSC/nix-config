@@ -26,6 +26,9 @@
       case $1 in
         "urgent>>"*)
           urgent="$(hyprctl clients -j | jq ".[]|select(.address == \"0x$(echo "$1" | cut -d '>' -f 3- | cut -d , -f 1)\").workspace.id")"
+          if [ -z "$urgent" ]; then
+            urgent=0
+          fi
           if [ "$urgent" -eq "$active" ]; then
             urgent=0
           fi
