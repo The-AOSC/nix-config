@@ -35,7 +35,6 @@
     modules.neovim.enable = true;
     modules.nix-sh.enable = true;
     modules.pass.enable = true;
-    modules.powerctl.enable = true;
     modules.qbittorrent.enable = true;
     modules.rofi.enable = true;
     modules.sbcl.enable = true;
