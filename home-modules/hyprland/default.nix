@@ -100,7 +100,6 @@ in {
           "SUPER,                F4,                    exec, ${terminalStart} rlcl"
           "SUPER,                F6,                    exec, ${terminalStart} sh -c 'sleep 0.1; while true; do nmtui; done'"
           "SUPER,                r,                     exec, rofi -show drun"
-          "SUPER,                d,                     exec, wmenu-history"
           ",                     XF86PowerOff,          exec, powerctl"
           "SUPER SHIFT,          q,                     killactive"
           "SUPER SHIFT,          Space,                 togglefloating"
