@@ -12,7 +12,7 @@
       enable = true;
       settings = {
         global = {
-          dmenu = "${pkgs.wmenu}/bin/wmenu -p dunst";
+          dmenu = "${pkgs.rofi}/bin/rofi -dmenu -p dunst";
           browser = "${pkgs.xdg-utils}/bin/xdg-open";
         };
       };

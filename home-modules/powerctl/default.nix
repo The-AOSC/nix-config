@@ -28,7 +28,7 @@
           }
           case "$#" in
             0)
-              action="$(printf "${lib.concatMapStringsSep ''\n'' (command: builtins.elemAt command 0) commands}" | ${pkgs.wmenu}/bin/wmenu -i)"
+              action="$(printf "${lib.concatMapStringsSep ''\n'' (command: builtins.elemAt command 0) commands}" | ${pkgs.rofi}/bin/rofi -dmenu -i)"
               case "$action" in
                 ${lib.concatMapStringsSep "\n" (command: ''
               ${builtins.elemAt command 0})
