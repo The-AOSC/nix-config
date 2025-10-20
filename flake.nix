@@ -64,8 +64,8 @@
         ];
         flake = {
           lib = import ./lib.nix inputs;
-          nixosModules = self.lib.import-all ./nixos-modules;
-          homeManagerModules = self.lib.import-all ./home-modules;
+          nixosModules = self.lib.import-all ./nixosModules;
+          homeManagerModules = self.lib.import-all ./homeModules;
           overlays = {
             always-redraw-progress-bar-on-log-output = final: prev: {
               nix = prev.nix.appendPatches [
@@ -217,7 +217,7 @@
               name = "nix-mineral-patched";
               src = inputs.nix-mineral;
               patches = [
-                ./nixos-modules/hardening/override.patch
+                ./nixosModules/hardening/override.patch
               ];
             };
           in [
@@ -225,13 +225,13 @@
               drv = pkgs.runCommand "nix-mineral.nix-patched" {} ''
                 cp ${nix-mineral-patched}/nix-mineral.nix $out
               '';
-              path_ = "./nixos-modules/hardening/nix-mineral.nix";
+              path_ = "./nixosModules/hardening/nix-mineral.nix";
             }
             {
               drv = pkgs.runCommand "sources.toml" {} ''
                 cp ${nix-mineral-patched}/sources.toml $out
               '';
-              path_ = "./nixos-modules/hardening/sources.toml";
+              path_ = "./nixosModules/hardening/sources.toml";
             }
           ];
           formatter = pkgs.alejandra;
