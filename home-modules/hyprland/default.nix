@@ -101,6 +101,8 @@ in {
           "SUPER,                F6,                    exec, ${terminalStart} sh -c 'sleep 0.1; while true; do nmtui; done'"
           "SUPER,                r,                     exec, rofi -show drun"
           ",                     XF86PowerOff,          exec, rofi -show power -no-show-icons"
+          "SUPER,                c,                     exec, sh -c 'wl-paste -n|wl-copy'"
+          "SUPER ALT,            c,                     exec, sh -c 'wl-paste -n -p|wl-copy'"
           "SUPER SHIFT,          q,                     killactive"
           "SUPER SHIFT,          Space,                 togglefloating"
           "SUPER,                f,                     fullscreen, 0"
