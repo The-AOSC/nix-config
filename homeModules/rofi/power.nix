@@ -10,8 +10,8 @@
         name = "power";
         path = let
           commands = [
-            ["󰒲 Suspend" "sync; systemctl suspend"]
-            ["󰋊 Hibernate" "sync; systemctl hibernate"]
+            ["󰒲 Suspend" "sleep 1; sync; systemctl suspend"]
+            ["󰋊 Hibernate" "sleep 1; sync; systemctl hibernate"]
             ["󰌾 Lock" "sleep 1; loginctl lock-session"]
             ["󰍁 Transparent lock" "sleep 1; hyprlock"]
             ["󰍃 Log-out" "uwsm stop"]
