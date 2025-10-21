@@ -89,6 +89,18 @@
             colorbindiff = final: prev: {
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
             };
+            hypridle-wait-for-hyprlock-fadein = final: prev: {
+              hypridle = prev.hypridle.overrideAttrs (old: {
+                patches = old.patches or [] ++ [
+                  ./patches/hypridle/hyprlock-wait-for-fadein.patch
+                ];
+              });
+              hyprlock = prev.hyprlock.overrideAttrs (old: {
+                patches = old.patches or [] ++ [
+                  ./patches/hyprlock/hypridle-wait-for-fadein.patch
+                ];
+              });
+            };
             multi-dimensional-workspaces = final: prev: {
               multi-dimensional-workspaces = final.callPackage ./packages/multi-dimensional-workspaces {
                 inherit (final.hyprlandPlugins) mkHyprlandPlugin;

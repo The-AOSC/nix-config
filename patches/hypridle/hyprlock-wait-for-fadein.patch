@@ -1,0 +1,62 @@
+https://github.com/hyprwm/hypridle/issues/146#issuecomment-3031273599
+diff --git a/src/core/Hypridle.cpp b/src/core/Hypridle.cpp
+index 13537c7..13fb586 100644
+--- a/src/core/Hypridle.cpp
++++ b/src/core/Hypridle.cpp
+@@ -6,6 +6,7 @@
+ #include <sys/wait.h>
+ #include <sys/poll.h>
+ #include <sys/mman.h>
++#include <sys/stat.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <algorithm>
+@@ -324,13 +325,26 @@ void CHypridle::onInhibit(bool lock) {
+     Debug::log(LOG, "Inhibit locks: {}", m_iInhibitLocks);
+ }
+ 
++void CHypridle::waitForLockfileRemoval(const char* lockfile, std::chrono::milliseconds interval) {
++    struct stat st;
++    while (::stat(lockfile, &st) == 0) {
++        std::this_thread::sleep_for(interval);
++    }
++}
++
+ void CHypridle::onLocked() {
+     Debug::log(LOG, "Wayland session got locked");
+     m_isLocked = true;
+ 
+-    static const auto LOCKCMD = g_pConfigManager->getValue<Hyprlang::STRING>("general:on_lock_cmd");
+-    if (!std::string{*LOCKCMD}.empty())
+-        spawn(*LOCKCMD);
++    static const auto ONLOCKCMD = g_pConfigManager->getValue<Hyprlang::STRING>("general:on_lock_cmd");
++    static const auto LOCKCMD = g_pConfigManager->getValue<Hyprlang::STRING>("general:lock_cmd");
++
++    if (!std::string{*ONLOCKCMD}.empty())
++        spawn(*ONLOCKCMD);
++
++    if (std::string{*LOCKCMD}.contains("hyprlock"))
++        waitForLockfileRemoval("/tmp/hyprlock.lock"); // we have max 5 seconds to delete the lock or logind will continue anyway
++                                                      // the 5 seconds is the time that logind waits for delay inhibit
+ 
+     if (m_inhibitSleepBehavior == SLEEP_INHIBIT_LOCK_NOTIFY)
+         uninhibitSleep();
+diff --git a/src/core/Hypridle.hpp b/src/core/Hypridle.hpp
+index 395b07c..3410c82 100644
+--- a/src/core/Hypridle.hpp
++++ b/src/core/Hypridle.hpp
+@@ -1,5 +1,6 @@
+ #pragma once
+ 
++#include <chrono>
+ #include <memory>
+ #include <vector>
+ #include <sdbus-c++/sdbus-c++.h>
+@@ -53,6 +54,7 @@ class CHypridle {
+   private:
+     void    setupDBUS();
+     void    enterEventLoop();
++    void    waitForLockfileRemoval(const char* lockfile, std::chrono::milliseconds interval = std::chrono::milliseconds(100));
+ 
+     bool    m_bTerminate    = false;
+     bool    isIdled         = false;

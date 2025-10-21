@@ -1,0 +1,47 @@
+https://github.com/hyprwm/hypridle/issues/146#issuecomment-3031273599
+diff --git a/src/core/hyprlock.cpp b/src/core/hyprlock.cpp
+index 0b5fa69..f8478d5 100644
+--- a/src/core/hyprlock.cpp
++++ b/src/core/hyprlock.cpp
+@@ -6,6 +6,7 @@
+ #include "../auth/Auth.hpp"
+ #include "../auth/Fingerprint.hpp"
+ #include "Egl.hpp"
++#include "src/helpers/MiscFunctions.hpp"
+ #include <chrono>
+ #include <hyprutils/memory/UniquePtr.hpp>
+ #include <sys/wait.h>
+@@ -239,6 +240,7 @@ void CHyprlock::addDmabufListener() {
+ }
+ 
+ void CHyprlock::run() {
++    spawnAsync("touch /tmp/hyprlock.lock");
+     m_sWaylandState.registry = makeShared<CCWlRegistry>((wl_proxy*)wl_display_get_registry(m_sWaylandState.display));
+     m_sWaylandState.registry->setGlobal([this](CCWlRegistry* r, uint32_t name, const char* interface, uint32_t version) {
+         const std::string IFACE = interface;
+diff --git a/src/renderer/Renderer.cpp b/src/renderer/Renderer.cpp
+index 41bdb0a..7716045 100644
+--- a/src/renderer/Renderer.cpp
++++ b/src/renderer/Renderer.cpp
+@@ -12,6 +12,7 @@
+ #include <GLES3/gl3ext.h>
+ #include <GLES2/gl2ext.h>
+ #include <algorithm>
++#include "src/helpers/MiscFunctions.hpp"
+ #include "widgets/PasswordInputField.hpp"
+ #include "widgets/Background.hpp"
+ #include "widgets/Label.hpp"
+@@ -610,7 +611,12 @@ void CRenderer::startFadeIn() {
+     Debug::log(LOG, "Starting fade in");
+     *opacity = 1.f;
+ 
+-    opacity->setCallbackOnEnd([this](auto) { opacity->setConfig(g_pConfigManager->m_AnimationTree.getConfig("fadeOut")); }, true);
++    opacity->setCallbackOnEnd(
++        [this](auto) {
++            opacity->setConfig(g_pConfigManager->m_AnimationTree.getConfig("fadeOut"));
++            spawnAsync("rm /tmp/hyprlock.lock");
++        },
++        true);
+ }
+ 
+ void CRenderer::startFadeOut(bool unlock) {
