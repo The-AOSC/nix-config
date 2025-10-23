@@ -1,0 +1,43 @@
+--- a/inject/index.js
++++ b/inject/index.js
+@@ -1104,6 +1104,7 @@
+         }
+         return false;
+     }
++    let observerStylus;
+     let observer$1;
+     let readyStateListener;
+     function canCheckForStyle() {
+@@ -1131,6 +1132,21 @@
+     }
+     function runDarkThemeDetector(callback, hints) {
+         stopDarkThemeDetector();
++        if (document.querySelector("html > style.stylus")) {
++            callback(true);
++            return;
++        } else {
++            observerStylus = new MutationObserver(() => {
++                if (document.querySelector("html > style.stylus")) {
++                    stopDarkThemeDetector();
++                    callback(true);
++                }
++            });
++            observerStylus.observe(document.documentElement, {
++                childList: true,
++                subtree: false
++            });
++        }
+         if (hints && hints.length > 0) {
+             const hint = hints[0];
+             if (hint.noDarkTheme) {
+@@ -1166,6 +1182,10 @@
+         }
+     }
+     function stopDarkThemeDetector() {
++        if (observerStylus) {
++            observerStylus.disconnect();
++            observerStylus = null;
++        }
+         if (observer$1) {
+             observer$1.disconnect();
+             observer$1 = null;

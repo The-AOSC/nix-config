@@ -23,17 +23,16 @@
     "catppuccin-userstyles": {
       "flake": false,
       "locked": {
-        "lastModified": 1757035364,
-        "narHash": "sha256-ylSK0yj9x3CqMXkXdzoav7RmOfddJ5WhUYJvLe9Gljg=",
+        "lastModified": 1760984958,
+        "narHash": "sha256-dHFqTxhwtRWUSc4/uklhZ8e7VXaFJU/1WALH6doUN+E=",
         "owner": "catppuccin",
         "repo": "userstyles",
-        "rev": "c9b357f2c40b1eea88e73c071b5d5587598f5206",
+        "rev": "67427151f25e96e0b3c00fdad7c98c5498fb38f1",
         "type": "github"
       },
       "original": {
         "owner": "catppuccin",
         "repo": "userstyles",
-        "rev": "c9b357f2c40b1eea88e73c071b5d5587598f5206",
         "type": "github"
       }
     },

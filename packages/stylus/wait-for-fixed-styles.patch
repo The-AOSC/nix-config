@@ -1,0 +1,32 @@
+diff --git a/src/background/style-manager/init.js b/src/background/style-manager/init.js
+index 073a7a0..1c1d8f0 100644
+--- a/src/background/style-manager/init.js
++++ b/src/background/style-manager/init.js
+@@ -2,7 +2,7 @@ import {DB, kInjectionOrder, kResolve} from '@/js/consts';
+ import {onConnect, onDisconnect} from '@/js/msg';
+ import {STORAGE_KEY} from '@/js/prefs';
+ import * as colorScheme from '../color-scheme';
+-import {bgBusy, bgInit, onSchemeChange} from '../common';
++import {bgInit, onSchemeChange} from '../common';
+ import {db, draftsDB, execMirror, prefsDB} from '../db';
+ import * as styleCache from './cache';
+ import './init';
+@@ -21,7 +21,7 @@ bgInit.push(async () => {
+   if (!styles[0])
+     styles = mirrored = await execMirror(DB, 'getAll');
+   setOrderImpl(orderFromDb, {store: false});
+-  initStyleMap(styles, mirrored);
++  await initStyleMap(styles, mirrored);
+   __.DEBUGLOG('styleMan init done');
+ });
+ 
+@@ -88,8 +88,7 @@ async function initStyleMap(styles, mirrored) {
+     console.error(`Skipped ${lost.length} unrecoverable styles:`, lost);
+   if (fixed) {
+     console[mirrored ? 'log' : 'warn'](`Fixed ${fixed.size} styles, ids:`, ...fixed.keys());
+-    fixed = await Promise.all([...fixed.values(), bgBusy]);
+-    fixed.pop();
++    fixed = await Promise.all([...fixed.values()]);
+     styles.push(...fixed);
+     fixed.forEach(storeInMap);
+   }

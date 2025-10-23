@@ -7,6 +7,7 @@
   darkreader-patched =
     config.lib.librewolf.patchExtension pkgs.nur.repos.rycee.firefox-addons.darkreader [
       ./darkreader-no-install-help.patch
+      ./darkreader-disable-if-stylus-detected.patch
     ] {
       prePatch = ''
         ${pkgs.dos2unix}/bin/dos2unix background/index.js

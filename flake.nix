@@ -41,7 +41,7 @@
       flake = false;
     };
     catppuccin-userstyles = {
-      url = "github:catppuccin/userstyles?rev=c9b357f2c40b1eea88e73c071b5d5587598f5206";
+      url = "github:catppuccin/userstyles";
       flake = false;
     };
     nix-gaming = {

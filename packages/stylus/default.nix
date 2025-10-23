@@ -20,6 +20,7 @@ in
     };
     patches = [
       ./declarative-stylus.patch
+      ./wait-for-fixed-styles.patch
     ];
     nativeBuildInputs = [
       nodejs
