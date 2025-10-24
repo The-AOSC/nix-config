@@ -22,9 +22,7 @@
         signByDefault = true;
         key = null;
       };
-      userName = "The AOSC";
-      userEmail = "the-aosc@tutamail.com";
-      extraConfig = {
+      settings = {
         init = {
           defaultBranch = "master";
         };
@@ -34,6 +32,10 @@
         log.showSignature = true;
         push.autoSetupRemote = true;
         pull.ff = "only";
+        user = {
+          name = "The AOSC";
+          email = "the-aosc@tutamail.com";
+        };
         gpg.ssh.allowedSignersFile = "${pkgs.writeText "git-ssh-allowed-signers" ''
           ''}";
         "diff \"gzip\"" = {
