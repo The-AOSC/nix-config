@@ -8,8 +8,11 @@
   options = {
     modules.gitlab.enable = lib.mkEnableOption "gitlab";
   };
-  config = lib.mkIf config.modules.gitlab.enable {
-    services.nginx = {
+  config = let
+    enable = config.modules.gitlab.enable;
+  in {
+    virtualisation.vmVariant.modules.gitlab.enable = lib.mkVMOverride false;
+    services.nginx = lib.mkIf enable {
       enable = true;
       recommendedProxySettings = lib.mkDefault true;
       virtualHosts = {
@@ -18,7 +21,7 @@
         };
       };
     };
-    services.xinetd = {
+    services.xinetd = lib.mkIf enable {
       enable = true;
       services = [
         {
@@ -28,28 +31,30 @@
         }
       ];
     };
-    networking.firewall = {
+    networking.firewall = lib.mkIf enable {
       allowedTCPPorts = [22 80];
     };
     users.users = let
       cfg = config.containers.gitlab.config;
-    in {
-      "${cfg.services.gitlab.user}" = {
-        uid = assert cfg.users.users.gitlab.uid != null; cfg.users.users.gitlab.uid;
-        group = cfg.services.gitlab.group;
+    in
+      lib.mkIf enable {
+        "${cfg.services.gitlab.user}" = {
+          uid = assert cfg.users.users.gitlab.uid != null; cfg.users.users.gitlab.uid;
+          group = cfg.services.gitlab.group;
+        };
+        "postgres" = {
+          uid = assert cfg.users.users.postgres.uid != null; cfg.users.users.postgres.uid;
+          group = "postgres";
+        };
       };
-      "postgres" = {
-        uid = assert cfg.users.users.postgres.uid != null; cfg.users.users.postgres.uid;
-        group = "postgres";
-      };
-    };
     users.groups = let
       cfg = config.containers.gitlab.config;
-    in {
-      "${cfg.services.gitlab.group}".gid = assert cfg.users.groups.gitlab.gid != null; cfg.users.groups.gitlab.gid;
-      "postgres".gid = assert cfg.users.groups.postgres.gid != null; cfg.users.groups.postgres.gid;
-    };
-    containers.gitlab = {
+    in
+      lib.mkIf enable {
+        "${cfg.services.gitlab.group}".gid = assert cfg.users.groups.gitlab.gid != null; cfg.users.groups.gitlab.gid;
+        "postgres".gid = assert cfg.users.groups.postgres.gid != null; cfg.users.groups.postgres.gid;
+      };
+    containers.gitlab = lib.mkIf enable {
       autoStart = true;
       restartIfChanged = true;
       timeoutStartSec = "5min";
