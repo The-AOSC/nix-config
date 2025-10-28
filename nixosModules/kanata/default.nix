@@ -45,6 +45,7 @@ with config.lib.kanata; {
   config = let
     enable = config.modules.kanata.enable;
   in {
+    virtualisation.vmVariant.modules.kanata.enable = lib.mkVMOverride false;
     lib.kanata = {
       layers = config.modules.kanata.layers;
       coerceLayer = list:
@@ -100,29 +101,5 @@ with config.lib.kanata; {
         })
         config.modules.kanata.keyboards;
     };
-    /*
-    (defvirtualkeys
-      vkey-mouse-left  (tap-hold 200 200 (movemouse-left  200 1) (movemouse-left  20 1))
-      vkey-mouse-right (tap-hold 200 200 (movemouse-right 200 1) (movemouse-right 20 1))
-      vkey-mouse-up    (tap-hold 200 200 (movemouse-up    200 1) (movemouse-up    20 1))
-      vkey-mouse-down  (tap-hold 200 200 (movemouse-down  200 1) (movemouse-down  20 1)))
-    (deflayermap (mouse-ctl)
-      n (tap-hold 200 200 (mwheel-down  200 120) (mwheel-down  20 12))
-      p (tap-hold 200 200 (mwheel-up    200 120) (mwheel-up    20 12))
-      h (tap-hold 200 200 (mwheel-left  200 120) (mwheel-left  20 12))
-      l (tap-hold 200 200 (mwheel-right 200 120) (mwheel-right 20 12))
-      kp7 (multi (on-press press-vkey vkey-mouse-up)    (on-release release-vkey vkey-mouse-up)
-                 (on-press press-vkey vkey-mouse-left)  (on-release release-vkey vkey-mouse-left))
-      kp8 (multi (on-press press-vkey vkey-mouse-up)    (on-release release-vkey vkey-mouse-up))
-      kp9 (multi (on-press press-vkey vkey-mouse-up)    (on-release release-vkey vkey-mouse-up)
-                 (on-press press-vkey vkey-mouse-right) (on-release release-vkey vkey-mouse-right))
-      kp4 (multi (on-press press-vkey vkey-mouse-left)  (on-release release-vkey vkey-mouse-left))
-      kp6 (multi (on-press press-vkey vkey-mouse-right) (on-release release-vkey vkey-mouse-right))
-      kp1 (multi (on-press press-vkey vkey-mouse-down)  (on-release release-vkey vkey-mouse-down)
-                 (on-press press-vkey vkey-mouse-left)  (on-release release-vkey vkey-mouse-left))
-      kp2 (multi (on-press press-vkey vkey-mouse-down)  (on-release release-vkey vkey-mouse-down))
-      kp3 (multi (on-press press-vkey vkey-mouse-down)  (on-release release-vkey vkey-mouse-down)
-                 (on-press press-vkey vkey-mouse-right) (on-release release-vkey vkey-mouse-right)))
-    */
   };
 }

@@ -109,7 +109,7 @@
       default-mouse = layers.withNoDefault (with-all-mods (mergeLayers base mouse));
       level1 = layers.withNoDefault (with-all-mods (with-layout-switch layers.homeRowMods.level1));
       level2 = layers.withNoDefault (with-all-mods layers.homeRowMods.level2);
-      level3 = layers.withNoDefault (with-all-mods (with-mode-select layers.homeRowMods.level3));
+      level3 = layers.withNoDefault (with-mode-select (with-all-mods layers.homeRowMods.level3));
       simple = with-mode-select layers.simple;
       mouse = mouse;
       mouse-hold = layers.mouse.hold;
