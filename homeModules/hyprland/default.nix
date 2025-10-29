@@ -21,7 +21,7 @@ in {
     wayland.windowManager.hyprland = let
       terminal = "${config.programs.kitty.package}/bin/kitty --single-instance";
       terminalStart = "${terminal} --";
-      terminalStartHold = ''${terminal} --hold -o shell='sleep 99d' --'';
+      terminalStartHold = ''${terminal} --single-instance=no --hold -o shell='sleep 99d' --'';
     in {
       enable = true;
       plugins = [
