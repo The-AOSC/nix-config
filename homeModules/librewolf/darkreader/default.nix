@@ -10,7 +10,7 @@
       ./darkreader-disable-if-stylus-detected.patch
     ] {
       prePatch = ''
-        ${pkgs.dos2unix}/bin/dos2unix background/index.js
+        ${pkgs.dos2unix}/bin/dos2unix background/index.js inject/index.js
       '';
     };
 in {
