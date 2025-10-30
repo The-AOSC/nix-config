@@ -65,7 +65,7 @@
         flake = {
           lib = import ./lib.nix inputs;
           nixosModules = self.lib.import-all ./nixosModules;
-          homeManagerModules = self.lib.import-all ./homeModules;
+          homeModules = self.lib.import-all ./homeModules;
           overlays = {
             always-redraw-progress-bar-on-log-output = final: prev: {
               nix = prev.nix.appendPatches [

@@ -38,7 +38,7 @@ inputs @ {
                       lib,
                       ...
                     }: {
-                      imports = home-config.modules ++ (nixpkgs.lib.attrValues self.homeManagerModules);
+                      imports = home-config.modules ++ (nixpkgs.lib.attrValues self.homeModules);
                       home.homeDirectory = osConfig.users.users."${user-name}".home;
                       home.stateVersion = osConfig.system.stateVersion;
                       home.username = user-name;
