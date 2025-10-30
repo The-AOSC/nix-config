@@ -45,17 +45,22 @@ in {
           )
           ++ (
             # for every container in {localhost-config.containers}:
-            #  {<local-address> = <container-name>}
+            #  {<local-address> = <container-name>.containers}
             lib.mapAttrsToList (container-name: container-config: {
-              "${container-config.local.ipv4}" = [container-name];
-              "${container-config.local.ipv6}" = [container-name];
+              "${container-config.local.ipv4}" = ["${container-name}.containers"];
+              "${container-config.local.ipv6}" = ["${container-name}.containers"];
             })
             localhost-config.containers
           )
           ++ [
             {
+              # loopback on container names
+              "127.0.0.3" = lib.attrNames localhost-config.containers;
+              "::1" = lib.attrNames localhost-config.containers;
+            }
+            {
               # extra-domains
-              "127.0.0.3" = localhost-config.extra-domains;
+              "127.0.0.4" = localhost-config.extra-domains;
               "::1" = localhost-config.extra-domains;
             }
           ]))

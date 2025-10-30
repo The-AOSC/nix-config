@@ -17,7 +17,7 @@
       recommendedProxySettings = lib.mkDefault true;
       virtualHosts = {
         "gitlab" = {
-          locations."/".proxyPass = "http://gitlab";
+          locations."/".proxyPass = "http://gitlab.containers";
         };
       };
     };
