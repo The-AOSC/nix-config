@@ -12,8 +12,8 @@
     # https://flakehub.com/flake/AshleyYakeley/NixVirt
     nixvirt.url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
     nixvirt.inputs.nixpkgs.follows = "nixpkgs";
-    flake-programs-sqlite.url = "github:wamserma/flake-programs-sqlite";
-    flake-programs-sqlite.inputs.nixpkgs.follows = "nixpkgs";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
