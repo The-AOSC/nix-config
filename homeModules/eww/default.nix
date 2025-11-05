@@ -120,14 +120,12 @@ in {
             handle() {
               case $1 in
                 "monitoraddedv2>>"*)
-                  echo add:
-                  echo $1
-                  #${eww-cmd} open bar --screen $id --id "bar$id"
+                  id=$(echo $1 | cut -d '>' -f 3- | cut -d , -f 1)
+                  ${eww-cmd} open bar --screen $id --id "bar$id"
                   ;;
                 "monitorremovedv2>>"*)
-                  echo remove:
-                  echo $1
-                  #${eww-cmd} close "bar$id"
+                  id=$(echo $1 | cut -d '>' -f 3- | cut -d , -f 1)
+                  ${eww-cmd} close "bar$id"
                   ;;
               esac
             }
