@@ -131,6 +131,8 @@ void hkChangeWorkspace(CMonitor *thisptr, const PHLWORKSPACE& pWorkspace, bool i
     anim_style = "";
 }
 
+static bool force_workspace_animation = false;
+
 inline CFunctionHook* g_pStartAnimationHook = nullptr;
 typedef void (*origStartAnimation)(void*, PHLWORKSPACE ws, CDesktopAnimationManager::eAnimationType type, bool left, bool instant);
 void hkStartAnimation(void *thisptr, PHLWORKSPACE ws, CDesktopAnimationManager::eAnimationType type, bool left, bool instant) {
@@ -146,6 +148,9 @@ void hkStartAnimation(void *thisptr, PHLWORKSPACE ws, CDesktopAnimationManager::
         }
     }
 
+    if (force_workspace_animation) {
+        instant = false;
+    }
     (*(origStartAnimation)g_pStartAnimationHook->m_original)(thisptr, ws, type, left, instant);
 
     if (const auto pconfig = conf.lock()) {
@@ -153,6 +158,17 @@ void hkStartAnimation(void *thisptr, PHLWORKSPACE ws, CDesktopAnimationManager::
             pvalues->internalStyle = style;
         }
     }
+}
+
+SDispatchResult focusWorkspaceOnCurrentMonitorFix(std::string args) {
+    force_workspace_animation = true;
+    auto result = g_pKeybindManager->m_dispatchers["focusworkspaceoncurrentmonitor"](args);
+    force_workspace_animation = false;
+    for (auto const& w : g_pCompositor->m_windows) {
+        w->m_realPosition->warp();
+        w->m_realSize->warp();
+    }
+    return result;
 }
 
 APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
@@ -198,6 +214,7 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     bool success = true;
     success = success && HyprlandAPI::addConfigValue(PHANDLE, PLUGIN_PREFIX "array_sizes", Hyprlang::STRING{"10"});
     success = success && HyprlandAPI::addConfigValue(PHANDLE, PLUGIN_PREFIX "animations", Hyprlang::STRING{"slide left|slide right"});
+    success = success && HyprlandAPI::addDispatcherV2(PHANDLE, PLUGIN_PREFIX "focusworkspaceoncurrentmonitor", focusWorkspaceOnCurrentMonitorFix);
     if (!success) {
         HyprlandAPI::addNotification(PHANDLE, PLUGIN_LOG_PREFIX " Failure in initializetion: failed to register dispatchers", CHyprColor(1.0, 0.2, 0.2, 1.0), 5000);
         throw std::runtime_error("[" PLUGIN_NAME "] Dispatchers failed");

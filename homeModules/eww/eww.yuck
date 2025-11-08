@@ -50,7 +50,7 @@
          :selected "${((from<=workspace-state.active) && (workspace-state.active<to)) ? 1 : 0}"
          :transition "none"
          :same-size false
-    (button :onclick "hyprctl dispatch workspace ${from + ((workspace-state.active - 1) % (to - from))}"
+    (button :onclick "hyprctl dispatch plugin:mdw:focusworkspaceoncurrentmonitor ${from + ((workspace-state.active - 1) % (to - from))}"
       "${jq(workspaces.nonempty, "any((${from} <= .) and (. < ${to}))") ? "" : ""}")
     (box :orientation "h"
          :space-evenly false
