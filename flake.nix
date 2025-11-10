@@ -91,14 +91,18 @@
             };
             hypridle-wait-for-hyprlock-fadein = final: prev: {
               hypridle = prev.hypridle.overrideAttrs (old: {
-                patches = old.patches or [] ++ [
-                  ./patches/hypridle/hyprlock-wait-for-fadein.patch
-                ];
+                patches =
+                  old.patches or []
+                  ++ [
+                    ./patches/hypridle/hyprlock-wait-for-fadein.patch
+                  ];
               });
               hyprlock = prev.hyprlock.overrideAttrs (old: {
-                patches = old.patches or [] ++ [
-                  ./patches/hyprlock/hypridle-wait-for-fadein.patch
-                ];
+                patches =
+                  old.patches or []
+                  ++ [
+                    ./patches/hyprlock/hypridle-wait-for-fadein.patch
+                  ];
               });
             };
             multi-dimensional-workspaces = final: prev: {
