@@ -55,26 +55,14 @@
     printf '{"active": %d, "urgent": %d}\n' "$active" "$urgent"
     ${hyprlisten}
   '';
-  current-window-listener = pkgs.writeShellScript "hyprland-current-window-listener" ''
-    set -e
-    handle() {
-      case $1 in
-        "activewindow>>"*)
-          echo "$1" | cut -d '>' -f 3- | cut -d , -f 2 | ${pkgs.gnused}/bin/sed -e 's/\\/\\\\/g'
-          ;;
-      esac
-    }
-    ${hyprctl} activewindow -j | jq -cr '.title? // ""'
-    ${hyprlisten}
-  '';
 in {
   modules.eww.config = ''
     (deflisten workspaces :initial "{\"nonempty\":[]}"
       "${workspaces-listener}")
     (deflisten workspace-state :initial '{"active":0,"urgent":0}'
       "${workspace-state-listener}")
-    (deflisten current-window :initial ""
-      "${current-window-listener}")
+    (deflisten current-window :initial "[]"
+      "${lib.getExe pkgs.hyprland-activewindow} _")
     (defwidget workspaces []
       (box :orientation "h"
            :space-evenly false

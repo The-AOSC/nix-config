@@ -1,8 +1,8 @@
 ; For icons: https://nerdfonts.ytyng.com/
-(defwidget bar []
+(defwidget bar [monitor]
   (centerbox :orientation "h"
     (bar-left)
-    (bar-center)
+    (bar-center :monitor monitor)
     (bar-right)))
 
 (defwidget bar-left []
@@ -11,11 +11,11 @@
        :space-evenly false
     (workspaces)))
 
-(defwidget bar-center []
+(defwidget bar-center [monitor]
   (box :orientation "h"
        :halign "center"
        :space-evenly false
-    (window)))
+    (window :monitor monitor)))
 
 (defwidget bar-right []
    (box :orientation "h"
@@ -67,11 +67,11 @@
           }"
     "${jq(workspaces.nonempty, "any(. == ${id})") ? "" : ""}"))
 
-(defwidget window []
+(defwidget window [monitor]
   (label :class "window"
-         :visible "${current-window != ""}"
+         :visible "${jq(current-window, "[.[]|select(.name==\"${monitor}\").title != \"\"] | any")}"
          :truncate true
-         :text current-window))
+         :text "${jq(current-window, ".[]|select(.name==\"${monitor}\").title", "r")}"))
 
 (defwidget meters []
   (box :orientation "h"
@@ -171,5 +171,5 @@
                       :y "0%"
                       :width "100%"
                       :anchor "top center")
-  (bar))
+  (bar :monitor screen))
 
