@@ -114,28 +114,18 @@ in {
             "WAYLAND_DISPLAY"
           ];
         };
-        Service = {
-          ExecStart = pkgs.writeShellScript "eww-hyprland" ''
+        Service = let
+          open-bar = pkgs.writeShellScript "eww-hyprland-open-bat" ''
+            ${eww-cmd} open bar --screen "$1" --id "bar$1"
+          '';
+        in {
+          ExecStart = "${lib.getExe pkgs.hyprland-monitor-attached} ${open-bar}";
+          ExecStartPost = pkgs.writeShellScript "eww-hyprland-handle-existing-monitors" ''
             set -e
-            handle() {
-              case $1 in
-                "monitoraddedv2>>"*)
-                  id=$(echo $1 | cut -d '>' -f 3- | cut -d , -f 1)
-                  ${eww-cmd} open bar --screen $id --id "bar$id"
-                  ;;
-                "monitorremovedv2>>"*)
-                  id=$(echo $1 | cut -d '>' -f 3- | cut -d , -f 1)
-                  ${eww-cmd} close "bar$id"
-                  ;;
-              esac
-            }
-            {
-              sleep 1
-              for id in $(${config.wayland.windowManager.hyprland.finalPackage}/bin/hyprctl -j monitors | jq ".[].id"); do
-                ${eww-cmd} open bar --screen $id --id "bar$id" || true
-              done
-            } &
-            ${pkgs.socat}/bin/socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+            sleep 1
+            for name in $(${config.wayland.windowManager.hyprland.finalPackage}/bin/hyprctl -j monitors | jq -r ".[].name"); do
+              ${open-bar} "$name" || true
+            done
           '';
           Restart = "always";
         };
