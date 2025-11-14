@@ -1,6 +1,8 @@
 {
-  writeShellApplication,
   jq,
+  writeShellApplication,
+  writeShellScript,
+  writeText,
   ...
 }:
 writeShellApplication {
@@ -8,12 +10,38 @@ writeShellApplication {
   runtimeInputs = [
     jq
   ];
-  text = ''
+  text = let
+    jqFilter = writeText "nix-flake-add-roots-jq-filter" ''
+      [
+        # add name for parent flake
+        {root:.}
+        # filter all flakes (format: {"$name":{"path":"$path"},...})
+        | .. | select(.[]?.path?)
+        # change format to: {"name":"$name","path":"$path"}
+        | to_entries | map({name:.key,path:.value.path})[]
+      ]
+      | unique_by(.path)
+      # output stream of pairs: "$name", "$path"
+      | map([.name,.path])[][]
+    '';
+    linkRoot = writeShellScript "nix-flake-add-roots-link-root" ''
+      name=".flake-roots/$1"
+      path="$2"
+      suffix=
+      if [ -e "$name" ]; then
+        suffix=2
+        while [ -e "$name-$suffix" ]; do
+          suffix="$(($suffix + 1))"
+        done
+        name="$name-$suffix"
+      fi
+      nix-store --realise --add-root "$name" "$path"
+    '';
+  in ''
     rm -rf .flake-roots
     mkdir .flake-roots
     nix flake archive --dry-run --json \
-      | jq '..|.path?|strings' \
-      | xargs --max-procs=1 \
-      nix-store --realise --add-root .flake-roots/root
+      | jq -r -f ${jqFilter} \
+      | xargs --max-args 2 --max-procs=1 ${linkRoot}
   '';
 }
