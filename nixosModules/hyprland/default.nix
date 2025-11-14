@@ -12,5 +12,9 @@
       enable = true;
       waylandCompositors = {};
     };
+    environment.pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
   };
 }

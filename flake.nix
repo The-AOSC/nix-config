@@ -113,6 +113,19 @@
             nix-flake-add-roots = final: prev: {
               nix-flake-add-roots = final.callPackage ./packages/nix-flake-add-roots {};
             };
+            fix-ssh-copy-id = final: prev: {
+              ssh-copy-id = prev.ssh-copy-id.overrideAttrs (old: {
+                buildInputs =
+                  old.buildInputs or []
+                  ++ [
+                    final.bash
+                  ];
+                buildCommand = ''
+                  ${old.buildCommand}
+                  patchShebangs --host $out/bin/ssh-copy-id
+                '';
+              });
+            };
             stylus = final: prev: {
               stylus = final.callPackage ./packages/stylus {
                 stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
