@@ -45,6 +45,18 @@
           setEnv = [
             "-XDG_CACHE_HOME"
             "SUDO_UID=$EUID"
+            "NH_BYPASS_ROOT_CHECK=true"
+          ];
+          groups = [
+            "wheel"
+          ];
+          cmd = "nh";
+        }
+        {
+          keepEnv = true;
+          setEnv = [
+            "-XDG_CACHE_HOME"
+            "SUDO_UID=$EUID"
           ];
           groups = [
             "wheel"
@@ -53,6 +65,7 @@
         }
       ];
     };
+    programs.nh.enable = true;
     programs.fuse.userAllowOther = true;
     services.logind.settings.Login = {
       HandleHibernateKey = "ignore";
