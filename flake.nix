@@ -223,6 +223,7 @@
               inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
             };
             nix-flake-add-roots = pkgs.callPackage ./packages/nix-flake-add-roots {};
+            nixos-anywhere-install-for = pkgs.callPackage ./packages/nixos-anywhere-install-for {};
             stylus = pkgs.callPackage ./packages/stylus {
               stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
             };
