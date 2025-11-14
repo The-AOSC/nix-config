@@ -67,11 +67,6 @@
           nixosModules = self.lib.import-all ./nixosModules;
           homeModules = self.lib.import-all ./homeModules;
           overlays = {
-            always-redraw-progress-bar-on-log-output = final: prev: {
-              nix = prev.nix.appendPatches [
-                ./patches/nix/always-redraw-progress-bar-on-log-output.patch
-              ];
-            };
             catppuccin-userstyles = final: prev: {
               catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
                 src = inputs.catppuccin-userstyles;
