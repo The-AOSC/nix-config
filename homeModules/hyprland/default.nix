@@ -28,6 +28,9 @@ in {
         pkgs.multi-dimensional-workspaces
       ];
       settings = {
+        windowrule = [
+          "suppressevent maximize, class:.*"
+        ];
         misc = {
           new_window_takes_over_fullscreen = 2; # unfullscreen
           session_lock_xray = true;
