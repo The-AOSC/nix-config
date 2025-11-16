@@ -84,6 +84,18 @@
             colorbindiff = final: prev: {
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
             };
+            fish-dont-use-standalone-mode = final: prev: {
+              # this is ugly hack; upstream issue:
+              # https://github.com/NixOS/nixpkgs/issues/462025
+              fish = prev.fish.overrideAttrs (old: {
+                patches =
+                  old.patches or []
+                  ++ [
+                    ./patches/fish/dont-use-standalone-mode.patch
+                  ];
+                doCheck = false;
+              });
+            };
             hypridle-wait-for-hyprlock-fadein = final: prev: {
               hypridle = prev.hypridle.overrideAttrs (old: {
                 patches =

@@ -5,6 +5,7 @@ inputs @ {...}: {
     inputs.self.overlays.catppuccin-userstyles
     inputs.self.overlays.christbashtree
     inputs.self.overlays.colorbindiff
+    inputs.self.overlays.fish-dont-use-standalone-mode
     inputs.self.overlays.fix-ssh-copy-id
     inputs.self.overlays.hypridle-wait-for-hyprlock-fadein
     inputs.self.overlays.multi-dimensional-workspaces
