@@ -222,6 +222,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-fish-downgrade": {
+      "locked": {
+        "lastModified": 1759885913,
+        "narHash": "sha256-FuvgBU6LgioetW8+ChW/JWaDbWQQDk2ShKxi0H8E7mc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fe9e07b2b565a8dee42e30eaff3e3606f6aefd6a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fe9e07b2b565a8dee42e30eaff3e3606f6aefd6a",
+        "type": "github"
+      }
+    },
     "nixvirt": {
       "inputs": {
         "nixpkgs": [
@@ -278,6 +294,7 @@
         "nix-mineral": "nix-mineral",
         "nixpkgs": "nixpkgs",
         "nixpkgs-buildDenoPackage": "nixpkgs-buildDenoPackage",
+        "nixpkgs-fish-downgrade": "nixpkgs-fish-downgrade",
         "nixvirt": "nixvirt",
         "nur": "nur",
         "sops-nix": "sops-nix"
