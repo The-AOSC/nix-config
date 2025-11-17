@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -51,6 +52,8 @@
         alias feh='feh -.'
 
         alias which='alias | command which --tty-only --read-alias'
+
+        alias torl='curl --proxy socks5h://localhost:${builtins.toString osConfig.services.tor.client.socksListenAddress.port}'
 
         set yt_dlp_opts
         alias yt-dlp='ionice -c 3 yt-dlp --throttled-rate 100K --embed-chapters --embed-metadata --sub-langs all,-live_chat --embed-subs --no-write-auto-subs --format "bestaudio+bestvideo[format_note!=Premium]/best[format_note!=Premium]" --sponsorblock-mark "-all,sponsor" --retry-sleep fragment:20 --socket-timeout 10 --no-overwrites $yt_dlp_opts'
