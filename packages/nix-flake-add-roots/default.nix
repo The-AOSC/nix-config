@@ -38,6 +38,7 @@ writeShellApplication {
       nix-store --realise --add-root "$name" "$path"
     '';
   in ''
+    nix flake prefetch-inputs
     rm -rf .flake-roots
     mkdir .flake-roots
     nix flake archive --dry-run --json \
