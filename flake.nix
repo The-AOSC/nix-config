@@ -227,9 +227,22 @@
           config,
           system,
           pkgs,
+          lib,
           ...
         }: {
           apps = {
+            nix-flake-add-roots = {
+              program = lib.getExe (pkgs.callPackage ./packages/nix-flake-add-roots {});
+              meta = {
+                description = "Create gc-roots of flake inputs";
+              };
+            };
+            nixos-anywhere-install-for = {
+              program = lib.getExe (pkgs.callPackage ./packages/nixos-anywhere-install-for {});
+              meta = {
+                description = "Wrapper around nixos-anywhere for use with this flake";
+              };
+            };
             update-files = {
               program = with config.files.writer; "${drv}/bin/${exeFilename}";
               meta = {
@@ -254,8 +267,6 @@
               multi-dimensional-workspaces = pkgs.callPackage ./packages/multi-dimensional-workspaces {
                 inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
               };
-              nix-flake-add-roots = pkgs.callPackage ./packages/nix-flake-add-roots {};
-              nixos-anywhere-install-for = pkgs.callPackage ./packages/nixos-anywhere-install-for {};
               stylus = pkgs.callPackage ./packages/stylus {
                 stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
               };
