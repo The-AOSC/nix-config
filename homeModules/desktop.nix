@@ -80,7 +80,6 @@
       moreutils
       nix-diff
       nix-flake-add-roots
-      nix-output-monitor
       nmap
       pciutils
       pdfarranger

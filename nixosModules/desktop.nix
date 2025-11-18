@@ -15,6 +15,7 @@
     modules.kanata.enable = true;
     modules.kdeconnect.enable = true;
     modules.nix-index.enable = true;
+    modules.nom.enable = true;
     modules.theme.enable = true;
     modules.u2f.enable = true;
     modules.wine.enable = true;
@@ -30,42 +31,33 @@
     };
     security.doas = {
       enable = true;
-      extraRules = [
-        {
-          keepEnv = true;
-          setEnv = [
-            "-XDG_CACHE_HOME"
-          ];
-          groups = [
-            "wheel"
-          ];
-        }
-        {
-          keepEnv = true;
-          setEnv = [
-            "-XDG_CACHE_HOME"
-            "SUDO_UID=$EUID"
-            "NH_BYPASS_ROOT_CHECK=true"
-          ];
-          groups = [
-            "wheel"
-          ];
-          cmd = "nh";
-        }
-        {
-          keepEnv = true;
-          setEnv = [
-            "-XDG_CACHE_HOME"
-            "SUDO_UID=$EUID"
-          ];
-          groups = [
-            "wheel"
-          ];
-          cmd = "nixos-rebuild";
-        }
+      extraRules = lib.mkMerge [
+        (lib.mkBefore [
+          {
+            keepEnv = true;
+            setEnv = [
+              "-XDG_CACHE_HOME"
+            ];
+            groups = [
+              "wheel"
+            ];
+          }
+        ])
+        [
+          {
+            keepEnv = true;
+            setEnv = [
+              "-XDG_CACHE_HOME"
+              "SUDO_UID=$EUID"
+            ];
+            groups = [
+              "wheel"
+            ];
+            cmd = "nixos-rebuild";
+          }
+        ]
       ];
     };
-    programs.nh.enable = true;
     programs.fuse.userAllowOther = true;
     services.logind.settings.Login = {
       HandleHibernateKey = "ignore";

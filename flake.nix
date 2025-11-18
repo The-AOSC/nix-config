@@ -51,6 +51,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-buildDenoPackage.url = "github:aMOPel/nixpkgs/feat/buildDenoPackage-second";
+    nom = {
+      url = "github:maralorn/nix-output-monitor";
+      inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.flake-utils.follows = "flake-utils";
+    };
+    nix-monitored = {
+      url = "github:ners/nix-monitored";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     flake-parts,
@@ -228,29 +237,32 @@
               };
             };
           };
-          packages = {
-            catppuccin-userstyles = pkgs.callPackage ./packages/catppuccin-userstyles.nix {
-              src = inputs.catppuccin-userstyles;
-              inherit
-                (import inputs.nixpkgs-buildDenoPackage {
-                  inherit system;
-                })
-                buildDenoPackage
-                ;
-            };
-            christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
-            colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
-            mindustry = pkgs.callPackage ./packages/mindustry/package.nix {};
-            multi-dimensional-workspaces = pkgs.callPackage ./packages/multi-dimensional-workspaces {
-              inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
-            };
-            nix-flake-add-roots = pkgs.callPackage ./packages/nix-flake-add-roots {};
-            nixos-anywhere-install-for = pkgs.callPackage ./packages/nixos-anywhere-install-for {};
-            stylus = pkgs.callPackage ./packages/stylus {
-              stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
-            };
-            wtf = pkgs.callPackage ./packages/wtf.nix {};
-          };
+          packages =
+            {
+              catppuccin-userstyles = pkgs.callPackage ./packages/catppuccin-userstyles.nix {
+                src = inputs.catppuccin-userstyles;
+                inherit
+                  (import inputs.nixpkgs-buildDenoPackage {
+                    inherit system;
+                  })
+                  buildDenoPackage
+                  ;
+              };
+              christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
+              colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
+              mindustry = pkgs.callPackage ./packages/mindustry/package.nix {};
+              multi-dimensional-workspaces = pkgs.callPackage ./packages/multi-dimensional-workspaces {
+                inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
+              };
+              nix-flake-add-roots = pkgs.callPackage ./packages/nix-flake-add-roots {};
+              nixos-anywhere-install-for = pkgs.callPackage ./packages/nixos-anywhere-install-for {};
+              stylus = pkgs.callPackage ./packages/stylus {
+                stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
+              };
+              wtf = pkgs.callPackage ./packages/wtf.nix {};
+            }
+            # https://github.com/ners/nix-monitored/issues/3
+            // builtins.mapAttrs (name: app: pkgs.writeShellScriptBin name ''exec "$0" ${app.program} "$@"'') config.apps;
           files.files = let
             nix-mineral-patched = pkgs.applyPatches {
               name = "nix-mineral-patched";
