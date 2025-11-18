@@ -160,7 +160,8 @@
               };
             };
             wine-fixes = final: prev: {
-              wine-ge-fixed = final.wine-ge.overrideAttrs (old: {
+              wine-ge-fixed = final.wine-ge.overrideAttrs (finalAttrs: old: {
+                NIX_LDFLAGS = "${old.NIX_LDFLAGS} ${builtins.toString (builtins.map (p: "-rpath ${final.lib.getLib p}/lib") finalAttrs.buildInputs)}";
                 patches =
                   old.patches or []
                   ++ [
@@ -187,7 +188,8 @@
                 '';
               });
               wine-staging-fixed =
-                (final.wineWowPackages.stagingFull.overrideAttrs (old: {
+                (final.wineWowPackages.stagingFull.overrideAttrs (finalAttrs: old: {
+                  NIX_LDFLAGS = "${old.NIX_LDFLAGS} ${builtins.toString (builtins.map (p: "-rpath ${final.lib.getLib p}/lib") finalAttrs.buildInputs)}";
                   /*
                   postInstall = let
                     wine-mono = final.fetchurl rec {
