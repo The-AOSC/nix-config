@@ -175,12 +175,11 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     PHANDLE = handle;
 
     const std::string HASH = __hyprland_api_get_hash();
+    const std::string CLIENT_HASH = __hyprland_api_get_client_hash();
 
     // ALWAYS add this to your plugins. It will prevent random crashes coming from
     // mismatched header versions.
-    if (HASH != GIT_COMMIT_HASH) {
-        //HyprlandAPI::addNotification(PHANDLE, PLUGIN_NAME " Mismatched headers! Can't proceed.",
-        //                             CHyprColor{1.0, 0.2, 0.2, 1.0}, 5000);
+    if (HASH != CLIENT_HASH) {
         HyprlandAPI::addNotification(PHANDLE, PLUGIN_LOG_PREFIX " Mismatched Hyprland version! check logs for details",
                                      CHyprColor(1.0, 0.2, 0.2, 1.0), 5000);
         Debug::log(ERR, PLUGIN_LOG_PREFIX " version mismatch!");
