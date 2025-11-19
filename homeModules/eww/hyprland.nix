@@ -62,7 +62,7 @@ in {
     (deflisten workspace-state :initial '{"active":0,"urgent":0}'
       "${workspace-state-listener}")
     (deflisten current-window :initial "[]"
-      "${lib.getExe pkgs.hyprland-activewindow} _ | ${lib.getExe pkgs.gnused} --unbuffered -e 's/\\\\/\\\\\\\\/g'")
+      "${lib.getExe pkgs.hyprland-activewindow} _ | ${lib.getExe pkgs.gnused} --unbuffered -e 's/\\\\\\\\/\\\\\\\\\\\\\\\\/g'")
     (defwidget workspaces []
       (box :orientation "h"
            :space-evenly false
