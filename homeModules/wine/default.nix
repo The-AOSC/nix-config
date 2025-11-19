@@ -1,4 +1,5 @@
 {
+  inputs,
   osConfig,
   config,
   pkgs,
@@ -13,15 +14,18 @@
     fileSystemsBlacklist = lib.filter (name: !(builtins.elem name fileSystemsWhitelist)) (lib.mapAttrsToList (name: value: name) osConfig.fileSystems);
     firejailBlacklist = lib.concatMapStringsSep " " (path: "--blacklist=${path}") fileSystemsBlacklist;
     location = "Desktop/games";
+    wine-staging = pkgs.wine-staging-fixed;
+    wine-ge = pkgs.wine-ge-fixed;
+    with-wine-ge = pkgs.writeShellScriptBin "with-wine-ge" ''
+      PATH=${wine-ge}/bin:$PATH
+      exec "$@"
+    '';
   in
     lib.mkIf config.modules.wine.enable {
-      home.packages = with pkgs; [
-        (pkgs.writeShellScriptBin "with-wine-ge" ''
-          PATH=${pkgs.wine-ge-fixed}/bin:$PATH
-          exec "$@"
-        '')
-        wine-staging-fixed
-        winetricks
+      home.packages = [
+        pkgs.winetricks
+        wine-staging
+        with-wine-ge
       ];
       home.file = {
         "${location}/firejail-run.sh" = {
@@ -114,5 +118,87 @@
           '';
         };
       };
+      home.checks = let
+        test-wine = wine:
+          pkgs.testers.runNixOSTest {
+            name = "${wine.name}";
+            nodes.machine = {pkgs, ...}: {
+              environment.systemPackages = [
+                wine
+              ];
+            };
+            testScript = let
+              hello32 = "${pkgs.pkgsCross.mingw32.hello}/bin/hello.exe";
+              hello64 = "${pkgs.pkgsCross.mingwW64.hello}/bin/hello.exe";
+            in ''
+              machine.wait_for_unit("multi-user.target")
+              ${lib.concatMapStrings (hello: ''
+                output = machine.succeed("wine ${hello}", timeout=180)
+                assert "Hello, world!" in output
+              '') [hello32 hello64]}
+            '';
+          };
+        test-wine-graphical = wine:
+          pkgs.testers.runNixOSTest {
+            name = "${wine.name}-graphical";
+            nodes.machine = {pkgs, ...}: {
+              imports = [
+                "${inputs.nixpkgs}/nixos/tests/common/x11.nix"
+              ];
+              environment.systemPackages = [
+                wine
+              ];
+            };
+            testScript = let
+              hello32 = "${pkgs.pkgsCross.mingw32.hello}/bin/hello.exe";
+              hello64 = "${pkgs.pkgsCross.mingwW64.hello}/bin/hello.exe";
+            in ''
+              machine.wait_for_x()
+              ${lib.concatMapStrings (hello: let
+                hello-bat = pkgs.writeText "hello.bat" ''
+                  ${lib.replaceString "/" "\\" hello} > hello-output
+                '';
+              in ''
+                machine.succeed("wineconsole ${hello-bat}", timeout=180)
+                machine.wait_for_file("hello-output")
+                output = machine.succeed("cat hello-output", timeout=180)
+                assert "Hello, world!" in output
+                output = machine.succeed("rm hello-output", timeout=180)
+              '') [hello32 hello64]}
+              machine.succeed("mkdir directory-name", timeout=180)
+              machine.execute("wine explorer directory-name >/dev/null &")
+              machine.wait_for_window("directory-name")
+            '';
+          };
+        test-with-wine-ge = pkgs.testers.runNixOSTest {
+          name = "with-wine-ge";
+          nodes.machine = {pkgs, ...}: {
+            environment.systemPackages = [
+              wine-staging
+              with-wine-ge
+            ];
+          };
+          testScript = let
+          in ''
+            machine.wait_for_unit("multi-user.target")
+            wine_path = machine.succeed("realpath $(which wine)", timeout=180)
+            wine_ge_path = machine.succeed("realpath $(with-wine-ge which wine)", timeout=180)
+            wine_path_expected = machine.succeed("realpath ${wine-staging}/bin/wine", timeout=180)
+            wine_ge_path_expected = machine.succeed("realpath ${wine-ge}/bin/wine", timeout=180)
+            print(f"{wine_path=}")
+            print(f"{wine_ge_path=}")
+            print(f"{wine_path_expected=}")
+            print(f"{wine_ge_path_expected=}")
+            assert wine_path == wine_path_expected
+            assert wine_ge_path == wine_ge_path_expected
+          '';
+        };
+      in [
+        (test-wine-graphical wine-ge)
+        (test-wine-graphical wine-staging)
+        (test-wine wine-ge)
+        (test-wine wine-staging)
+        test-with-wine-ge
+      ];
     };
 }
