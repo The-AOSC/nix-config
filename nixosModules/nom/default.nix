@@ -18,6 +18,9 @@
           version = "git";
           src = inputs.nom;
         };
+        comma = prev.comma.override {
+          nix = config.nix.package;
+        };
       })
     ];
     nix.monitored = {
