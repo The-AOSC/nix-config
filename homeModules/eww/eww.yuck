@@ -81,6 +81,7 @@
 
 (defwidget wireplumber []
   (label :class "wireplumber"
+         :visible "${wireplumber != []}"
          :text "${
            wireplumber[1]=="" ? "${round(wireplumber[0]*100, 0)}% 󰕾" : "󰖁"
          } ${
