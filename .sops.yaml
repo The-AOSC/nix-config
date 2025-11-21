@@ -23,3 +23,15 @@ creation_rules:
         - *user_aosc
         age:
         - *container_gitlab
+  - path_regex: secrets/nm-phone.env
+    key_groups:
+      - pgp:
+        - *user_aosc
+        age:
+        - *host_evacuis
+  - path_regex: secrets/nm-home.env
+    key_groups:
+      - pgp:
+        - *user_aosc
+        age:
+        - *host_evacuis
