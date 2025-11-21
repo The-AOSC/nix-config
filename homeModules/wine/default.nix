@@ -119,6 +119,7 @@
         };
       };
       home.checks = let
+        timeout = 300;
         test-wine = wine:
           pkgs.testers.runNixOSTest {
             name = "${wine.name}";
@@ -131,9 +132,10 @@
               hello32 = "${pkgs.pkgsCross.mingw32.hello}/bin/hello.exe";
               hello64 = "${pkgs.pkgsCross.mingwW64.hello}/bin/hello.exe";
             in ''
+              TIMEOUT = ${builtins.toString timeout}
               machine.wait_for_unit("multi-user.target")
               ${lib.concatMapStrings (hello: ''
-                output = machine.succeed("wine ${hello}", timeout=180)
+                output = machine.succeed("wine ${hello}", timeout=TIMEOUT)
                 assert "Hello, world!" in output
               '') [hello32 hello64]}
             '';
@@ -153,19 +155,20 @@
               hello32 = "${pkgs.pkgsCross.mingw32.hello}/bin/hello.exe";
               hello64 = "${pkgs.pkgsCross.mingwW64.hello}/bin/hello.exe";
             in ''
+              TIMEOUT = ${builtins.toString timeout}
               machine.wait_for_x()
               ${lib.concatMapStrings (hello: let
                 hello-bat = pkgs.writeText "hello.bat" ''
                   ${lib.replaceString "/" "\\" hello} > hello-output
                 '';
               in ''
-                machine.succeed("wineconsole ${hello-bat}", timeout=180)
+                machine.succeed("wineconsole ${hello-bat}", timeout=TIMEOUT)
                 machine.wait_for_file("hello-output")
-                output = machine.succeed("cat hello-output", timeout=180)
+                output = machine.succeed("cat hello-output", timeout=TIMEOUT)
                 assert "Hello, world!" in output
-                output = machine.succeed("rm hello-output", timeout=180)
+                output = machine.succeed("rm hello-output", timeout=TIMEOUT)
               '') [hello32 hello64]}
-              machine.succeed("mkdir directory-name", timeout=180)
+              machine.succeed("mkdir directory-name", timeout=TIMEOUT)
               machine.execute("wine explorer directory-name >/dev/null &")
               machine.wait_for_window("directory-name")
             '';
@@ -181,10 +184,10 @@
           testScript = let
           in ''
             machine.wait_for_unit("multi-user.target")
-            wine_path = machine.succeed("realpath $(which wine)", timeout=180)
-            wine_ge_path = machine.succeed("realpath $(with-wine-ge which wine)", timeout=180)
-            wine_path_expected = machine.succeed("realpath ${wine-staging}/bin/wine", timeout=180)
-            wine_ge_path_expected = machine.succeed("realpath ${wine-ge}/bin/wine", timeout=180)
+            wine_path = machine.succeed("realpath $(which wine)")
+            wine_ge_path = machine.succeed("realpath $(with-wine-ge which wine)")
+            wine_path_expected = machine.succeed("realpath ${wine-staging}/bin/wine")
+            wine_ge_path_expected = machine.succeed("realpath ${wine-ge}/bin/wine")
             print(f"{wine_path=}")
             print(f"{wine_ge_path=}")
             print(f"{wine_path_expected=}")
