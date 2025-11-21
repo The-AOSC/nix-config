@@ -6,6 +6,7 @@
   cfg = config.modules.netConfig;
 in {
   imports = [
+    ./avahi.nix
     ./containers.nix
     ./networkProfiles.nix
   ];

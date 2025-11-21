@@ -1,0 +1,475 @@
+>From 5b9e3e2b50ed6666ced29e3aadb8d37b0622ff8c Mon Sep 17 00:00:00 2001
+From: Stijn Hoop <stijn@sandcat.nl>
+Date: Sat, 21 Jul 2012 12:59:44 +0200
+Subject: [PATCH] Add capability to present aliases for the host as CNAME records
+
+Useful to (for example) drive development and staging websites while
+on the road.
+
+Based on the python code from the wiki:
+
+http://www.avahi.org/wiki/Examples/PythonPublishAlias
+
+as well as static-hosts.[ch]
+---
+ avahi-core/core.h              |    1 +
+ avahi-core/entry.c             |   37 ++++++++
+ avahi-core/publish.h           |   12 +++
+ avahi-daemon/Makefile.am       |    1 +
+ avahi-daemon/avahi-daemon.conf |    1 +
+ avahi-daemon/cnames.c          |  194 ++++++++++++++++++++++++++++++++++++++++
+ avahi-daemon/cnames.h          |   28 ++++++
+ avahi-daemon/main.c            |   27 ++++++
+ man/avahi-daemon.conf.5.xml.in |    6 ++
+ 9 files changed, 307 insertions(+), 0 deletions(-)
+ create mode 100644 avahi-daemon/cnames.c
+ create mode 100644 avahi-daemon/cnames.h
+
+diff --git a/avahi-core/core.h b/avahi-core/core.h
+index f50c612..d482c34 100644
+--- a/avahi-core/core.h
++++ b/avahi-core/core.h
+@@ -69,6 +69,7 @@ typedef struct AvahiServerConfig {
+     unsigned n_cache_entries_max;     /**< Maximum number of cache entries per interface */
+     AvahiUsec ratelimit_interval;     /**< If non-zero, rate-limiting interval parameter. */
+     unsigned ratelimit_burst;         /**< If ratelimit_interval is non-zero, rate-limiting burst parameter. */
++    char **aliases;                   /**< Additional names to publish as CNAME for this host. */
+ } AvahiServerConfig;
+ 
+ /** Allocate a new mDNS responder object. */
+diff --git a/avahi-core/entry.c b/avahi-core/entry.c
+index 0d86213..eeaa0f8 100644
+--- a/avahi-core/entry.c
++++ b/avahi-core/entry.c
+@@ -428,6 +428,43 @@ int avahi_server_add_ptr(
+     return AVAHI_OK;
+ }
+ 
++int avahi_server_add_cname(
++    AvahiServer *s,
++    AvahiSEntryGroup *g,
++    AvahiIfIndex interface,
++    AvahiProtocol protocol,
++    AvahiPublishFlags flags,
++    uint32_t ttl,
++    const char *name) {
++
++    AvahiRecord *r;
++    AvahiEntry *e;
++    char *fq;
++
++    assert(s);
++    assert(s->domain_name);
++    assert(name);
++
++    AVAHI_CHECK_VALIDITY(s, !name || avahi_is_valid_domain_name(name), AVAHI_ERR_INVALID_HOST_NAME);
++
++    if (!(fq = avahi_strdup_printf("%s.%s", name, s->domain_name)))
++        return avahi_server_set_errno(s, AVAHI_ERR_NO_MEMORY);
++
++    if (!(r = avahi_record_new_full(fq, AVAHI_DNS_CLASS_IN, AVAHI_DNS_TYPE_CNAME, ttl)))
++        return avahi_server_set_errno(s, AVAHI_ERR_NO_MEMORY);
++
++    avahi_free(fq);
++
++    r->data.cname.name = avahi_normalize_name_strdup(s->host_name_fqdn);
++    e = server_add_internal(s, g, interface, protocol, flags, r);
++    avahi_record_unref(r);
++
++    if (!e)
++	return avahi_server_errno(s);
++
++    return AVAHI_OK;
++}
++
+ int avahi_server_add_address(
+     AvahiServer *s,
+     AvahiSEntryGroup *g,
+diff --git a/avahi-core/publish.h b/avahi-core/publish.h
+index 90797de..bc0f5ae 100644
+--- a/avahi-core/publish.h
++++ b/avahi-core/publish.h
+@@ -98,6 +98,18 @@ int avahi_server_add_address(
+     const char *name,
+     AvahiAddress *a);
+ 
++/** Add a CNAME mapping to the server, which will point to the this
++ * servers FQDN. See avahi_server_add() for more information. */
++int avahi_server_add_cname(
++    AvahiServer *s,
++    AvahiSEntryGroup *g,
++    AvahiIfIndex interface,
++    AvahiProtocol protocol,
++    AvahiPublishFlags flags,
++    uint32_t ttl,
++    const char *name);
++
++
+ /** Add an DNS-SD service to the Server. This will add all required
+  * RRs to the server. See avahi_server_add() for more information.  If
+  * adding one of the RRs fails, the function returns with an error,
+diff --git a/avahi-daemon/Makefile.am b/avahi-daemon/Makefile.am
+index b6b5a77..c8e29f8 100644
+--- a/avahi-daemon/Makefile.am
++++ b/avahi-daemon/Makefile.am
+@@ -50,6 +50,7 @@ avahi_daemon_SOURCES = \
+ 	simple-protocol.c simple-protocol.h \
+ 	static-services.c static-services.h \
+ 	static-hosts.c static-hosts.h \
++	cnames.c cnames.h \
+ 	ini-file-parser.c ini-file-parser.h \
+ 	setproctitle.c setproctitle.h \
+ 	sd-daemon.h sd-daemon.c \
+diff --git a/avahi-daemon/avahi-daemon.conf b/avahi-daemon/avahi-daemon.conf
+index 27e240d..40f55b9 100644
+--- a/avahi-daemon/avahi-daemon.conf
++++ b/avahi-daemon/avahi-daemon.conf
+@@ -22,6 +22,7 @@
+ #host-name=foo
+ #domain-name=local
+ #browse-domains=0pointer.de, zeroconf.org
++#aliases=wwwtest,othername
+ use-ipv4=yes
+ use-ipv6=no
+ #allow-interfaces=eth0
+diff --git a/avahi-daemon/cnames.c b/avahi-daemon/cnames.c
+new file mode 100644
+index 0000000..fea9cb4
+--- /dev/null
++++ b/avahi-daemon/cnames.c
+@@ -0,0 +1,194 @@
++/***
++  This file is part of avahi.
++
++  avahi is free software; you can redistribute it and/or modify it
++  under the terms of the GNU Lesser General Public License as
++  published by the Free Software Foundation; either version 2.1 of the
++  License, or (at your option) any later version.
++
++  avahi is distributed in the hope that it will be useful, but WITHOUT
++  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
++  Public License for more details.
++
++  You should have received a copy of the GNU Lesser General Public
++  License along with avahi; if not, write to the Free Software
++  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
++  USA.
++***/
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <string.h>
++#include <errno.h>
++#include <stdio.h>
++
++#include <avahi-common/llist.h>
++#include <avahi-common/malloc.h>
++#include <avahi-common/error.h>
++#include <avahi-core/log.h>
++#include <avahi-core/publish.h>
++
++#include "main.h"
++#include "cnames.h"
++
++typedef struct CName CName;
++
++struct CName {
++    AvahiSEntryGroup *group;
++    int iteration;
++
++    char *cname;
++
++    AVAHI_LLIST_FIELDS(CName, cnames);
++};
++
++static AVAHI_LLIST_HEAD(CName, cnames) = NULL;
++static int current_iteration = 0;
++
++static void add_cname_to_server(CName *c);
++static void remove_cname_from_server(CName *c);
++
++static void entry_group_callback(AvahiServer *s, AVAHI_GCC_UNUSED AvahiSEntryGroup *eg, AvahiEntryGroupState state, void* userdata) {
++    CName *c;
++
++    assert(s);
++    assert(eg);
++
++    c = userdata;
++
++    switch (state) {
++
++        case AVAHI_ENTRY_GROUP_COLLISION:
++            avahi_log_error("Conflict for alias \"%s\", not established.", c->cname);
++            break;
++
++        case AVAHI_ENTRY_GROUP_ESTABLISHED:
++            avahi_log_notice ("Alias \"%s\" successfully established.", c->cname);
++            break;
++
++        case AVAHI_ENTRY_GROUP_FAILURE:
++            avahi_log_notice ("Failed to establish alias \"%s\": %s.", c->cname, avahi_strerror (avahi_server_errno (s)));
++            break;
++
++        case AVAHI_ENTRY_GROUP_UNCOMMITED:
++        case AVAHI_ENTRY_GROUP_REGISTERING:
++            ;
++    }
++}
++
++static CName *cname_new(void) {
++    CName *c;
++
++    c = avahi_new(CName, 1);
++
++    c->group = NULL;
++    c->cname = NULL;
++    c->iteration = current_iteration;
++
++    AVAHI_LLIST_PREPEND(CName, cnames, cnames, c);
++
++    return c;
++}
++
++static void cname_free(CName *c) {
++    assert(c);
++
++    AVAHI_LLIST_REMOVE(CName, cnames, cnames, c);
++
++    if (c->group)
++        avahi_s_entry_group_free(c->group);
++
++    avahi_free(c->cname);
++
++    avahi_free(c);
++}
++
++static CName *cname_find(const char *name) {
++    CName *c;
++
++    assert(name);
++
++    for (c = cnames; c; c = c->cnames_next)
++        if (!strcmp(c->cname, name))
++            return c;
++
++    return NULL;
++}
++
++static void add_cname_to_server(CName *c)
++{
++
++    if (!c->group)
++        if (!(c->group = avahi_s_entry_group_new (avahi_server, entry_group_callback, c))) {
++            avahi_log_error("avahi_s_entry_group_new() failed: %s", avahi_strerror(avahi_server_errno(avahi_server)));
++            return;
++        }
++
++    if (avahi_s_entry_group_is_empty(c->group)) {
++        int err;
++
++        if ((err = avahi_server_add_cname(avahi_server, c->group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, 0, AVAHI_DEFAULT_TTL_HOST_NAME, c->cname)) < 0) {
++            avahi_log_error ("Alias %s: avahi_server_add_cname failure: %s", c->cname, avahi_strerror(err));
++            return;
++        }
++
++        avahi_s_entry_group_commit (c->group);
++    }
++}
++
++static void remove_cname_from_server(CName *c)
++{
++    if (c->group)
++        avahi_s_entry_group_reset (c->group);
++}
++
++void cnames_add_to_server(void) {
++    CName *c;
++
++    for (c = cnames; c; c = c->cnames_next)
++        add_cname_to_server(c);
++}
++
++void cnames_remove_from_server(void) {
++    CName *c;
++
++    for (c = cnames; c; c = c->cnames_next)
++        remove_cname_from_server(c);
++}
++
++void cnames_register(char **aliases) {
++    CName *c, *next;
++    char **name;
++    char *fq;
++
++    current_iteration++;
++
++    for (name = aliases; name && *name; name++) {
++        if (!(c = cname_find(*name))) {
++            c = cname_new();
++            c->cname = *name;
++
++            avahi_log_info("Loading new alias %s.", c->cname);
++        }
++
++        c->iteration = current_iteration;
++    }
++
++    for (c = cnames; c; c = next) {
++        next = c->cnames_next;
++
++        if (c->iteration != current_iteration) {
++            avahi_log_info("Alias %s vanished, removing.", c->cname);
++            cname_free(c);
++        }
++    }
++}
++
++void cnames_free_all (void)
++{
++    while(cnames)
++        cname_free(cnames);
++}
+diff --git a/avahi-daemon/cnames.h b/avahi-daemon/cnames.h
+new file mode 100644
+index 0000000..afd671c
+--- /dev/null
++++ b/avahi-daemon/cnames.h
+@@ -0,0 +1,28 @@
++#ifndef foocnamesfoo
++#define foocnameshfoo
++
++/***
++  This file is part of avahi.
++
++  avahi is free software; you can redistribute it and/or modify it
++  under the terms of the GNU Lesser General Public License as
++  published by the Free Software Foundation; either version 2.1 of the
++  License, or (at your option) any later version.
++
++  avahi is distributed in the hope that it will be useful, but WITHOUT
++  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
++  Public License for more details.
++
++  You should have received a copy of the GNU Lesser General Public
++  License along with avahi; if not, write to the Free Software
++  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
++  USA.
++***/
++
++void cnames_register(char **aliases);
++void cnames_free_all(void);
++void cnames_add_to_server(void);
++void cnames_remove_from_server(void);
++
++#endif
+diff --git a/avahi-daemon/main.c b/avahi-daemon/main.c
+index d46f40a..867de6d 100644
+--- a/avahi-daemon/main.c
++++ b/avahi-daemon/main.c
+@@ -76,6 +76,7 @@
+ #include "simple-protocol.h"
+ #include "static-services.h"
+ #include "static-hosts.h"
++#include "cnames.h"
+ #include "ini-file-parser.h"
+ #include "sd-daemon.h"
+ 
+@@ -359,6 +360,7 @@ static void server_callback(AvahiServer *s, AvahiServerState state, void *userda
+ 
+             static_service_add_to_server();
+             static_hosts_add_to_server();
++            cnames_add_to_server();
+ 
+             remove_dns_server_entry_groups();
+ 
+@@ -377,6 +379,7 @@ static void server_callback(AvahiServer *s, AvahiServerState state, void *userda
+             static_service_remove_from_server();
+             static_hosts_remove_from_server();
+             remove_dns_server_entry_groups();
++            cnames_remove_from_server();
+ 
+             n = avahi_alternative_host_name(avahi_server_get_host_name(s));
+ 
+@@ -406,6 +409,7 @@ static void server_callback(AvahiServer *s, AvahiServerState state, void *userda
+             static_service_remove_from_server();
+             static_hosts_remove_from_server();
+             remove_dns_server_entry_groups();
++            cnames_remove_from_server();
+ 
+             break;
+ 
+@@ -619,6 +623,21 @@ static int load_config_file(DaemonConfig *c) {
+                     avahi_strfreev(e);
+ 
+                     c->server_config.browse_domains = filter_duplicate_domains(c->server_config.browse_domains);
++                } else if (strcasecmp(p->key, "aliases") == 0) {
++                    char **e, **t;
++
++                    e = avahi_split_csv(p->value);
++
++                    for (t = e; *t; t++) {
++                        if (!avahi_is_valid_host_name(*t)) {
++                            avahi_log_error("Invalid host name \"%s\" for key \"%s\" in group \"%s\"\n", *t, p->key, g->name);
++                            avahi_strfreev(e);
++                            goto finish;
++                        }
++                    }
++
++                    avahi_strfreev(c->server_config.aliases);
++                    c->server_config.aliases = e;
+                 } else if (strcasecmp(p->key, "use-ipv4") == 0)
+                     c->server_config.use_ipv4 = is_yes(p->value);
+                 else if (strcasecmp(p->key, "use-ipv6") == 0)
+@@ -965,6 +984,9 @@ static void reload_config(void) {
+     static_service_add_to_server();
+     static_hosts_add_to_server();
+ 
++    cnames_register(config.server_config.aliases);
++    cnames_add_to_server();
++
+     if (resolv_conf_entry_group)
+         avahi_s_entry_group_reset(resolv_conf_entry_group);
+ 
+@@ -1200,6 +1222,8 @@ static int run_server(DaemonConfig *c) {
+     static_hosts_load(0);
+ #endif
+ 
++    cnames_register(config.server_config.aliases);
++
+     if (!(avahi_server = avahi_server_new(poll_api, &c->server_config, server_callback, c, &error))) {
+         avahi_log_error("Failed to create server: %s", avahi_strerror(error));
+         goto finish;
+@@ -1237,6 +1261,9 @@ finish:
+     static_hosts_remove_from_server();
+     static_hosts_free_all();
+ 
++    cnames_remove_from_server();
++    cnames_free_all();
++
+     remove_dns_server_entry_groups();
+ 
+     simple_protocol_shutdown();
+diff --git a/man/avahi-daemon.conf.5.xml.in b/man/avahi-daemon.conf.5.xml.in
+index bea7ed5..0d61e93 100644
+--- a/man/avahi-daemon.conf.5.xml.in
++++ b/man/avahi-daemon.conf.5.xml.in
+@@ -58,6 +58,12 @@
+     </option>
+ 
+     <option>
++      <p><opt>aliases=</opt> Set a comma separated list of aliases for this
++      host. A separate CNAME record pointing to the FQDN of this host will
++      be registered for each of the listed aliases.</p>
++    </option>
++
++    <option>
+       <p><opt>use-ipv4=</opt> Takes a boolean value ("yes" or
+       "no"). If set to "no" avahi-daemon will not use IPv4
+       sockets. Default is "yes".</p>
+-- 
+1.7.1
+

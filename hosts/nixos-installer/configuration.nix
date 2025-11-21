@@ -10,5 +10,13 @@
       PermitRootLogin = lib.mkForce "prohibit-password";
     };
   };
+  modules.netConfig = {
+    enable = true;
+    advertiseContainers = false;
+  };
+  services.avahi.publish = {
+    enable = lib.mkForce false;
+    addresses = lib.mkForce false;
+  };
   nixpkgs.hostPlatform = "x86_64-linux";
 }
