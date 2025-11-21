@@ -2,7 +2,6 @@
   description = "NixOS configuration of The AOSC";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-fish-downgrade.url = "github:NixOS/nixpkgs?rev=fe9e07b2b565a8dee42e30eaff3e3606f6aefd6a";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence = {
@@ -94,19 +93,6 @@
             colorbindiff = final: prev: {
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
             };
-            fish-downgrade = final: prev: {
-              # upstream issue:
-              # https://github.com/NixOS/nixpkgs/issues/462025
-              fish =
-                (import inputs.nixpkgs-fish-downgrade {
-                  inherit (final) system;
-                }).fish.overrideAttrs (old: {
-                  postPatch = ''
-                    ${old.postPatch or ""}
-                    cp -f ${prev.fish.src}/share/tools/create_manpage_completions.py share/tools/create_manpage_completions.py
-                  '';
-                });
-            };
             hypridle-wait-for-hyprlock-fadein = final: prev: {
               hypridle = prev.hypridle.overrideAttrs (old: {
                 patches =
@@ -161,7 +147,6 @@
             };
             wine-fixes = final: prev: {
               wine-ge-fixed = final.wine-ge.overrideAttrs (finalAttrs: old: {
-                NIX_LDFLAGS = "${old.NIX_LDFLAGS} ${builtins.toString (builtins.map (p: "-rpath ${final.lib.getLib p}/lib") finalAttrs.buildInputs)}";
                 patches =
                   old.patches or []
                   ++ [
@@ -189,7 +174,6 @@
               });
               wine-staging-fixed =
                 (final.wineWowPackages.stagingFull.overrideAttrs (finalAttrs: old: {
-                  NIX_LDFLAGS = "${old.NIX_LDFLAGS} ${builtins.toString (builtins.map (p: "-rpath ${final.lib.getLib p}/lib") finalAttrs.buildInputs)}";
                   /*
                   postInstall = let
                     wine-mono = final.fetchurl rec {
