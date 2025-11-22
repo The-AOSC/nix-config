@@ -1,11 +1,19 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: {
   imports = [
     ../../networks.nix
   ];
+  systemd.services."getty@tty1" = {
+    overrideStrategy = "asDropin";
+    serviceConfig.ExecStart = lib.mkBefore [""]; # override default from `getty@.service`
+    script = ''
+      exec ${lib.getExe pkgs.asciiquarium-transparent} -t
+    '';
+  };
   time.timeZone = "Asia/Yekaterinburg";
   users.users.root = {
     openssh.authorizedKeys.keyFiles = [
