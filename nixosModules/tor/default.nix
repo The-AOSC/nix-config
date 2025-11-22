@@ -60,9 +60,6 @@
         type = "basic";
       }
     ];
-    users.users.aosc.extraGroups = [
-      "tor"
-    ];
     environment.persistence."/persist" = {
       directories = [
         {

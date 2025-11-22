@@ -53,10 +53,13 @@
     nom = {
       url = "github:maralorn/nix-output-monitor";
       inputs.nixpkgs.follows = "nixpkgs";
-      #inputs.flake-utils.follows = "flake-utils";
     };
     nix-monitored = {
       url = "github:ners/nix-monitored";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -22,7 +22,7 @@
     extraGroups = [
       "dialout"
       "networkmanager"
-      #"video"
+      "tor"
       "wheel"
       "wireshark"
     ];
