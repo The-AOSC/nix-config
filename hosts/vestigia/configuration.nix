@@ -25,6 +25,8 @@
     AllowGroups = lib.mkForce null;
     PermitRootLogin = lib.mkForce "prohibit-password";
   };
+  services.tor.client.socksListenAddress.addr = lib.mkForce "0.0.0.0";
+  networking.firewall.allowedTCPPorts = [9150]; # tor proxy
   system.stateVersion = "25.11";
   modules.base.enable = true;
   modules.netConfig.enable = true;
