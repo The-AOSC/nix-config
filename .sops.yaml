@@ -3,6 +3,7 @@ keys:
   - &user_aosc 0B22AB0E280F6FD2FDFA6F862DAEF773F14D02E5
   # ssh-to-age < ssh_host_ed25519_key.pub
   - &host_evacuis age108qx9xe89tp6wrlptjnezkf4f37nz55a769dkc8f7cx7geve0caqllyp20
+  - &host_vestigia age12lcqqusgfxvdkwgacwhlrk0vdpfn00332wtvzy749k5nxkmmr9gse2temz
   - &container_gitlab age1xzqptxhkdy9tpv0076uhjnppt6s0ggccvk2zckr6myljd3h3rp2ssxmh5u
 creation_rules:
   - path_regex: secrets/root-password.yaml
@@ -11,6 +12,7 @@ creation_rules:
         - *user_aosc
         age:
         - *host_evacuis
+        - *host_vestigia
   - path_regex: secrets/aosc-password.yaml
     key_groups:
       - pgp:
@@ -29,9 +31,11 @@ creation_rules:
         - *user_aosc
         age:
         - *host_evacuis
+        - *host_vestigia
   - path_regex: secrets/nm-home.env
     key_groups:
       - pgp:
         - *user_aosc
         age:
         - *host_evacuis
+        - *host_vestigia

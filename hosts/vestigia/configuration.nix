@@ -8,8 +8,6 @@
   ];
   time.timeZone = "Asia/Yekaterinburg";
   users.users.root = {
-    password = "root"; # WARNING: REMOVE AFTER BOOTSTRAPPING
-    hashedPasswordFile = lib.mkForce null; # WARNING: REMOVE AFTER BOOTSTRAPPING
     openssh.authorizedKeys.keyFiles = [
       ../../credentials/aosc.authorized_keys
     ];
