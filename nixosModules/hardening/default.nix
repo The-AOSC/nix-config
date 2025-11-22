@@ -23,6 +23,7 @@
     };
     boot.kernel.sysctl = {
       "net.ipv4.icmp_echo_ignore_all" = false;
+      "net.ipv6.icmp.echo_ignore_all" = false;
       "fs.binfmt_misc.status" =
         lib.mkIf
         (with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {})))
