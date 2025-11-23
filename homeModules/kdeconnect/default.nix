@@ -9,7 +9,13 @@
   };
   config = lib.mkIf config.modules.kdeconnect.enable {
     home.packages = [
-      pkgs.kdePackages.kdeconnect-kde
+      (pkgs.kdePackages.kdeconnect-kde.overrideAttrs (old: {
+        cmakeFlags =
+          old.cmakeFlags or []
+          ++ [
+            "-DMDNS_ENABLED=OFF"
+          ];
+      }))
     ];
     home.persistence."/persist" = {
       directories = [
