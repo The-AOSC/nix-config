@@ -20,6 +20,9 @@
       ../../credentials/aosc.authorized_keys
     ];
   };
+  environment.systemPackages = with pkgs; [
+    brightnessctl
+  ];
   fileSystems."/persist".neededForBoot = true;
   services.openssh.settings = {
     AllowGroups = lib.mkForce null;
