@@ -62,6 +62,12 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ez-configs = {
+      url = "github:ehllie/ez-configs";
+      #url = "/home/aosc/ez-configs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     flake-parts,
@@ -71,13 +77,18 @@
     flake-parts.lib.mkFlake {inherit inputs;} (
       top @ {...}: {
         imports = [
+          inputs.ez-configs.flakeModule
           inputs.files.flakeModules.default
           inputs.home-manager.flakeModules.home-manager
         ];
+        ezConfigs = {
+          root = ./.;
+          globalArgs = {
+            inherit inputs;
+          };
+          nixos.hosts.evacuis.userHomeModules = ["aosc"];
+        };
         flake = {
-          lib = import ./lib.nix inputs;
-          nixosModules = self.lib.import-all ./nixosModules;
-          homeModules = self.lib.import-all ./homeModules;
           overlays = {
             catppuccin-userstyles = final: prev: {
               catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
@@ -207,7 +218,6 @@
               wtf = final.callPackage ./packages/wtf.nix {};
             };
           };
-          nixosConfigurations = builtins.mapAttrs self.lib.mkNixosSystem (self.lib.import-all ./hosts);
         };
         systems = [
           "x86_64-linux"
@@ -268,7 +278,7 @@
               name = "nix-mineral-patched";
               src = inputs.nix-mineral;
               patches = [
-                ./nixosModules/hardening/override.patch
+                ./nixos-modules/hardening/override.patch
               ];
             };
           in [
@@ -276,13 +286,13 @@
               drv = pkgs.runCommand "nix-mineral.nix-patched" {} ''
                 cp ${nix-mineral-patched}/nix-mineral.nix $out
               '';
-              path_ = "./nixosModules/hardening/nix-mineral.nix";
+              path_ = "./nixos-modules/hardening/nix-mineral.nix";
             }
             {
               drv = pkgs.runCommand "sources.toml" {} ''
                 cp ${nix-mineral-patched}/sources.toml $out
               '';
-              path_ = "./nixosModules/hardening/sources.toml";
+              path_ = "./nixos-modules/hardening/sources.toml";
             }
           ];
           formatter = pkgs.alejandra;

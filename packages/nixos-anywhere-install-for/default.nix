@@ -16,7 +16,7 @@ writeShellApplication {
     host="$1"
     ip="$2"
     shift 2
-    nixos-anywhere --generate-hardware-config nixos-generate-config ./hosts/"$host"/hardware-configuration.nix --flake ".#$host" --target-host root@"$ip" "$@"
-    nix fmt ./hosts/"$host"/hardware-configuration.nix
+    nixos-anywhere --generate-hardware-config nixos-generate-config ./nixos-configurations/"$host"/hardware-configuration.nix --flake ".#$host" --target-host root@"$ip" "$@"
+    nix fmt ./nixos-configurations/"$host"/hardware-configuration.nix
   '';
 }

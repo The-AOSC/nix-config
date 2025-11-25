@@ -1,5 +1,10 @@
-inputs @ {...}: {
-  overlays = [
+{inputs, ...}: {
+  imports = [
+    ./configuration.nix
+    ./hardware-configuration.nix
+    ./unfree.nix
+  ];
+  nixpkgs.overlays = [
     inputs.nix-gaming.overlays.default
     inputs.nur.overlays.default
     inputs.self.overlays.catppuccin-userstyles
@@ -16,17 +21,4 @@ inputs @ {...}: {
     inputs.self.overlays.wtf
     inputs.sops-nix.overlays.default
   ];
-  nixos-modules = [
-    ./configuration.nix
-    ./hardware-configuration.nix
-    ./unfree.nix
-  ];
-  home = {
-    "aosc" = {
-      modules = [
-        ./home.nix
-        ./unfree-fonts.nix
-      ];
-    };
-  };
 }
