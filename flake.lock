@@ -392,16 +392,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1763629995,
-        "narHash": "sha256-iEvbCIlHX6WUblrnoF7gwUQtu2ay97zoZsvoP85I2BA=",
+        "lastModified": 1763555559,
+        "narHash": "sha256-VmxyRnXsOxV3a+leXjuS6TOI+8O9p76/wkbC3OlVI/Y=",
         "owner": "maralorn",
         "repo": "nix-output-monitor",
-        "rev": "0cb46615fb8187e4598feac4ccf8f27a06aae0b7",
+        "rev": "c1c48a07a55735379add43cb5b7df287d22f1e7e",
         "type": "github"
       },
       "original": {
         "owner": "maralorn",
         "repo": "nix-output-monitor",
+        "rev": "c1c48a07a55735379add43cb5b7df287d22f1e7e",
         "type": "github"
       }
     },

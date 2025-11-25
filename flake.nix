@@ -51,7 +51,7 @@
     };
     nixpkgs-buildDenoPackage.url = "github:aMOPel/nixpkgs/feat/buildDenoPackage-second";
     nom = {
-      url = "github:maralorn/nix-output-monitor";
+      url = "github:maralorn/nix-output-monitor?rev=c1c48a07a55735379add43cb5b7df287d22f1e7e";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-monitored = {
