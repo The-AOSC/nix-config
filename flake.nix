@@ -82,7 +82,7 @@
           inputs.home-manager.flakeModules.home-manager
         ];
         ezConfigs = {
-          root = ./.;
+          root = builtins.toString ./.;
           globalArgs = {
             inherit inputs;
           };
