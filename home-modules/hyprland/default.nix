@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  debug = true;
+  debug = false;
 in {
   options = {
     modules.hyprland.enable = lib.mkEnableOption "hyprland";
