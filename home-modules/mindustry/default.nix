@@ -9,7 +9,7 @@
   };
   config = lib.mkIf config.modules.mindustry.enable {
     home.packages = [
-      pkgs.mindustry-wayland
+      pkgs.mindustry150-wayland
     ];
     home.persistence."/persist" = {
       directories = [

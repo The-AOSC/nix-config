@@ -64,7 +64,6 @@
     };
     ez-configs = {
       url = "github:ehllie/ez-configs";
-      #url = "/home/aosc/ez-configs";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -79,6 +78,7 @@
         imports = [
           inputs.ez-configs.flakeModule
           inputs.files.flakeModules.default
+          inputs.flake-parts.flakeModules.easyOverlay
           inputs.home-manager.flakeModules.home-manager
         ];
         ezConfigs = {
@@ -90,22 +90,18 @@
         };
         flake = {
           overlays = {
-            catppuccin-userstyles = final: prev: {
-              catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
-                src = inputs.catppuccin-userstyles;
-                inherit
-                  (import inputs.nixpkgs-buildDenoPackage {
-                    inherit (final) system;
-                  })
-                  buildDenoPackage
-                  ;
-              };
-            };
-            christbashtree = final: prev: {
-              christbashtree = final.callPackage ./packages/christbashtree.nix {};
-            };
-            colorbindiff = final: prev: {
-              colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
+            fix-ssh-copy-id = final: prev: {
+              ssh-copy-id = prev.ssh-copy-id.overrideAttrs (old: {
+                buildInputs =
+                  old.buildInputs or []
+                  ++ [
+                    final.bash
+                  ];
+                buildCommand = ''
+                  ${old.buildCommand}
+                  patchShebangs --host $out/bin/ssh-copy-id
+                '';
+              });
             };
             hypridle-wait-for-hyprlock-fadein = final: prev: {
               hypridle = prev.hypridle.overrideAttrs (old: {
@@ -123,43 +119,78 @@
                   ];
               });
             };
-            multi-dimensional-workspaces = final: prev: {
-              multi-dimensional-workspaces = final.callPackage ./packages/multi-dimensional-workspaces {
-                inherit (final.hyprlandPlugins) mkHyprlandPlugin;
-              };
-            };
-            nix-flake-add-roots = final: prev: {
-              nix-flake-add-roots = final.callPackage ./packages/nix-flake-add-roots {};
-            };
-            fix-ssh-copy-id = final: prev: {
-              ssh-copy-id = prev.ssh-copy-id.overrideAttrs (old: {
-                buildInputs =
-                  old.buildInputs or []
+            wpctl-add-db-gain-change-support = final: prev: {
+              wireplumber = prev.wireplumber.overrideAttrs (old: {
+                patches =
+                  old.patches or []
                   ++ [
-                    final.bash
+                    ./patches/wireplumber/wpctl-add-db-gain-change-support.patch
                   ];
-                buildCommand = ''
-                  ${old.buildCommand}
-                  patchShebangs --host $out/bin/ssh-copy-id
-                '';
               });
             };
-            stylus = final: prev: {
-              stylus = final.callPackage ./packages/stylus {
-                stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
+          };
+        };
+        systems = [
+          "x86_64-linux"
+        ];
+        perSystem = {
+          config,
+          system,
+          final,
+          pkgs,
+          lib,
+          ...
+        }: {
+          overlayAttrs =
+            {
+              inherit
+                (config.packages)
+                catppuccin-userstyles
+                christbashtree
+                colorbindiff
+                mindustry150
+                mindustry150-server
+                mindustry150-wayland
+                multi-dimensional-workspaces
+                nix-flake-add-roots
+                stylus
+                wine-ge-fixed
+                wine-staging-fixed
+                wtf
+                ;
+            }
+            # those overlays provide required dependencies for flake.packages;
+            # note that they applied as part of flake.overlays.default instead of normal chaining
+            // (inputs.nix-gaming.overlays.default final pkgs)
+            // (inputs.nur.overlays.default final pkgs);
+          packages =
+            {
+              catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
+                src = inputs.catppuccin-userstyles;
+                inherit
+                  (import inputs.nixpkgs-buildDenoPackage {
+                    inherit system;
+                  })
+                  buildDenoPackage
+                  ;
               };
-            };
-            update-mindustry = final: prev: {
-              mindustry = final.callPackage ./packages/mindustry/package.nix {};
-              mindustry-wayland = final.callPackage ./packages/mindustry/package.nix {
-                enableWayland = true;
-              };
-              mindustry-server = final.callPackage ./packages/mindustry/package.nix {
+              christbashtree = final.callPackage ./packages/christbashtree.nix {};
+              colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
+              mindustry150 = final.callPackage ./packages/mindustry/package.nix {};
+              mindustry150-server = final.callPackage ./packages/mindustry/package.nix {
                 enableClient = false;
                 enableServer = true;
               };
-            };
-            wine-fixes = final: prev: {
+              mindustry150-wayland = final.callPackage ./packages/mindustry/package.nix {
+                enableWayland = true;
+              };
+              multi-dimensional-workspaces = final.callPackage ./packages/multi-dimensional-workspaces {
+                inherit (final.hyprlandPlugins) mkHyprlandPlugin;
+              };
+              nix-flake-add-roots = final.callPackage ./packages/nix-flake-add-roots {};
+              stylus = final.callPackage ./packages/stylus {
+                stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
+              };
               wine-ge-fixed = final.wine-ge.overrideAttrs (finalAttrs: old: {
                 patches =
                   old.patches or []
@@ -204,38 +235,11 @@
                 })).override {
                   gstreamerSupport = false;
                 };
-            };
-            wpctl-add-db-gain-change-support = final: prev: {
-              wireplumber = prev.wireplumber.overrideAttrs (old: {
-                patches =
-                  old.patches or []
-                  ++ [
-                    ./patches/wireplumber/wpctl-add-db-gain-change-support.patch
-                  ];
-              });
-            };
-            wtf = final: prev: {
               wtf = final.callPackage ./packages/wtf.nix {};
-            };
-          };
-        };
-        systems = [
-          "x86_64-linux"
-        ];
-        perSystem = {
-          config,
-          system,
-          pkgs,
-          lib,
-          ...
-        }: {
+            }
+            # https://github.com/ners/nix-monitored/issues/3
+            // builtins.mapAttrs (name: app: pkgs.writeShellScriptBin name ''exec "$0" ${app.program} "$@"'') config.apps;
           apps = {
-            nix-flake-add-roots = {
-              program = lib.getExe (pkgs.callPackage ./packages/nix-flake-add-roots {});
-              meta = {
-                description = "Create gc-roots of flake inputs";
-              };
-            };
             nixos-anywhere-install-for = {
               program = lib.getExe (pkgs.callPackage ./packages/nixos-anywhere-install-for {});
               meta = {
@@ -249,30 +253,6 @@
               };
             };
           };
-          packages =
-            {
-              catppuccin-userstyles = pkgs.callPackage ./packages/catppuccin-userstyles.nix {
-                src = inputs.catppuccin-userstyles;
-                inherit
-                  (import inputs.nixpkgs-buildDenoPackage {
-                    inherit system;
-                  })
-                  buildDenoPackage
-                  ;
-              };
-              christbashtree = pkgs.callPackage ./packages/christbashtree.nix {};
-              colorbindiff = pkgs.callPackage ./packages/colorbindiff.nix {};
-              mindustry = pkgs.callPackage ./packages/mindustry/package.nix {};
-              multi-dimensional-workspaces = pkgs.callPackage ./packages/multi-dimensional-workspaces {
-                inherit (pkgs.hyprlandPlugins) mkHyprlandPlugin;
-              };
-              stylus = pkgs.callPackage ./packages/stylus {
-                stylus-nur = inputs.nur.legacyPackages."${system}".repos.rycee.firefox-addons.stylus;
-              };
-              wtf = pkgs.callPackage ./packages/wtf.nix {};
-            }
-            # https://github.com/ners/nix-monitored/issues/3
-            // builtins.mapAttrs (name: app: pkgs.writeShellScriptBin name ''exec "$0" ${app.program} "$@"'') config.apps;
           files.files = let
             nix-mineral-patched = pkgs.applyPatches {
               name = "nix-mineral-patched";
