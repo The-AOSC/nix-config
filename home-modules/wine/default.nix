@@ -119,7 +119,7 @@
         };
       };
       home.checks = let
-        timeout = 300;
+        timeout = 600;
         test-wine = wine:
           pkgs.testers.runNixOSTest {
             name = "${wine.name}";

@@ -20,11 +20,6 @@
         ${pkgs.fastfetch}/bin/fastfetch
       '';
       interactiveShellInit = ''
-        # upstream issue:
-        # https://github.com/NixOS/nixpkgs/issues/462025
-        # workaround:
-        # https://github.com/nix-community/home-manager/issues/8178#issuecomment-3558563979
-        set -p fish_complete_path ${config.programs.fish.package}/share/fish/completions
         set -p fish_complete_path ~/.config/fish/completions
 
         fish_hybrid_key_bindings
