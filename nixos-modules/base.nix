@@ -39,6 +39,11 @@
     programs.nano.enable = false;
     programs.neovim.enable = true;
     environment.binsh = "${pkgs.dash}/bin/dash";
+    environment.systemPackages = with pkgs; [
+      inetutils
+      (lib.hiPrio unixtools.hostname)
+      (lib.hiPrio unixtools.ping)
+    ];
     systemd.tmpfiles.rules = [
       "D! /persist/tmp 0755 root root"
     ];

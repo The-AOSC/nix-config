@@ -71,8 +71,6 @@
       grim
       helvum
       imagemagick
-      inetutils
-      iputils
       jmtpfs
       jq
       killall
