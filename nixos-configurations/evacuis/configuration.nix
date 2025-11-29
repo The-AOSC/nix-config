@@ -82,17 +82,7 @@
   modules.swaylock.enable = true;
   modules.tor.enable = true;
   modules.virt-manager.enable = true;
-  modules.netConfig = {
-    enable = true;
-    networks = {
-      home-wifi = {
-        ipv4.address1 = "192.168.1.253/24";
-        ipv4.dns = "192.168.1.1";
-        ipv4.gateway = "192.168.1.1";
-        ipv4.method = "manual";
-      };
-    };
-  };
+  modules.netConfig.enable = true;
   modules.kanata.keyboards.default = with config.lib.kanata; {
     defaultLayer = "default";
     extraConfig = ''
