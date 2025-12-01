@@ -1,5 +1,7 @@
 {...}: {
-  modules.desktop.enable = true;
+  profiles = {
+    desktop = true;
+  };
   modules.rldebugfs.enable = true;
   modules.swaylock.enable = true;
   modules.tor.enable = true;

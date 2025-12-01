@@ -9,9 +9,9 @@
     inputs.impermanence.homeManagerModules.impermanence
   ];
   options = {
-    modules.desktop.enable = lib.mkEnableOption "desktop";
+    profiles.desktop = lib.mkEnableOption "desktop";
   };
-  config = lib.mkIf config.modules.desktop.enable {
+  config = lib.mkIf config.profiles.desktop {
     modules.cava.enable = true;
     modules.char-names.enable = true;
     modules.dunst.enable = true;

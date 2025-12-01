@@ -9,9 +9,9 @@
     inputs.sops-nix.nixosModules.sops
   ];
   options = {
-    modules.base.enable = lib.mkEnableOption "base";
+    profiles.base = lib.mkEnableOption "base";
   };
-  config = lib.mkIf config.modules.base.enable {
+  config = lib.mkIf config.profiles.base {
     modules.build-vm.enable = true;
     modules.hardening.enable = true;
     modules.ntp.enable = true;
@@ -28,7 +28,7 @@
     users.users.root.hashedPasswordFile = config.sops.secrets.root-password.path;
     sops.secrets.root-password = {
       key = "hash";
-      sopsFile = ../secrets/root-password.yaml;
+      sopsFile = ../../secrets/root-password.yaml;
       neededForUsers = true;
     };
     boot.loader = {

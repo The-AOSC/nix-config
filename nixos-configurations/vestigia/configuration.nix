@@ -7,6 +7,9 @@
   imports = [
     ../../networks.nix
   ];
+  profiles = {
+    base = true;
+  };
   systemd.services."getty@tty1" = {
     overrideStrategy = "asDropin";
     serviceConfig.ExecStart = lib.mkBefore [""]; # override default from `getty@.service`
@@ -31,7 +34,6 @@
   services.tor.client.socksListenAddress.addr = lib.mkForce "0.0.0.0";
   networking.firewall.allowedTCPPorts = [9150]; # tor proxy
   system.stateVersion = "25.11";
-  modules.base.enable = true;
   modules.netConfig.enable = true;
   modules.theme.enable = true;
   modules.tor.enable = true;

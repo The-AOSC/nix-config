@@ -6,10 +6,10 @@
   ...
 }: {
   options = {
-    modules.desktop.enable = lib.mkEnableOption "desktop";
+    profiles.desktop = lib.mkEnableOption "desktop";
   };
-  config = lib.mkIf config.modules.desktop.enable {
-    modules.base.enable = true;
+  config = lib.mkIf config.profiles.desktop {
+    profiles.base = lib.mkDefault true;
     modules.enableNumlock.enable = true;
     modules.hyprland.enable = true;
     modules.kanata.enable = true;
@@ -25,7 +25,7 @@
     sops.secrets = {
       aosc-password = {
         key = "hash";
-        sopsFile = ../secrets/aosc-password.yaml;
+        sopsFile = ../../secrets/aosc-password.yaml;
         neededForUsers = true;
       };
     };

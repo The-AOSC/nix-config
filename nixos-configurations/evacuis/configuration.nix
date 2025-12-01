@@ -7,6 +7,9 @@
   imports = [
     ../../networks.nix
   ];
+  profiles = {
+    desktop = true;
+  };
   boot.kernelPatches = [
     {
       name = "fix-headphones-audio";
@@ -76,7 +79,6 @@
     openFirewall = true;
   };
   services.openssh.ports = [2222];
-  modules.desktop.enable = true;
   modules.amd.enable = true;
   modules.gitlab.enable = true;
   modules.swaylock.enable = true;
