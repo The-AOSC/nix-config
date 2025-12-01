@@ -10,7 +10,6 @@
     ./global.nix
     ./lib.nix
     ./profile-files.nix
-    ./simple-tab-groups
     ./tree-style-tabs
     ./vimium
   ];
