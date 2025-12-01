@@ -73,7 +73,7 @@ in {
         level = lib.length sizes;
         sub-count = lib.head sizes;
         sub-sizes = lib.tail sizes;
-        sub-step = lib.fold builtins.mul 1 sub-sizes;
+        sub-step = lib.foldr builtins.mul 1 sub-sizes;
         generate-subelement = index: generate sub-sizes (sub-step * index + offset);
       in
         if level == 0
