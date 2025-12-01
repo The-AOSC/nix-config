@@ -10,13 +10,12 @@
   };
   config = lib.mkIf config.profiles.desktop {
     profiles.base = lib.mkDefault true;
-    modules.enableNumlock.enable = true;
+    profiles.headless = lib.mkDefault false;
     modules.hyprland.enable = true;
     modules.kanata.enable = true;
     modules.kdeconnect.enable = true;
     modules.nix-index.enable = true;
     modules.nom.enable = true;
-    modules.theme.enable = true;
     modules.u2f.enable = true;
     modules.wine.enable = true;
     modules.yubikey.enable = true;

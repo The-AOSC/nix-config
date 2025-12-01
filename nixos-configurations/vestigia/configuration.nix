@@ -5,8 +5,9 @@
   ...
 }: {
   profiles = {
-    base = true;
+    headless = false;
     home = true;
+    server = true;
   };
   systemd.services."getty@tty1" = {
     overrideStrategy = "asDropin";
@@ -16,24 +17,13 @@
     '';
   };
   time.timeZone = "Asia/Yekaterinburg";
-  users.users.root = {
-    openssh.authorizedKeys.keyFiles = [
-      ../../credentials/aosc.authorized_keys
-    ];
-  };
   environment.systemPackages = with pkgs; [
     brightnessctl
   ];
   fileSystems."/persist".neededForBoot = true;
-  services.openssh.settings = {
-    AllowGroups = lib.mkForce null;
-    PermitRootLogin = lib.mkForce "prohibit-password";
-  };
   services.tor.client.socksListenAddress.addr = lib.mkForce "0.0.0.0";
   networking.firewall.allowedTCPPorts = [9150]; # tor proxy
   system.stateVersion = "25.11";
-  modules.netConfig.enable = true;
-  modules.theme.enable = true;
   modules.tor.enable = true;
   modules.kanata.enable = true;
   modules.kanata.keyboards.default = with config.lib.kanata; {

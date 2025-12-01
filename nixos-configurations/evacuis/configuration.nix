@@ -82,7 +82,6 @@
   modules.swaylock.enable = true;
   modules.tor.enable = true;
   modules.virt-manager.enable = true;
-  modules.netConfig.enable = true;
   modules.kanata.keyboards.default = with config.lib.kanata; {
     defaultLayer = "default";
     extraConfig = ''

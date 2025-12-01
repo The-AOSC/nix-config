@@ -14,6 +14,7 @@
   config = lib.mkIf config.profiles.base {
     modules.build-vm.enable = true;
     modules.hardening.enable = true;
+    modules.netConfig.enable = true;
     modules.ntp.enable = true;
     modules.persistence.enable = true;
     modules.sshd.enable = true;
@@ -25,12 +26,6 @@
       };
     };
     users.mutableUsers = false;
-    users.users.root.hashedPasswordFile = config.sops.secrets.root-password.path;
-    sops.secrets.root-password = {
-      key = "hash";
-      sopsFile = ../../secrets/root-password.yaml;
-      neededForUsers = true;
-    };
     boot.loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
