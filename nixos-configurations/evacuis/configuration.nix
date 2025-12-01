@@ -4,11 +4,9 @@
   lib,
   ...
 }: {
-  imports = [
-    ../../networks.nix
-  ];
   profiles = {
     desktop = true;
+    home = true;
   };
   boot.kernelPatches = [
     {

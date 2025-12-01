@@ -4,11 +4,9 @@
   lib,
   ...
 }: {
-  imports = [
-    ../../networks.nix
-  ];
   profiles = {
     base = true;
+    home = true;
   };
   systemd.services."getty@tty1" = {
     overrideStrategy = "asDropin";
