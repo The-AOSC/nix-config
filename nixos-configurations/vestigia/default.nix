@@ -3,6 +3,7 @@
     ./configuration.nix
     ./disko.nix
     ./hardware-configuration.nix
+    ./screensaver.nix
     inputs.disko.nixosModules.disko
   ];
   nixpkgs.overlays = [
