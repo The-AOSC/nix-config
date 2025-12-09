@@ -8,6 +8,7 @@
   imports = [
     ./fish-command-timer.nix
     ./nmcli.nix
+    ./terminate-hyperlinks.nix
   ];
   options = {
     modules.fish.enable = lib.mkEnableOption "fish";
