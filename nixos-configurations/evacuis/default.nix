@@ -1,8 +1,10 @@
 {inputs, ...}: {
   imports = [
     ./configuration.nix
+    ./disko.nix
     ./hardware-configuration.nix
     ./unfree.nix
+    inputs.disko.nixosModules.disko
   ];
   nixpkgs.overlays = [
     inputs.self.overlays.fix-ssh-copy-id

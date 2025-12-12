@@ -15,6 +15,8 @@
     }
   ];
   time.timeZone = "Asia/Yekaterinburg";
+  fileSystems."/persist".neededForBoot = true;
+  fileSystems."/media".neededForBoot = true;
   users.users.aosc = {
     openssh.authorizedKeys.keyFiles = [
       ../../credentials/aosc.authorized_keys
