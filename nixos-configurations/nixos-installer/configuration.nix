@@ -1,4 +1,5 @@
 {lib, ...}: {
+  disko.enableConfig = false;
   users.users.root.openssh.authorizedKeys.keyFiles = [
     ../../credentials/aosc.authorized_keys
   ];
