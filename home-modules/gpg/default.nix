@@ -4,6 +4,9 @@
   lib,
   ...
 }: {
+  imports = [
+    ./pinentry-auto.nix
+  ];
   options = {
     modules.gpg.enable = lib.mkEnableOption "gpg";
   };
@@ -25,7 +28,6 @@
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;
-      pinentry.package = pkgs.pinentry-qt;
     };
     home.file = {
       "${config.programs.gpg.homedir}/sshcontrol".source =
