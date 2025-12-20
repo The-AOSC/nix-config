@@ -35,8 +35,6 @@
       ".local/HyperSpec"
       "nix-config"
       "nixpkgs"
-      "smb"
-      "smbro"
     ];
     files = [
       "TODO.norg"

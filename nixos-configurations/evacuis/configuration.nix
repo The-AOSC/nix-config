@@ -35,48 +35,8 @@
   system.stateVersion = "25.05";
   environment.persistence."/persist" = {
     directories = [
-      "/var/lib/samba"
       "/var/lib/systemd/backlight"
     ];
-  };
-  services.samba = {
-    enable = true;
-    openFirewall = true;
-    nmbd.enable = true;
-    settings = {
-      global = {
-        security = "user";
-        "unix extensions" = true;
-        "allow insecure wide links" = true;
-        "wide links" = false;
-        "acl allow execute always" = true;
-      };
-      "aosc" = {
-        comment = "aosc";
-        path = "${config.users.users.aosc.home}/smb";
-        "valid users" = "aosc";
-        public = false;
-        writable = true;
-        "read only" = false;
-        printable = false;
-        "create mask" = "0755";
-      };
-      "aosc-ro" = {
-        comment = "aosc readonly";
-        path = "${config.users.users.aosc.home}/smbro";
-        "valid users" = "aosc";
-        public = false;
-        writable = false;
-        "read only" = true;
-        printable = false;
-        "create mask" = "0755";
-        "wide links" = true;
-      };
-    };
-  };
-  services.samba-wsdd = {
-    enable = true;
-    openFirewall = true;
   };
   services.openssh.ports = [2222];
   modules.amd.enable = true;
