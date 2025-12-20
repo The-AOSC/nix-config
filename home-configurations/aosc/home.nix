@@ -26,6 +26,8 @@
   ];
   home.persistence."/persist" = {
     directories = [
+      "dav"
+      "dav-upload"
       "Desktop/colledge"
       "Desktop/Documents"
       "inst"

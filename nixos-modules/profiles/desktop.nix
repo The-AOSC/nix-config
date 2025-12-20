@@ -17,6 +17,7 @@
     modules.nix-index.enable = true;
     modules.nom.enable = true;
     modules.u2f.enable = true;
+    modules.webdav.enable = true;
     modules.wine.enable = true;
     modules.yubikey.enable = true;
     hardware.graphics.enable = true;
