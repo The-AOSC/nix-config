@@ -13,7 +13,16 @@
   }:
     {
       directory = path;
-      route = [(lib.converge (lib.replaceString "//" "/") "/${route}/*path")];
+      route = let
+        routeNorm = lib.converge (lib.replaceString "//" "/") "/${route}/";
+        routePath =
+          if routeNorm == "/"
+          then "/"
+          else (lib.removeSuffix "/" routeNorm);
+      in [
+        "${routeNorm}*path"
+        "${routePath}"
+      ];
       handler = "filesystem";
       methods = [
         (
