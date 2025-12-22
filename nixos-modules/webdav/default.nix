@@ -92,14 +92,16 @@ in {
     services.nginx = {
       enable = true;
       recommendedProxySettings = lib.mkDefault true;
-      virtualHosts = {
-        "${dav-hostname}" = {
+      virtualHosts = let
+        virtHost = {
           locations = lib.mkMerge ([
               {"/".proxyPass = "http://${dav-hostname}:8888";}
             ]
             ++ (lib.map nginxLocationsForUser users));
-          default = true;
         };
+      in {
+        "${dav-hostname}" = virtHost // {default = true;};
+        "${dav-hostname}.local" = virtHost;
       };
     };
     security.pam.services."permit-auth".text = ''

@@ -16,9 +16,8 @@
       enable = true;
       recommendedProxySettings = lib.mkDefault true;
       virtualHosts = {
-        "gitlab" = {
-          locations."/".proxyPass = "http://gitlab.containers";
-        };
+        "gitlab".locations."/".proxyPass = "http://gitlab.containers";
+        "gitlab.local".locations."/".proxyPass = "http://gitlab.containers";
       };
     };
     services.xinetd = {
