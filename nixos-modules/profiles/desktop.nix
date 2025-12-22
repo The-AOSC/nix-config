@@ -59,6 +59,7 @@
       ];
     };
     programs.fuse.userAllowOther = true;
+    services.davfs2.enable = true;
     services.logind.settings.Login = {
       HandleHibernateKey = "ignore";
       HandleLidSwitch = "ignore";
