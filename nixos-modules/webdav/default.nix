@@ -107,6 +107,9 @@ in {
               {"/".proxyPass = "http://${dav-hostname}:8888";}
             ]
             ++ (lib.map nginxLocationsForUser users));
+          extraConfig = ''
+            client_max_body_size 1G;
+          '';
         };
       in {
         "${dav-hostname}" = virtHost // {default = true;};
