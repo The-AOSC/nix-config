@@ -84,6 +84,7 @@
       picocom
       pipes
       pulseaudio # pactl
+      pv
       rlwrap
       shellcheck
       sops
