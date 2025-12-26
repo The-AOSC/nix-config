@@ -90,6 +90,16 @@
         };
         flake = {
           overlays = {
+            fix-nvim-tree-sitter-grammars = final: prev: {
+              tree-sitter =
+                prev.tree-sitter
+                // {
+                  allGrammars =
+                    builtins.filter
+                    (grammar: grammar.pname != "tree-sitter-@tlaplus/tlaplus")
+                    prev.tree-sitter.allGrammars;
+                };
+            };
             fix-ssh-copy-id = final: prev: {
               ssh-copy-id = prev.ssh-copy-id.overrideAttrs (old: {
                 buildInputs =

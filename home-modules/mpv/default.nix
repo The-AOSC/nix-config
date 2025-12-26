@@ -16,6 +16,7 @@
             (old.patches or [])
             ++ [
               ../../patches/mpv/mpv-0.35.1-always-never-osd-cycle.patch
+              ../../patches/mpv/mpv-0.41.0-revert-wayland-convert-luminance-values-to-libplacebo-space.patch
             ];
         });
         scripts = [
