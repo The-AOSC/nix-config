@@ -45,10 +45,10 @@
       src-layout
       (
         [null null null null null null null "kp7" "kp8" "kp9" null "powr"]
-        ++ [null null null null null null null "kp4" "kp5" "kp6" null null]
-        ++ [null null null null null null null "kp1" "kp2" "kp3" null null]
-        ++ [null null null null null null "kp0" "kp." "kprt" null]
-        ++ [null]
+        ++ [null null null "e" null null null "kp4" "kp5" "kp6" null null]
+        ++ [null "a" null "d" "f" null null "kp1" "kp2" "kp3" null null]
+        ++ [null null "c" null "b" null "kp0" "kp." "kprt" null]
+        ++ ["spc"]
       )
     ];
     level-mods = level1: level2: level3: {
