@@ -28,6 +28,7 @@
     modules.hyprlock.enable = true;
     modules.kdeconnect.enable = true;
     modules.kitty.enable = true;
+    modules.lan-mouse.enable = true;
     modules.libreoffice.enable = true;
     modules.librewolf.enable = true;
     modules.mindustry.enable = true;
