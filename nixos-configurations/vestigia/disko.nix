@@ -44,6 +44,22 @@
         };
       };
     };
+    disk.backup = {
+      device = "/dev/disk/by-id/ata-TOSHIBA_MQ04UBF100_54RDT0MIT";
+      content = {
+        type = "gpt";
+        partitions = {
+          backup = {
+            size = "100%";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/backup";
+            };
+          };
+        };
+      };
+    };
     nodev = {
       "/" = {
         fsType = "tmpfs";
