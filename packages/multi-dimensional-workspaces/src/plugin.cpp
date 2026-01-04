@@ -1,4 +1,5 @@
 #include <hyprland/src/Compositor.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 #include <hyprland/src/helpers/MiscFunctions.hpp>
 #include <hyprland/src/helpers/Monitor.hpp>
 #include <hyprland/src/managers/animation/DesktopAnimationManager.hpp>
@@ -30,7 +31,7 @@ SWorkspaceIDName hkGetWorkspaceIDNameFromString(const std::string& in) {
         SWorkspaceIDName result = {WORKSPACE_INVALID, ""};
         static auto* const ARRAY_SIZES = (Hyprlang::STRING const*)HyprlandAPI::getConfigValue(PHANDLE, PLUGIN_PREFIX "array_sizes")->getDataStaticPtr();
 
-        int target = g_pCompositor->m_lastMonitor->activeWorkspaceID();
+        int target = Desktop::focusState()->monitor()->activeWorkspaceID();
         const std::string &info = in.substr(((const std::string) PLUGIN_PREFIX).length());
         const std::string &config = *ARRAY_SIZES;
         const std::string &delim = ":";
@@ -182,9 +183,9 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     if (HASH != CLIENT_HASH) {
         HyprlandAPI::addNotification(PHANDLE, PLUGIN_LOG_PREFIX " Mismatched Hyprland version! check logs for details",
                                      CHyprColor(1.0, 0.2, 0.2, 1.0), 5000);
-        Debug::log(ERR, PLUGIN_LOG_PREFIX " version mismatch!");
-        Debug::log(ERR, PLUGIN_LOG_PREFIX " | hyprgrass was built against: {}", GIT_COMMIT_HASH);
-        Debug::log(ERR, PLUGIN_LOG_PREFIX " | actual hyprland version: {}", HASH);
+        Log::logger->log(Log::ERR, PLUGIN_LOG_PREFIX " version mismatch!");
+        Log::logger->log(Log::ERR, PLUGIN_LOG_PREFIX " | hyprgrass was built against: {}", GIT_COMMIT_HASH);
+        Log::logger->log(Log::ERR, PLUGIN_LOG_PREFIX " | actual hyprland version: {}", HASH);
     }
 
     {

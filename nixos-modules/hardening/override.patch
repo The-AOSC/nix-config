@@ -1,37 +1,26 @@
---- a/nix-mineral.nix
-+++ b/nix-mineral.nix
-@@ -614,7 +614,6 @@
-           "vsyscall=none"
-           "debugfs=off"
-           "oops=panic"
--          "quiet"
-           "loglevel=0"
-           "random.trust_cpu=off"
-           "random.trust_bootloader=off"
-@@ -632,26 +631,6 @@
-         loader.systemd-boot.editor = l.mkDefault false;
-       };
-       environment.etc = {
--        # Empty /etc/securetty to prevent root login on tty.
--        securetty.text = ''
--          # /etc/securetty: list of terminals on which root is allowed to login.
--          # See securetty(5) and login(1).
--        '';
--
--        # Set machine-id to the Kicksecure machine-id, for privacy reasons.
--        # /var/lib/dbus/machine-id doesn't exist on dbus enabled NixOS systems,
--        # so we don't have to worry about that.
--        machine-id.text = ''
--          b08dfa6083e7567a1921a715000001fb
--        '';
--
--        # Borrow Kicksecure banner/issue. 
--        issue.source = (fetchGhFile sources.issue);
--
--        # Borrow Kicksecure gitconfig, disabling git symlinks and enabling fsck
--        # by default for better git security.
--        gitconfig.source = (fetchGhFile sources.gitconfig);
--
-         # Borrow Kicksecure bluetooth configuration for better bluetooth privacy
-         # and security. Disables bluetooth automatically when not connected to
-         # any device.
+diff --git a/settings/kernel/lockdown.nix b/settings/kernel/lockdown.nix
+index 71a54ca..6672104 100644
+--- a/settings/kernel/lockdown.nix
++++ b/settings/kernel/lockdown.nix
+@@ -27,7 +27,7 @@
+       Enable linux kernel lockdown, this blocks loading of unsigned kernel modules
+       and breaks hibernation.
+ 
+-      (if false, you probably want to disable `${options.nix-mineral.settings.kernel.only-signed-modules}`)
++      (if false, you probably want to disable config.nix-mineral.settings.kernel.only-signed-modules)
+     '' true;
+   };
+ 
+diff --git a/settings/kernel/only-signed-modules.nix b/settings/kernel/only-signed-modules.nix
+index 40279db..e95f416 100644
+--- a/settings/kernel/only-signed-modules.nix
++++ b/settings/kernel/only-signed-modules.nix
+@@ -27,7 +27,7 @@
+       Requires all kernel modules to be signed. This prevents out-of-tree
+       kernel modules from working unless signed.
+ 
+-      (if false, `${options.nix-mineral.settings.kernel.lockdown}` must also be false)
++      (if false, config.nix-mineral.settings.kernel.lockdown must also be false)
+     '' true;
+   };
+ 

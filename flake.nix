@@ -1,7 +1,8 @@
 {
   description = "NixOS configuration of The AOSC";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=e160de05ce40652179032dbac94646d5f1610a36"; # xinetd: fix build (#476310)
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence = {
@@ -24,7 +25,9 @@
     };
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
-      flake = false;
+      inputs.flake-compat.follows = "nom/git-hooks/flake-compat";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     files.url = "github:mightyiam/files";
     nur = {
@@ -99,9 +102,23 @@
                 prev.tree-sitter
                 // {
                   allGrammars =
-                    builtins.filter
-                    (grammar: grammar.pname != "tree-sitter-@tlaplus/tlaplus")
-                    prev.tree-sitter.allGrammars;
+                    builtins.map (grammar:
+                      if grammar.pname == "tree-sitter-nix"
+                      then
+                        grammar.overrideAttrs (old: {
+                          patches =
+                            old.patches or []
+                            ++ [
+                              ./patches/tree-sitter-nix/remove-is-not.patch
+                            ];
+                        })
+                      else grammar)
+                    (builtins.filter
+                      (grammar:
+                        !(builtins.elem grammar.pname [
+                          "tree-sitter-@tlaplus/tlaplus"
+                        ]))
+                      prev.tree-sitter.allGrammars);
                 };
             };
             fix-ssh-copy-id = final: prev: {
@@ -267,28 +284,7 @@
               };
             };
           };
-          files.files = let
-            nix-mineral-patched = pkgs.applyPatches {
-              name = "nix-mineral-patched";
-              src = inputs.nix-mineral;
-              patches = [
-                ./nixos-modules/hardening/override.patch
-              ];
-            };
-          in [
-            {
-              drv = pkgs.runCommand "nix-mineral.nix-patched" {} ''
-                cp ${nix-mineral-patched}/nix-mineral.nix $out
-              '';
-              path_ = "./nixos-modules/hardening/nix-mineral.nix";
-            }
-            {
-              drv = pkgs.runCommand "sources.toml" {} ''
-                cp ${nix-mineral-patched}/sources.toml $out
-              '';
-              path_ = "./nixos-modules/hardening/sources.toml";
-            }
-          ];
+          files.files = [];
           formatter = pkgs.alejandra;
         };
       }

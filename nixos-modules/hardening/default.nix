@@ -5,48 +5,47 @@
   lib,
   ...
 }: {
-  imports = [
-    ./nix-mineral.nix
+  imports = let
+    nix-mineral = lib.fix (self:
+      (import "${inputs.nixpkgs.legacyPackages.x86_64-linux.applyPatches {
+        name = "nix-mineral-patched";
+        src = inputs.nix-mineral;
+        patches = [
+          ./override.patch
+        ];
+      }}/flake.nix").outputs (inputs.nix-mineral.inputs
+        // {
+          inherit self;
+        }));
+  in [
+    nix-mineral.nixosModules.nix-mineral
   ];
   options = {
     modules.hardening.enable = lib.mkEnableOption "hardening";
   };
   config = lib.mkIf config.modules.hardening.enable {
-    nix-mineral.enable = true;
-    fileSystems = {
-      "/etc".enable = false;
-      "/home".enable = false;
-      "/root".enable = false;
-      "/srv".enable = false;
-      "/tmp".enable = false;
-      "/var".enable = false;
-    };
-    boot.kernel.sysctl = {
-      "net.ipv4.icmp_echo_ignore_all" = false;
-      "net.ipv6.icmp.echo_ignore_all" = false;
-      "fs.binfmt_misc.status" =
-        lib.mkIf
-        (with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {})))
-        true;
-    };
-    nix-mineral.overrides = {
-      compatibility = {
-        allow-busmaster-bit = true; # check if needed, probably not
-        no-lockdown = true; # hibernation
-      };
-      desktop = {
-        allow-multilib = true;
-        hideproc-off = true;
-        skip-restrict-home-permission = true;
-      };
-      performance = {
-      };
-      security = {
-        disable-amd-iommu-forced-isolation = true;
-        disable-bluetooth-kmodules = true;
-        disable-intelme-kmodules = true;
-      };
-      software-choice = {
+    nix-mineral = {
+      enable = true;
+      filesystems.enable = false;
+      settings = {
+        debug = {
+          dmesg-restrict = false;
+          quiet-boot = false;
+        };
+        etc = {
+          generic-machine-id = false;
+          kicksecure-gitconfig = false;
+          kicksecure-issue = false;
+          no-root-securetty = false; # allow local root login
+        };
+        kernel = {
+          amd-iommu-force-isolation = false;
+          lockdown = false; # hibernation
+          binfmt-misc = lib.mkIf (with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {}))) true;
+        };
+        network = {
+          icmp.ignore-all = false;
+        };
       };
     };
   };

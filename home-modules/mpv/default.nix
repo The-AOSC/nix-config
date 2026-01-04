@@ -10,8 +10,8 @@
   config = lib.mkIf config.modules.mpv.enable {
     programs.mpv = {
       enable = true;
-      package = pkgs.mpv-unwrapped.wrapper {
-        mpv = pkgs.mpv-unwrapped.overrideAttrs (old: {
+      package = pkgs.mpv.override {
+        mpv-unwrapped = pkgs.mpv-unwrapped.overrideAttrs (old: {
           patches =
             (old.patches or [])
             ++ [
