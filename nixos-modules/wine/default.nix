@@ -9,5 +9,6 @@
   config = lib.mkIf config.modules.wine.enable {
     programs.firejail.enable = true;
     hardware.graphics.enable32Bit = true;
+    nix-mineral.settings.system.multilib = true;
   };
 }
