@@ -397,6 +397,34 @@
         "type": "github"
       }
     },
+    "nixvim": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "nom",
+          "flake-utils",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767906546,
+        "narHash": "sha256-AoSWS8+P+7hQ/jIdv0wBjgH1MvnerdWBFXO4GV3JoQs=",
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "rev": "7eb8f36f085b85a2aeff929aff52d0f6aa14e000",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "type": "github"
+      }
+    },
     "nixvirt": {
       "inputs": {
         "nixpkgs": [
@@ -480,6 +508,7 @@
         "nix-monitored": "nix-monitored",
         "nixpkgs": "nixpkgs",
         "nixpkgs-buildDenoPackage": "nixpkgs-buildDenoPackage",
+        "nixvim": "nixvim",
         "nixvirt": "nixvirt",
         "nom": "nom",
         "nur": "nur",

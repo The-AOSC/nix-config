@@ -74,6 +74,12 @@
       url = "github:feschber/lan-mouse";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.systems.follows = "nom/flake-utils/systems";
+    };
   };
   outputs = inputs @ {
     flake-parts,
@@ -184,6 +190,7 @@
                 mindustry150-wayland
                 multi-dimensional-workspaces
                 nix-flake-add-roots
+                nixvim-configured
                 stylus
                 wine-ge-fixed
                 wine-staging-fixed
@@ -193,6 +200,7 @@
             # those overlays provide required dependencies for flake.packages;
             # note that they applied as part of flake.overlays.default instead of normal chaining
             // (inputs.nix-gaming.overlays.default final pkgs)
+            // (inputs.nixvim.overlays.default final pkgs)
             // (inputs.nur.overlays.default final pkgs);
           packages =
             {
@@ -218,6 +226,7 @@
               multi-dimensional-workspaces = final.callPackage ./packages/multi-dimensional-workspaces {
                 inherit (final.hyprlandPlugins) mkHyprlandPlugin;
               };
+              nixvim-configured = final.callPackage ./packages/nixvim/package.nix {};
               nix-flake-add-roots = final.callPackage ./packages/nix-flake-add-roots {};
               stylus = final.callPackage ./packages/stylus {
                 stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
