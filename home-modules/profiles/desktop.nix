@@ -44,6 +44,7 @@
     modules.unp.enable = true;
     modules.vivaldi.enable = true;
     modules.wine.enable = true;
+    modules.wiremix.enable = true;
     modules.wtf.enable = true;
     modules.xkb.enable = true;
     modules.zathura.enable = true;
