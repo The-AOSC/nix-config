@@ -1,12 +1,11 @@
 {
   description = "NixOS configuration of The AOSC";
   inputs = {
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs?rev=e160de05ce40652179032dbac94646d5f1610a36"; # xinetd: fix build (#476310)
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence = {
-      url = "github:nix-community/impermanence/home-manager-v2";
+      url = "github:nix-community/impermanence";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };

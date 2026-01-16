@@ -5,9 +5,6 @@
   lib,
   ...
 }: {
-  imports = [
-    inputs.impermanence.homeManagerModules.impermanence
-  ];
   options = {
     profiles.desktop = lib.mkEnableOption "desktop";
   };
