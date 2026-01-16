@@ -19,6 +19,11 @@ in {
       description = "Whether to advertise containers ising CNAME mDNS records";
       default = true;
     };
+    disableConflictCheck = lib.mkOption {
+      type = lib.types.bool;
+      description = "Whether to disable hostname conflict check";
+      default = false;
+    };
   };
   config = lib.mkIf cfg.enable {
     services.avahi = {
@@ -28,6 +33,9 @@ in {
           old.patches or []
           ++ [
             ../../patches/avahi/0001-Add-capability-to-present-aliases-for-the-host-as-CN.patch
+          ]
+          ++ lib.optionals cfg.disableConflictCheck [
+            ../../patches/avahi/0002-disable-conflict-check.patch
           ];
       });
       nssmdns4 = true;

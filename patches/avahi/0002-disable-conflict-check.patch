@@ -1,0 +1,12 @@
+diff --git a/avahi-core/server.c b/avahi-core/server.c
+index e507750..c3ff552 100644
+--- a/avahi-core/server.c
++++ b/avahi-core/server.c
+@@ -239,6 +239,7 @@ static void incoming_probe(AvahiServer *s, AvahiRecord *record, AvahiInterface *
+ }
+ 
+ static int handle_conflict(AvahiServer *s, AvahiInterface *i, AvahiRecord *record, int unique) {
++    return 1;
+     int valid = 1, ours = 0, conflict = 0, withdraw_immediately = 0;
+     AvahiEntry *e, *n, *conflicting_entry = NULL;
+ 
