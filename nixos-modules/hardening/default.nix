@@ -44,6 +44,8 @@
           binfmt-misc = lib.mkIf (with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {}))) true;
         };
         network = {
+          # allow pings via ff02::1
+          icmp.cast = true;
           icmp.ignore-all = false;
         };
       };
