@@ -1,0 +1,19 @@
+diff --git a/lib/NOM/Update.hs b/lib/NOM/Update.hs
+index b628206..4864eaf 100644
+--- a/lib/NOM/Update.hs
++++ b/lib/NOM/Update.hs
+@@ -290,11 +290,10 @@ processJsonMessage = \case
+         pathId <- getStorePathId path
+         uploaded to pathId now
+       Just (MkActivityStatus{activity = JSON.Build drv host}) -> do
+-        tokens <- use #successTokens
+-        if tokens > 0
++        drvId <- lookupDerivation drv
++        isCompleted <- derivationIsCompleted drvId
++        if isCompleted
+           then withChange do
+-            modifying' #successTokens pred
+-            drvId <- lookupDerivation drv
+             finishBuildByDrvId host drvId
+           else noChange
+       _ -> pure (isJust interesting_activity)
