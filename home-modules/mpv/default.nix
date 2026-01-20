@@ -31,6 +31,10 @@
         "Alt+KP_ADD" = "add video-zoom 0.1";
         "Alt+KP_SUBTRACT" = "add video-zoom -0.1";
         "$" = "cycle audio -1";
+        "WHEEL_LEFT" = "ignore";
+        "WHEEL_RIGHT" = "ignore";
+        "WHEEL_UP" = "ignore";
+        "WHEEL_DOWN" = "ignore";
       };
       config = {
         no-sub-visibility = "";
