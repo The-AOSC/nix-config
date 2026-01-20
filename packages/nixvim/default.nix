@@ -22,6 +22,8 @@
     list = true;
     # time until swap update & gitgutter update time
     updatetime = 100;
+    # no folds closed at startup
+    foldlevelstart = 99;
   };
   highlight."ExtraWhitespace" = {
     ctermbg = "red";
