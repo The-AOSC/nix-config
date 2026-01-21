@@ -82,7 +82,6 @@
       pdfarranger
       picocom
       pipes
-      pulseaudio # pactl
       pv
       rlwrap
       shellcheck
