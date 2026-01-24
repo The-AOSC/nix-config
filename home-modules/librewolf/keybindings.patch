@@ -1,7 +1,7 @@
 diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browser.xhtml b/browser-omni.ja/chrome/browser/content/browser/browser.xhtml
 --- a/browser-omni.ja/chrome/browser/content/browser/browser.xhtml	2025-08-11 12:10:28.867399871 +0500
 +++ b/browser-omni.ja/chrome/browser/content/browser/browser.xhtml	2025-08-11 16:28:52.847092220 +0500
-@@ -229,8 +229,9 @@
+@@ -237,8 +237,9 @@
           data-l10n-id="window-new-shortcut"
           command="cmd_newNavigator"
           modifiers="accel" reserved="true"/>
@@ -13,7 +13,7 @@ diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browse
      <key id="focusURLBar" data-l10n-id="location-open-shortcut" command="Browser:OpenLocation"
           modifiers="accel"/>
      <key id="focusURLBar2" data-l10n-id="location-open-shortcut-alt" command="Browser:OpenLocation"
-@@ -249,8 +250,7 @@
+@@ -257,8 +258,7 @@
      <key id="openFileKb" data-l10n-id="file-open-shortcut" command="Browser:OpenFile"  modifiers="accel"/>
      <key id="key_savePage" data-l10n-id="save-page-shortcut" command="Browser:SavePage" modifiers="accel"/>
      <key id="printKb" data-l10n-id="print-shortcut" command="cmd_print"  modifiers="accel"/>
@@ -23,7 +23,7 @@ diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browse
      <key id="key_toggleMute" data-l10n-id="mute-toggle-shortcut" command="cmd_toggleMute" modifiers="control"/>
      <key id="key_undo"
           data-l10n-id="text-action-undo-shortcut"
-@@ -277,14 +277,10 @@
+@@ -285,14 +285,10 @@
  
      <key keycode="VK_BACK" command="cmd_handleBackspace" reserved="false"/>
      <key keycode="VK_BACK" command="cmd_handleShiftBackspace" modifiers="shift" reserved="false"/>
@@ -34,13 +34,13 @@ diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browse
 +    <key id="goBackKb" key="h" modifiers="shift" command="Browser:Back"/>
 +    <key id="goForwardKb" key="l" modifiers="shift" command="Browser:Forward"/>
      <key id="goHome" keycode="VK_HOME" modifiers="alt"/>
--    <key keycode="VK_F5" command="Browser:Reload"/>
+-    <key id="key_reload2" keycode="VK_F5" command="Browser:Reload"/>
      <key id="showAllHistoryKb" data-l10n-id="history-show-all-shortcut" command="Browser:ShowAllHistory" modifiers="accel,shift"/>
--    <key keycode="VK_F5" command="Browser:ReloadSkipCache" modifiers="accel"/>
+-    <key id="key_reload_skip_cache2" keycode="VK_F5" command="Browser:ReloadSkipCache" modifiers="accel"/>
      <key id="key_enterFullScreen" keycode="VK_F11" command="View:FullScreen"/>
      <key id="key_exitFullScreen" keycode="VK_F11" command="View:FullScreen" reserved="true" disabled="true"/>
      <key id="key_toggleReaderMode"
-@@ -296,8 +292,8 @@
+@@ -304,8 +300,8 @@
      <key id="key_togglePictureInPicture" data-l10n-id="picture-in-picture-toggle-shortcut" command="View:PictureInPicture" modifiers="accel,shift"/>
      <key                                 data-l10n-id="picture-in-picture-toggle-shortcut-alt" command="View:PictureInPicture" modifiers="accel,shift"/>
  
@@ -51,7 +51,7 @@ diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browse
      <key id="key_aboutProcesses" command="View:AboutProcesses" keycode="VK_ESCAPE" modifiers="shift"/>
      <key id="key_viewSource" data-l10n-id="page-source-shortcut" command="View:PageSource" modifiers="accel"/>
      <key id="key_viewInfo" data-l10n-id="page-info-shortcut" command="View:PageInfo"   modifiers="accel"/>
-@@ -357,8 +353,7 @@
+@@ -365,8 +361,7 @@
           command="cmd_quitApplication"
           reserved="true"/>
  
@@ -61,7 +61,7 @@ diff '--color=auto' -ruN a/browser-omni.ja/chrome/browser/content/browser/browse
  
  
  <key id="key_selectTab1" key="1" modifiers="alt"/>
-@@ -5083,7 +5078,7 @@
+@@ -5512,7 +5507,7 @@
                          command="View:PageInfo" data-l10n-id="menu-tools-page-info"/>
                </menupopup>
              </menu>
