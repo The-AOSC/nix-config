@@ -5,20 +5,8 @@
   lib,
   ...
 }: {
-  imports = let
-    nix-mineral = lib.fix (self:
-      (import "${inputs.nixpkgs.legacyPackages.x86_64-linux.applyPatches {
-        name = "nix-mineral-patched";
-        src = inputs.nix-mineral;
-        patches = [
-          ./override.patch
-        ];
-      }}/flake.nix").outputs (inputs.nix-mineral.inputs
-        // {
-          inherit self;
-        }));
-  in [
-    nix-mineral.nixosModules.nix-mineral
+  imports = [
+    inputs.nix-mineral.nixosModules.nix-mineral
   ];
   options = {
     modules.hardening.enable = lib.mkEnableOption "hardening";

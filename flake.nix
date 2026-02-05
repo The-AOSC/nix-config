@@ -27,6 +27,7 @@
       inputs.flake-compat.follows = "nom/git-hooks/flake-compat";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.ndg.follows = "";
     };
     files.url = "github:mightyiam/files";
     nur = {
