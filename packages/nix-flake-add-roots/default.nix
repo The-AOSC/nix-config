@@ -1,5 +1,6 @@
 {
   jq,
+  nix,
   writeShellApplication,
   writeShellScript,
   writeText,
@@ -9,6 +10,7 @@ writeShellApplication {
   name = "nix-flake-add-roots";
   runtimeInputs = [
     jq
+    nix # lix doesn't support 'flake prefetch-inputs' command
   ];
   text = let
     jqFilter = writeText "nix-flake-add-roots-jq-filter" ''
