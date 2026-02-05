@@ -82,6 +82,7 @@
   ];
   plugins.colorizer.enable = true;
   plugins.gitgutter.enable = true;
+  plugins.kitty-scrollback.enable = true;
   plugins.nix.enable = true;
   plugins.treesitter.enable = true;
   plugins.treesitter.highlight.enable = true;
