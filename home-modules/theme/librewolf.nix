@@ -57,7 +57,7 @@
                           }))
                       (lib.filter
                         (style: style ? usercssData)
-                        (builtins.fromJSON (builtins.readFile "${pkgs.catppuccin-userstyles}/import.json"))));
+                        (builtins.fromJSON (builtins.readFile ./import.json))));
                   };
                 };
               };

@@ -43,16 +43,11 @@
       url = "github:/catppuccin/vimium";
       flake = false;
     };
-    catppuccin-userstyles = {
-      url = "github:catppuccin/userstyles";
-      flake = false;
-    };
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-buildDenoPackage.url = "github:aMOPel/nixpkgs/feat/buildDenoPackage-second";
     nom = {
       url = "github:maralorn/nix-output-monitor";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -182,7 +177,6 @@
             {
               inherit
                 (config.packages)
-                catppuccin-userstyles
                 christbashtree
                 colorbindiff
                 mindustry150
@@ -204,15 +198,6 @@
             // (inputs.nur.overlays.default final pkgs);
           packages =
             {
-              catppuccin-userstyles = final.callPackage ./packages/catppuccin-userstyles.nix {
-                src = inputs.catppuccin-userstyles;
-                inherit
-                  (import inputs.nixpkgs-buildDenoPackage {
-                    inherit system;
-                  })
-                  buildDenoPackage
-                  ;
-              };
               christbashtree = final.callPackage ./packages/christbashtree.nix {};
               colorbindiff = final.callPackage ./packages/colorbindiff.nix {};
               mindustry150 = final.callPackage ./packages/mindustry/package.nix {};
