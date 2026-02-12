@@ -7,6 +7,7 @@
     modules.rofi.enable = lib.mkEnableOption "rofi";
   };
   imports = [
+    ./pass.nix
     ./power.nix
   ];
   config = lib.mkIf config.modules.rofi.enable {

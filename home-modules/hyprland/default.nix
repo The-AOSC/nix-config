@@ -103,6 +103,7 @@ in {
           "SUPER,                F4,                    exec, ${terminalStart} rlcl"
           "SUPER,                F6,                    exec, ${terminalStart} sh -c 'sleep 0.1; while true; do nmtui; done'"
           "SUPER,                r,                     exec, rofi -show drun"
+          "SUPER,                p,                     exec, rofi-pass --last-used"
           ",                     XF86PowerOff,          exec, rofi -show power -no-show-icons"
           "SUPER,                c,                     exec, sh -c 'wl-paste -n|wl-copy'"
           "SUPER ALT,            c,                     exec, sh -c 'wl-paste -n -p|wl-copy'"
