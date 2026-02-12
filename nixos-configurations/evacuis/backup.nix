@@ -11,10 +11,20 @@
         (_: conf: lib.attrNames conf.home.persistence)
         (config.home-manager.users or {})
       );
-      #paths = lib.uniqueStrings (system-paths ++ home-paths);
-      paths = ["/persist"];
+      paths = lib.uniqueStrings (system-paths ++ home-paths);
     in
       paths;
+    exclude = [
+      "/media/data-fixed"
+      "/media/data-raw"
+      "/media/home/aosc/Desktop/games"
+      "/media/home/aosc/Desktop/Movies"
+      "/media/home/aosc/Desktop/Videos/current/90/*.*"
+      "/media/home/aosc/Desktop/Videos/current/90/tmp"
+      "/media/mnt"
+      "/media/sda6"
+      "/persist/swap"
+    ];
     environment = {
       "BORG_RSH" = let
         key = (lib.elemAt (lib.filter (key: key.type == "rsa") config.services.openssh.hostKeys) 0).path;
