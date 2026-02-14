@@ -1,24 +1,8 @@
-commit ca500e60a47a8b5b7d16bd695ec65aff5a07b1f5
-gpg: Signature made Sat 31 May 2025 11:02:08 PM +05
-gpg:                using RSA key 1FB2583842B96A6C7B088DBDD99A3BDB95A7FDD4
-gpg:                issuer "the-aosc@tutamail.com"
-gpg: Good signature from "The AOSC <the-aosc@tutamail.com>" [ultimate]
-Primary key fingerprint: 0B22 AB0E 280F 6FD2 FDFA  6F86 2DAE F773 F14D 02E5
-     Subkey fingerprint: 1FB2 5838 42B9 6A6C 7B08  8DBD D99A 3BDB 95A7 FDD4
-Author: The AOSC <the-aosc@tutamail.com>
-Date:   Sat May 31 23:01:09 2025 +0500
-
-    Revert "ALSA: hda/realtek - Add Headset Mic supported Acer NB platform"
-    
-    This reverts commit 34ab5bbc6e82214d7f7393eba26d164b303ebb4e.
-    
-    Bisected cause of broken audio in headphones after boot
-
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index cd0d7ba7320e..4f13eda9c0b9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -12027,8 +12027,6 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 80f0be13b69f..c21655ef97f2 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -8280,8 +8280,6 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
   *   at most one tbl is allowed to define for the same vendor and same codec
   */
  static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {

@@ -242,24 +242,31 @@
                   ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
                 '';
               });
-              wine-staging-fixed =
-                (final.wineWowPackages.stagingFull.overrideAttrs (finalAttrs: old: {
-                  /*
-                  postInstall = let
-                    wine-mono = final.fetchurl rec {
-                      # https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions
-                      hash = "";
-                      version = "wine-mono-...";
-                      url = "https://github.com/wine-mono/wine-mono/releases/download/${version}/${version}-x86.msi";
-                    };
-                  in ''
-                    ${old.postInstall or ""}
-                    ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
-                  '';
-                  */
-                })).override {
-                  gstreamerSupport = false;
+              wine-staging-fixed = let
+                wine = final.wineWow64Packages.stagingFull.override {
+                  #gstreamerSupport = false;
                 };
+                wine-mono = final.fetchurl rec {
+                  # https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions
+                  version = "10.4.1";
+                  url = "https://dl.winehq.org/wine/wine-mono/${version}/wine-mono-${version}-x86.msi";
+                  hash = "sha256-Bx9LKIfhyXoR15H/PWW+lCnu1t7EwnCIiL/VRro1jiM=";
+                };
+              in
+                pkgs.runCommand wine.name {
+                  inherit (wine) meta;
+                  passthru =
+                    wine.passthru
+                    // {
+                      inherit wine;
+                    };
+                } ''
+                  cp ${wine} $out -ra
+                  chmod +200 $out -R
+                  # TODO: substitute only hashes
+                  find $out -type f | xargs sed -i "s#${wine.outPath}#$out#g"
+                  ln -s ${wine-mono} $out/share/wine/mono/${wine-mono.name}
+                '';
               wtf = final.callPackage ./packages/wtf.nix {};
             }
             # https://github.com/ners/nix-monitored/issues/3
