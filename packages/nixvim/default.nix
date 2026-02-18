@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./colorscheme.nix
+    ./latex.nix
     ./neorg.nix
     ./securemodelines.nix
   ];

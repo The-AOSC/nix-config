@@ -88,6 +88,7 @@
       sops
       speedtest-cli
       termdown
+      texliveFull
       tree
       tty-solitaire
       universal-ctags
