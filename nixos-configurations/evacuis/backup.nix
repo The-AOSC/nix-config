@@ -24,6 +24,7 @@
       "/media/mnt"
       "/media/sda6"
       "/persist/swap"
+      "/persist/tmp"
     ];
     environment = {
       "BORG_RSH" = let
