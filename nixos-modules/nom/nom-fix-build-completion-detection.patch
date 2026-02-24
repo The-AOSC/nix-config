@@ -1,0 +1,13 @@
+diff --git a/lib/NOM/Update.hs b/lib/NOM/Update.hs
+index 52cd219e60dfb5e0f48f09a21549db8426d613bf..0b4822fab268e7c94e7c6e6905d431c35dcf839e 100644
+--- a/lib/NOM/Update.hs
++++ b/lib/NOM/Update.hs
+@@ -280,7 +280,7 @@ processJsonMessage = \case
+         isCompleted <-
+           derivationToAnyOutPath drvId >>= \case
+             Nothing -> pure False -- Derivation has no "out" output.
+-            Just path -> waitForStorePath path -- Blocks up to 500ms. This should probably be fixed by doing something smart wtih concurrency.
++            _ -> pure True
+         if isCompleted then withChange $ finishBuildByDrvId host drvId else noChange
+       _ -> pure (isJust interesting_activity)
+   Plain msg -> tell [Right msg] >> noChange

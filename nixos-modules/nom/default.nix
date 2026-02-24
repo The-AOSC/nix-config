@@ -17,6 +17,9 @@
         nix-output-monitor = prev.nix-output-monitor.overrideAttrs (old: {
           version = "git";
           src = inputs.nom;
+          patches = [
+            ./nom-fix-build-completion-detection.patch
+          ];
         });
         comma = prev.comma.override {
           nix = config.nix.package;
