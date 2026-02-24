@@ -52,6 +52,18 @@ in {
     };
   };
   config = lib.mkIf enable {
+    # https://github.com/NixOS/nixpkgs/pull/486044
+    systemd = lib.mkIf config.security.polkit.enable {
+      services."polkit-agent-helper@".serviceConfig = {
+        PrivateDevices = lib.mkForce false;
+        DeviceAllow = [
+          "/dev/urandom r"
+          "char-hidraw rw"
+        ];
+        ProtectHome = lib.mkForce "read-only";
+        StandardError = "journal";
+      };
+    };
     security.pam = {
       u2f = {
         enable = true;
