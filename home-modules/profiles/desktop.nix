@@ -85,6 +85,7 @@
       pv
       rlwrap
       shellcheck
+      slurp
       sops
       speedtest-cli
       termdown

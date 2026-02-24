@@ -145,6 +145,9 @@ in {
           "SUPER SHIFT,          9,                     movetoworkspacesilent, plugin:mdw:+0:+0:4"
           "SUPER SHIFT,          0,                     movetoworkspacesilent, plugin:mdw:+0:+0:5"
           "SUPER ALT SHIFT CTRL, Return,                submap, escape"
+          ",                     Print,                 exec, ${lib.getExe pkgs.grim} -c"
+          ''CTRL,                Print,                 exec, ${lib.getExe pkgs.grim} -c -g "$(${lib.getExe' config.wayland.windowManager.hyprland.finalPackage "hyprctl"} clients -j | ${lib.getExe pkgs.jq} -r '[.[]|select(.floating|not)]|sort_by(.focusHistoryID)|first|"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')"''
+          ''CTRL SHIFT,          Print,                 exec, ${lib.getExe pkgs.grim} -c -g "$(${lib.getExe pkgs.slurp})"''
         ];
         bindm = [
           "SUPER,                m,                     movewindow"
