@@ -36,6 +36,9 @@
           icmp.cast = true;
           icmp.ignore-all = false;
         };
+        system = {
+          yama = "relaxed";
+        };
       };
     };
   };
