@@ -4,7 +4,6 @@
     ./configuration.nix
     ./disko.nix
     ./hardware-configuration.nix
-    ./unfree.nix
   ];
   nixpkgs.overlays = [
     inputs.self.overlays.fix-nvim-tree-sitter-grammars
