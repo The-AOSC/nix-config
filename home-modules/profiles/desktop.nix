@@ -42,7 +42,6 @@
     modules.tmux.enable = true;
     modules.translate-shell.enable = true;
     modules.unp.enable = true;
-    modules.vivaldi.enable = true;
     modules.wine.enable = true;
     modules.wiremix.enable = true;
     modules.wtf.enable = true;

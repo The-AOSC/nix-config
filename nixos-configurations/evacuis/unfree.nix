@@ -3,6 +3,5 @@
     builtins.elem (lib.getName pkg) [
       "corefonts"
       "vista-fonts"
-      "vivaldi"
     ];
 }
