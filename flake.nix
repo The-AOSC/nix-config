@@ -46,8 +46,8 @@
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.flake-parts.follows = "flake-parts";
-      inputs.nixpkgs.url = "github:NixOS/nixpkgs?rev=0182a361324364ae3f436a63005877674cf45efb";
-      #inputs.nixpkgs.follows = "nixpkgs";
+      inputs.git-hooks.follows = "nom/git-hooks";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nom = {
       url = "github:maralorn/nix-output-monitor";
@@ -217,7 +217,7 @@
               stylus = final.callPackage ./packages/stylus {
                 stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
               };
-              wine-ge-fixed = inputs.nix-gaming.packages.${system}.wine-ge.overrideAttrs (finalAttrs: old: {
+              wine-ge-fixed = final.wine-ge.overrideAttrs (finalAttrs: old: {
                 patches =
                   old.patches or []
                   ++ [
