@@ -60,6 +60,7 @@
           executable = true;
           text = ''
             #!/bin/sh
+            PATH=$PATH:${pkgs.writeShellScriptBin "wine64" ''exec -a "$0" wine "$@"''}/bin
             ${config.home.file."${location}/firejail-run-cwd.sh".source} winetricks --force "$@" 2>&1 | grep --color=auto -i 'warning\|$'
           '';
         };
