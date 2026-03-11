@@ -76,6 +76,7 @@
       enable = true;
       package = pkgs.wireshark;
     };
+    programs.dconf.enable = true;
     boot.kernel.sysctl."kernel.dmesg_restrict" = 0;
     documentation.nixos.includeAllModules = true;
     documentation.nixos.extraModuleSources = [inputs.self]; # remove references to configuration
