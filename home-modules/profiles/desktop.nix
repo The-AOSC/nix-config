@@ -59,6 +59,7 @@
       bvi
       christbashtree
       colorbindiff
+      crosspipe
       dig
       dos2unix
       fastfetch
@@ -67,7 +68,6 @@
       file
       gimp
       grim
-      helvum
       imagemagick
       jmtpfs
       jq
