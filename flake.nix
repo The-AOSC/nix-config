@@ -21,7 +21,10 @@
     ez-configs = {
       url = "github:ehllie/ez-configs";
       inputs = {
-        flake-parts.follows = "flake-parts";
+        flake-parts = {
+          follows = "flake-parts";
+          inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
+        };
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -38,20 +41,33 @@
     impermanence = {
       url = "github:nix-community/impermanence";
       inputs = {
-        home-manager.follows = "home-manager";
+        home-manager = {
+          follows = "home-manager";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         nixpkgs.follows = "nixpkgs";
       };
     };
     import-tree.url = "github:vic/import-tree";
     lan-mouse = {
       url = "github:feschber/lan-mouse";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs = {
-        flake-parts.follows = "flake-parts";
-        git-hooks.follows = "nom/git-hooks";
+        flake-parts = {
+          follows = "flake-parts";
+          inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
+        };
+        git-hooks.inputs = {
+          flake-compat.follows = "nix-mineral/flake-compat";
+          gitignore.inputs.nixpkgs.follows = "nixpkgs";
+          nixpkgs.follows = "nixpkgs";
+        };
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -62,8 +78,10 @@
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
       inputs = {
-        flake-compat.follows = "nom/git-hooks/flake-compat";
-        flake-parts.follows = "flake-parts";
+        flake-parts = {
+          follows = "flake-parts";
+          inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
+        };
         ndg.follows = "";
         nixpkgs.follows = "nixpkgs";
       };
@@ -76,9 +94,11 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
-        flake-parts.follows = "flake-parts";
+        flake-parts = {
+          follows = "flake-parts";
+          inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
+        };
         nixpkgs.follows = "nixpkgs";
-        systems.follows = "nom/flake-utils/systems";
       };
     };
     nixvirt = {
@@ -87,12 +107,29 @@
     };
     nom = {
       url = "github:maralorn/nix-output-monitor";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        flake-utils.inputs.systems.follows = "nixvim/systems";
+        git-hooks = {
+          follows = "nix-gaming/git-hooks";
+          inputs = {
+            flake-compat.follows = "nix-mineral/flake-compat";
+            gitignore = {
+              follows = "nix-gaming/git-hooks/gitignore";
+              inputs.nixpkgs.follows = "nixpkgs";
+            };
+            nixpkgs.follows = "nixpkgs";
+          };
+        };
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     nur = {
       url = "github:nix-community/NUR";
       inputs = {
-        flake-parts.follows = "flake-parts";
+        flake-parts = {
+          follows = "flake-parts";
+          inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
+        };
         nixpkgs.follows = "nixpkgs";
       };
     };
