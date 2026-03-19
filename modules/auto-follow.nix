@@ -66,7 +66,7 @@ let
           children = [];
           parents = [{inherit location parent;}];
         }).children;
-    flatInfo = flattenInfo [] root;
+    flatInfo = lib.filter (value: value.info != {}) (flattenInfo [] root);
     # check if input values (`{inputs=...; locked=...; original=...;}`) is the same flake
     sameSource = a: b: let
       filterSource = v: let
