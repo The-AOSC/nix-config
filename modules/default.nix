@@ -1,28 +1,9 @@
 top @ {inputs, ...}: {
-  flake-file.description = "NixOS configuration of The AOSC";
-  flake-file.formatter = pkgs: pkgs.alejandra;
-  flake-file.outputs = "dendritic";
   imports = [
-    inputs.flake-file.flakeModules.default
     inputs.ez-configs.flakeModule
     inputs.files.flakeModules.default
     inputs.flake-parts.flakeModules.easyOverlay
     inputs.home-manager.flakeModules.home-manager
-  ];
-  auto-follow.enable = true;
-  auto-follow.lockFile = ../flake.lock;
-  auto-follow.simularInputs = [
-    [
-      {
-        original.owner = "nixos";
-        original.repo = "flake-compat";
-        original.type = "github";
-      }
-      {
-        original.type = "tarball";
-        original.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
-      }
-    ]
   ];
   ezConfigs = {
     root = builtins.toString ../.;
@@ -98,9 +79,6 @@ top @ {inputs, ...}: {
       };
     };
   };
-  systems = [
-    "x86_64-linux"
-  ];
   perSystem = {
     config,
     system,
@@ -222,6 +200,5 @@ top @ {inputs, ...}: {
       };
     };
     files.files = [];
-    formatter = pkgs.alejandra;
   };
 }

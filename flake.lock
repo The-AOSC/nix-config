@@ -126,7 +126,7 @@
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
-          "nixpkgs"
+          "nixpkgs-lib"
         ]
       },
       "locked": {
@@ -501,6 +501,9 @@
         "nix-mineral": "nix-mineral",
         "nix-monitored": "nix-monitored",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-lib": [
+          "nixpkgs"
+        ],
         "nixvim": "nixvim",
         "nixvirt": "nixvirt",
         "nom": "nom",

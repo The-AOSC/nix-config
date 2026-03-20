@@ -1,5 +1,6 @@
 let
   module = {
+    self,
     config,
     lib,
     ...
@@ -112,6 +113,7 @@ let
         type = lib.types.path;
         description = "Path to flake.lock file";
         example = lib.literalExpression "../flake.lock";
+        default = self + /flake.lock;
       };
       simularInputs = lib.mkOption {
         type = with lib.types; listOf (listOf attrs);
