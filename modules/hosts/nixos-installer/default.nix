@@ -1,9 +1,12 @@
 {
-  flake.aspects = {
-    host-nixos-installer.nixos = {
-      imports = [
-        ../../../nixos-configurations/nixos-installer/default.nix
-      ];
+  flake.aspects = {aspects, ...}: {
+    host-nixos-installer = {
+      includes = [aspects.base];
+      nixos = {
+        imports = [
+          ../../../nixos-configurations/nixos-installer/default.nix
+        ];
+      };
     };
   };
 }

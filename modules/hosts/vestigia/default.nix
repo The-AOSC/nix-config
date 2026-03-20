@@ -1,9 +1,12 @@
 {
-  flake.aspects = {
-    host-vestigia.nixos = {
-      imports = [
-        ../../../nixos-configurations/vestigia/default.nix
-      ];
+  flake.aspects = {aspects, ...}: {
+    host-vestigia = {
+      includes = [aspects.base];
+      nixos = {
+        imports = [
+          ../../../nixos-configurations/vestigia/default.nix
+        ];
+      };
     };
   };
 }
