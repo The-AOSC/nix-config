@@ -6,6 +6,7 @@ top @ {inputs, ...}: {
     inputs.home-manager.flakeModules.home-manager
   ];
   ezConfigs = {
+    nixos.configurationsDirectory = "${inputs.self}/non-existent-directory";
     root = builtins.toString ../.;
     globalArgs = {
       inherit inputs;
