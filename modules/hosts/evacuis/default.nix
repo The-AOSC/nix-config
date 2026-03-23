@@ -2,7 +2,6 @@
   flake.aspects = {aspects, ...}: {
     host._.evacuis = {
       includes = [
-        aspects.base
         (aspects.users "aosc")
       ];
       nixos = {
