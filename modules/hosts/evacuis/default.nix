@@ -5,7 +5,6 @@
       nixos = {
         imports = [
           ./_hardware-configuration.nix
-          ../../../nixos-configurations/evacuis/default.nix
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {inherit inputs;};

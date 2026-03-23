@@ -1,10 +1,5 @@
 {inputs, ...}: {
-  imports = [
-    ./backup.nix
-    ./configuration.nix
-    ./disko.nix
-  ];
-  nixpkgs.overlays = [
+  flake.aspects.host-evacuis.nixos.nixpkgs.overlays = [
     inputs.self.overlays.fix-nvim-tree-sitter-grammars
     inputs.self.overlays.fix-ssh-copy-id
     inputs.self.overlays.hypridle-wait-for-hyprlock-fadein

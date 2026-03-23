@@ -1,7 +1,7 @@
 {
-  disko.devices = {
+  flake.aspects.host-evacuis.nixos.disko.devices = {
     disk.system = {
-      device = "/dev/disk/by-id/ata-ST1000LM035-1RK172_WL1XYZ8E";
+      device = "/dev/disk/by-id/nvme-WD_PC_SN740_SDDQNQD-1T00-1014_241006802182";
       content = {
         type = "gpt";
         partitions = {
@@ -17,14 +17,14 @@
             };
           };
           swap = {
-            size = "16G";
+            size = "32G";
             priority = 500;
             content = {
               type = "swap";
             };
           };
           nix = {
-            size = "200G";
+            size = "250G";
             #priority = 1000;
             content = {
               type = "filesystem";
@@ -44,17 +44,17 @@
         };
       };
     };
-    disk.backup = {
-      device = "/dev/disk/by-id/ata-TOSHIBA_MQ04UBF100_54RDT0MIT";
+    disk.media = {
+      device = "/dev/disk/by-id/nvme-ADATA_LEGEND_960_2O352LAQA117";
       content = {
         type = "gpt";
         partitions = {
-          backup = {
+          media = {
             size = "100%";
             content = {
               type = "filesystem";
-              format = "ext4";
-              mountpoint = "/backup";
+              format = "btrfs";
+              mountpoint = "/media";
             };
           };
         };

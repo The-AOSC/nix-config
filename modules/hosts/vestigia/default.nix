@@ -5,7 +5,6 @@
       nixos = {
         imports = [
           ./_hardware-configuration.nix
-          ../../../nixos-configurations/vestigia/default.nix
         ];
       };
     };

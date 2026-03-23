@@ -1,10 +1,11 @@
-{
+# build with .#nixosConfigurations.nixos-installer.config.system.build.isoImage
+{inputs, ...}: {
   flake.aspects = {aspects, ...}: {
     host-nixos-installer = {
       includes = [aspects.base];
       nixos = {
         imports = [
-          ../../../nixos-configurations/nixos-installer/default.nix
+          "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
         ];
       };
     };
