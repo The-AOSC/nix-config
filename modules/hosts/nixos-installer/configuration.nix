@@ -1,5 +1,5 @@
 {lib, ...}: {
-  flake.aspects.host-nixos-installer.nixos = {
+  flake.aspects.host._.nixos-installer.nixos = {
     disko.enableConfig = false;
     users.users.root.openssh.authorizedKeys.keyFiles = [
       ../../../credentials/aosc.authorized_keys

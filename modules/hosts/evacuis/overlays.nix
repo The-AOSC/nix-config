@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.aspects.host-evacuis.nixos.nixpkgs.overlays = [
+  flake.aspects.host._.evacuis.nixos.nixpkgs.overlays = [
     inputs.self.overlays.fix-nvim-tree-sitter-grammars
     inputs.self.overlays.fix-ssh-copy-id
     inputs.self.overlays.hypridle-wait-for-hyprlock-fadein

@@ -1,5 +1,5 @@
 {
-  flake.aspects.host-vestigia.nixos = {
+  flake.aspects.host._.vestigia.nixos = {
     config,
     pkgs,
     lib,

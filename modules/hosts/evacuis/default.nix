@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.aspects = {aspects, ...}: {
-    host-evacuis = {
+    host._.evacuis = {
       includes = [
         aspects.base
         (aspects.users "aosc")

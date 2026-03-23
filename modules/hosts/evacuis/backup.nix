@@ -1,5 +1,5 @@
 {
-  flake.aspects.host-evacuis.nixos = {
+  flake.aspects.host._.evacuis.nixos = {
     config,
     lib,
     ...

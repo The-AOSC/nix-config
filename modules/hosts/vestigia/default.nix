@@ -1,6 +1,6 @@
 {
   flake.aspects = {aspects, ...}: {
-    host-vestigia = {
+    host._.vestigia = {
       includes = [aspects.base];
       nixos = {
         imports = [

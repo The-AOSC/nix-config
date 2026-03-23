@@ -1,5 +1,5 @@
 {
-  flake.aspects.host-vestigia.nixos.disko.devices = {
+  flake.aspects.host._.vestigia.nixos.disko.devices = {
     disk.system = {
       device = "/dev/disk/by-id/ata-ST1000LM035-1RK172_WL1XYZ8E";
       content = {

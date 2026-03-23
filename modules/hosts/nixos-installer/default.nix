@@ -1,7 +1,7 @@
 # build with .#nixosConfigurations.nixos-installer.config.system.build.isoImage
 {inputs, ...}: {
   flake.aspects = {aspects, ...}: {
-    host-nixos-installer = {
+    host._.nixos-installer = {
       includes = [aspects.base];
       nixos = {
         imports = [
