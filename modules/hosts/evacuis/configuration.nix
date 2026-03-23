@@ -19,10 +19,6 @@
     fileSystems."/persist".neededForBoot = true;
     fileSystems."/media".neededForBoot = true;
     users.users.aosc = {
-      openssh.authorizedKeys.keyFiles = [
-        ../../../credentials/aosc.authorized_keys
-      ];
-      isNormalUser = true;
       extraGroups = [
         "dialout"
         "networkmanager"
@@ -30,7 +26,6 @@
         "wheel"
         "wireshark"
       ];
-      shell = pkgs.fish;
     };
     boot.binfmt.emulatedSystems = ["aarch64-linux" "armv7l-linux"];
     system.stateVersion = "25.05";

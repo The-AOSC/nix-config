@@ -22,14 +22,6 @@
     modules.wine.enable = true;
     modules.yubikey.enable = true;
     hardware.graphics.enable = true;
-    users.users.aosc.hashedPasswordFile = config.sops.secrets.aosc-password.path;
-    sops.secrets = {
-      aosc-password = {
-        key = "hash";
-        sopsFile = ../../secrets/aosc-password.yaml;
-        neededForUsers = true;
-      };
-    };
     security.doas = {
       enable = true;
       extraRules = lib.mkMerge [

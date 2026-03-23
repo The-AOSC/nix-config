@@ -1,7 +1,10 @@
 {inputs, ...}: {
   flake.aspects = {aspects, ...}: {
     host-evacuis = {
-      includes = [aspects.base];
+      includes = [
+        aspects.base
+        (aspects.users "aosc")
+      ];
       nixos = {
         imports = [
           ./_hardware-configuration.nix
