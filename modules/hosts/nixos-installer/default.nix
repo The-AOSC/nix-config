@@ -2,6 +2,9 @@
 {inputs, ...}: {
   flake.aspects = {aspects, ...}: {
     host._.nixos-installer = {
+      includes = [
+        aspects.user._.root._.remote
+      ];
       nixos = {
         imports = [
           "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"

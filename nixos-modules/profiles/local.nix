@@ -22,11 +22,5 @@
         wifi-security.psk = "$PHONE_PSK";
       };
     };
-    users.users.root.hashedPasswordFile = config.sops.secrets.root-password.path;
-    sops.secrets.root-password = {
-      key = "hash";
-      sopsFile = ../../secrets/root-password.yaml;
-      neededForUsers = true;
-    };
   };
 }

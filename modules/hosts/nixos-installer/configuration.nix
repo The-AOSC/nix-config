@@ -1,9 +1,6 @@
 {lib, ...}: {
   flake.aspects.host._.nixos-installer.nixos = {
     disko.enableConfig = false;
-    users.users.root.openssh.authorizedKeys.keyFiles = [
-      ../../../credentials/aosc.authorized_keys
-    ];
     modules.sshd.enable = true;
     services.openssh = {
       authorizedKeysInHomedir = lib.mkForce true; # nixos-anywhere compatibility
