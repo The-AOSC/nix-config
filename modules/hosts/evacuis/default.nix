@@ -2,7 +2,7 @@
   flake.aspects = {aspects, ...}: {
     host._.evacuis = {
       includes = [
-        aspects.user._.root._.local
+        ((aspects.users "root")._.convert-user-aspects (user: [user._.local]))
         (aspects.users "aosc")
       ];
       nixos = {

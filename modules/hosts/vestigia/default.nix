@@ -2,8 +2,7 @@
   flake.aspects = {aspects, ...}: {
     host._.vestigia = {
       includes = [
-        aspects.user._.root._.local
-        aspects.user._.root._.remote
+        ((aspects.users "root")._.convert-user-aspects (user: [user._.local user._.remote]))
       ];
       nixos = {
         imports = [
