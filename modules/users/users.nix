@@ -4,25 +4,76 @@
   ...
 }: {
   flake.aspects = {aspects, ...}: {
-    users = username: {
+    users = username: let
+      forwards = from: [
+        (aspects.make-forward {
+          each =
+            if username != "root"
+            then from
+            else [];
+          fromClass = _: "homeManager";
+          intoClass = _: "nixos";
+          intoPath = _: ["home-manager" "users" username];
+          fromAspect = aspect: aspect;
+        })
+        (aspects.make-forward {
+          each = from;
+          fromClass = _: "user";
+          intoClass = _: "nixos";
+          intoPath = _: ["users" "users" username];
+          fromAspect = aspect: aspect;
+        })
+      ];
+      convert-user-aspects = f: {
+        includes = let
+          from = f aspects.user._.${username} or {};
+        in
+          [
+            ({
+              aspect-chain,
+              class,
+            }: {
+              # user and homeManager aspects in user._.<username> should only be included for <username>
+              includes =
+                if lib.elem class ["user" "homeManager"]
+                then []
+                else from;
+            })
+          ]
+          ++ (forwards from);
+      };
+    in {
       includes = [
         ({
           aspect-chain,
           class,
         }: {
-          includes = let
-            aspect = aspects.user._.${username} or {};
-            # user and homeManager aspects in user._.<username> should only be included for <username>
-            filtered =
-              if lib.elem class ["user" "homeManager"]
-              then {}
-              else aspect;
-          in [filtered];
+          includes =
+            [
+              # per user config
+              (convert-user-aspects (user-aspect: [
+                {user.isNormalUser = lib.mkIf (username != "root") true;}
+                user-aspect
+              ]))
+            ]
+            # shared config
+            ++ (forwards [(lib.head aspect-chain)]);
         })
-        (aspects.users username)._.home-manager
-        (aspects.users username)._.users-config
+        (aspects.make-once {
+          key = lib.mapAttrsToList (n: v: "${n}-${builtins.toString v}") __curPos;
+          fromClasses = ["nixos"];
+          fromAspect.nixos = {
+            imports = [
+              inputs.home-manager.nixosModules.home-manager
+            ];
+            home-manager = {
+              extraSpecialArgs = {inherit inputs;};
+              useGlobalPkgs = true;
+              useUserPackages = true;
+            };
+          };
+        })
       ];
-      nixos.users.users.${username}.isNormalUser = lib.mkIf (username != "root") true;
       provides = {
         sops-password = sopsFile: {
           nixos = {config, ...}: {
@@ -34,58 +85,7 @@
             users.users.${username}.hashedPasswordFile = config.sops.secrets."${username}-password".path;
           };
         };
-        home-manager.includes = [
-          (aspects.make-once {
-            key = lib.mapAttrsToList (n: v: "${n}-${builtins.toString v}") __curPos;
-            fromClasses = ["nixos"];
-            fromAspect.nixos = {
-              imports = [
-                inputs.home-manager.nixosModules.home-manager
-              ];
-              home-manager = {
-                extraSpecialArgs = {inherit inputs;};
-                useGlobalPkgs = true;
-                useUserPackages = true;
-              };
-            };
-          })
-          # home-manager config
-          ({
-            class,
-            aspect-chain,
-          }:
-            aspects.make-forward {
-              each = [
-                # user specific config
-                (aspects.user._.${username} or {})
-                # system specific config
-                (lib.head aspect-chain)
-              ];
-              fromClass = _: "homeManager";
-              intoClass = _: "nixos";
-              intoPath = _: ["home-manager" "users" username];
-              fromAspect = aspect: aspect;
-            })
-        ];
-        users-config.includes = [
-          # users.users config
-          ({
-            class,
-            aspect-chain,
-          }:
-            aspects.make-forward {
-              each = [
-                # user specific config
-                (aspects.user._.${username} or {})
-                # system specific config
-                (lib.head aspect-chain)
-              ];
-              fromClass = _: "user";
-              intoClass = _: "nixos";
-              intoPath = _: ["users" "users" username];
-              fromAspect = aspect: aspect;
-            })
-        ];
+        inherit convert-user-aspects;
       };
     };
   };
