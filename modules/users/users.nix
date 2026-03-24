@@ -6,7 +6,19 @@
   flake.aspects = {aspects, ...}: {
     users = username: {
       includes = [
-        (aspects.user._.${username} or {})
+        ({
+          aspect-chain,
+          class,
+        }: {
+          includes = let
+            aspect = aspects.user._.${username} or {};
+            # user and homeManager aspects in user._.<username> should only be included for <username>
+            filtered =
+              if lib.elem class ["user" "homeManager"]
+              then {}
+              else aspect;
+          in [filtered];
+        })
         (aspects.users username)._.home-manager
         (aspects.users username)._.users-config
       ];
