@@ -88,26 +88,5 @@
         ];
       };
     };
-    user.provides = {
-      aosc = {
-        includes = [
-          ((aspects.users "aosc")._.sops-password ../../secrets/aosc-password.yaml)
-        ];
-        nixos = {pkgs, ...}: {
-          users.users.aosc = {
-            openssh.authorizedKeys.keyFiles = [
-              ../../credentials/aosc.authorized_keys
-            ];
-            shell = pkgs.fish;
-          };
-        };
-      };
-      root = {
-        provides.local.includes = [((aspects.users "root")._.sops-password ../../secrets/root-password.yaml)];
-        provides.remote.nixos.users.users.root.openssh.authorizedKeys.keyFiles = [
-          ../../credentials/aosc.authorized_keys
-        ];
-      };
-    };
   };
 }
