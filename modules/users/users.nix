@@ -4,6 +4,7 @@
       includes = [
         (aspects.user._.${username} or {})
         (aspects.users username)._.home-manager
+        (aspects.users username)._.users-config
       ];
       nixos.users.users.${username}.isNormalUser = lib.mkIf (username != "root") true;
       provides = {
@@ -33,6 +34,25 @@
               fromClass = _: "homeManager";
               intoClass = _: "nixos";
               intoPath = _: ["home-manager" "users" username];
+              fromAspect = aspect: aspect;
+            })
+        ];
+        users-config.includes = [
+          # users.users config
+          ({
+            class,
+            aspect-chain,
+          }:
+            aspects.make-forward {
+              each = [
+                # user specific config
+                (aspects.user._.${username} or {})
+                # system specific config
+                (lib.head aspect-chain)
+              ];
+              fromClass = _: "user";
+              intoClass = _: "nixos";
+              intoPath = _: ["users" "users" username];
               fromAspect = aspect: aspect;
             })
         ];
