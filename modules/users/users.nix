@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   flake.aspects = {aspects, ...}: {
     users = username: {
       includes = [
@@ -19,6 +23,20 @@
           };
         };
         home-manager.includes = [
+          (aspects.make-once {
+            key = lib.mapAttrsToList (n: v: "${n}-${builtins.toString v}") __curPos;
+            fromClasses = ["nixos"];
+            fromAspect.nixos = {
+              imports = [
+                inputs.home-manager.nixosModules.home-manager
+              ];
+              home-manager = {
+                extraSpecialArgs = {inherit inputs;};
+                useGlobalPkgs = true;
+                useUserPackages = true;
+              };
+            };
+          })
           # home-manager config
           ({
             class,
