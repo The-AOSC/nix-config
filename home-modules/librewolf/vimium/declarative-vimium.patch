@@ -1,6 +1,6 @@
 --- a/lib/settings.js
 +++ b/lib/settings.js
-@@ -110,9 +110,11 @@ const Settings = {
+@@ -122,9 +122,14 @@ const Settings = {
        );
      }
  
@@ -8,12 +8,15 @@
 +    let result = (await chrome.storage.session.get("settings")).settings || {};
      result = this.migrateSettingsIfNecessary(result);
      result["settingsVersion"] = Utils.getCurrentVersion();
-+    console.log("Current settings:");
-+    console.log(result);
++    let page = window.location.href;
++    if (page.startsWith("moz-extension://") && page.endsWith("/pages/options.html")) {
++        console.log("Current settings:");
++        console.log(result);
++    }
      this._settings = Object.assign(globalThis.structuredClone(defaultOptions), result);
    },
  
-@@ -177,15 +179,7 @@ const Settings = {
+@@ -216,15 +221,7 @@ const Settings = {
      settings = this.migrateSettingsIfNecessary(settings);
      settings["settingsVersion"] = Utils.getCurrentVersion();
      const result = this.pruneOutDefaultValues(settings);
@@ -30,7 +33,7 @@
      await this.load();
    },
  
-@@ -204,7 +198,7 @@ const Settings = {
+@@ -243,7 +240,7 @@ const Settings = {
    // Used only by tests.
    async clear() {
      this._settings = null;
