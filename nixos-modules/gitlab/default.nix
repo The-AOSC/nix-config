@@ -76,6 +76,7 @@
           inputs.impermanence.nixosModules.impermanence
           inputs.self.nixosModules.sshd
           inputs.sops-nix.nixosModules.sops
+          (inputs.self.aspects.secrets._.gitlab {owner = config.services.gitlab.user;}).modules.nixos
         ];
         networking.firewall = {
           enable = true;
@@ -96,20 +97,6 @@
           };
           port = 80;
         };
-        sops.secrets = lib.listToAttrs (lib.map (lib.flip lib.nameValuePair {
-            sopsFile = ../../secrets/gitlab-secrets.yaml;
-            owner = config.services.gitlab.user;
-          }) [
-            "active-record-deterministic-key"
-            "active-record-primary-key"
-            "active-record-salt"
-            "database-password"
-            "db"
-            "initial-root-password"
-            "jws"
-            "otp"
-            "secret"
-          ]);
         services.postgresql.package = pkgs.postgresql_17;
         modules.sshd.enable = true;
         services.openssh = {

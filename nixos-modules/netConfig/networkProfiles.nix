@@ -34,14 +34,6 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    sops.secrets = lib.mkMerge (lib.mapAttrsToList (_: network:
-      lib.mapAttrs (_: path: {
-        format = "dotenv";
-        key = "";
-        sopsFile = path;
-      })
-      network.secrets)
-    cfg.networks);
     networking.networkmanager = {
       settings = lib.mkIf (!cfg.createDefaultConnections) {
         main.no-auto-default = "*";

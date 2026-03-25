@@ -57,7 +57,7 @@
               ]))
             ]
             # shared config
-            ++ (forwards [(lib.head aspect-chain)]);
+            ++ (forwards [(lib.head aspect-chain) aspects.base]);
         })
         (aspects.make-once {
           key = lib.mapAttrsToList (n: v: "${n}-${builtins.toString v}") __curPos;
@@ -75,16 +75,6 @@
         })
       ];
       provides = {
-        sops-password = sopsFile: {
-          nixos = {config, ...}: {
-            sops.secrets."${username}-password" = {
-              inherit sopsFile;
-              key = "hash";
-              neededForUsers = true;
-            };
-            users.users.${username}.hashedPasswordFile = config.sops.secrets."${username}-password".path;
-          };
-        };
         inherit convert-user-aspects;
       };
     };

@@ -2,7 +2,7 @@
   flake.aspects = {aspects, ...}: {
     user._.aosc = {
       includes = [
-        ((aspects.users "aosc")._.sops-password ../../../secrets/aosc-password.yaml)
+        (aspects.users "aosc")._.sops-password
       ];
       nixos = {pkgs, ...}: {
         users.users.aosc.shell = pkgs.fish;
