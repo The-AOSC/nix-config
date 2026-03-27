@@ -1,6 +1,6 @@
 {
   flake.aspects = {aspects, ...}: {
-    host._.vestigia = {
+    hosts._.vestigia = {
       includes = [
         (aspects.users "root")
         (aspects.users "root")._.local

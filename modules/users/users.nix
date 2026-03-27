@@ -55,7 +55,7 @@
               aspect-chain,
               class,
             }: {
-              includes = forwards [aspects.base (lib.head aspect-chain)] username;
+              includes = forwards [(lib.head aspect-chain)] username;
             })
           ];
         };

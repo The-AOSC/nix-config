@@ -1,7 +1,7 @@
 # build with .#nixosConfigurations.nixos-installer.config.system.build.isoImage
 {inputs, ...}: {
   flake.aspects = {aspects, ...}: {
-    host._.nixos-installer = {
+    hosts._.nixos-installer = {
       includes = [
         (aspects.users "root")
         (aspects.users "root")._.remote

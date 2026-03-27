@@ -1,5 +1,5 @@
 {lib, ...}: {
-  flake.aspects.host._.nixos-installer.nixos = {
+  flake.aspects.hosts._.nixos-installer.nixos = {
     disko.enableConfig = false;
     modules.sshd.enable = true;
     services.openssh = {
