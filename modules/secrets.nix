@@ -33,7 +33,7 @@
           "secret"
         ]);
     };
-    users = username: {
+    users.perInstance = username: {
       provides.sops-password = {
         nixos = {config, ...}: {
           sops.secrets."${username}-password" = {

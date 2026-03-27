@@ -3,7 +3,8 @@
   flake.aspects = {aspects, ...}: {
     host._.nixos-installer = {
       includes = [
-        ((aspects.users "root")._.convert-user-aspects (user: [user._.remote]))
+        (aspects.users "root")
+        (aspects.users "root")._.remote
       ];
       nixos = {
         imports = [

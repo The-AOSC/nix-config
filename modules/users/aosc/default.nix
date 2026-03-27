@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.aspects = {aspects, ...}: {
-    user._.aosc = {
+    users._.aosc = {
       includes = [
         (aspects.users "aosc")._.sops-password
       ];
