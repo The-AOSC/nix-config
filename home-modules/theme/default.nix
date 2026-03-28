@@ -64,6 +64,7 @@
       gtk3 = {
         extraConfig.gtk-application-prefer-dark-theme = config.catppuccin.flavor != "latte";
       };
+      gtk4.theme = config.gtk.theme;
     };
     qt = {
       enable = true;
