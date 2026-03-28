@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   flake-file.inputs = {
     # https://flakehub.com/flake/AshleyYakeley/NixVirt
     nixvirt.url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
@@ -20,5 +20,8 @@
     ez-configs.url = "github:ehllie/ez-configs";
     lan-mouse.url = "github:feschber/lan-mouse";
     nixvim.url = "github:nix-community/nixvim";
+    # defore 14518370cc96dee21ee8765540251915ce813b3f neovim dont wrap lua path (#500416)
+    nixpkgs-nixvim.url = "github:nixos/nixpkgs?rev=ce0546f43cf747ef8f232a204569be9b7771b375";
+    nixvim.inputs.nixpkgs.follows = lib.mkForce "nixpkgs-nixvim";
   };
 }

@@ -407,13 +407,29 @@
         "type": "github"
       }
     },
+    "nixpkgs-nixvim": {
+      "locked": {
+        "lastModified": 1774052586,
+        "narHash": "sha256-FKJrGposJYtT2pMVNzKaJD4tEzFHKkQqD681tN6Ee60=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ce0546f43cf747ef8f232a204569be9b7771b375",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ce0546f43cf747ef8f232a204569be9b7771b375",
+        "type": "github"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": [
           "flake-parts"
         ],
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-nixvim"
         ],
         "systems": "systems"
       },
@@ -520,6 +536,7 @@
         "nixpkgs-lib": [
           "nixpkgs"
         ],
+        "nixpkgs-nixvim": "nixpkgs-nixvim",
         "nixvim": "nixvim",
         "nixvirt": "nixvirt",
         "nom": "nom",
