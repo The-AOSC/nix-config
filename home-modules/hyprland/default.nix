@@ -37,7 +37,8 @@ in {
           force_default_wallpaper = 0;
         };
         input = {
-          kb_layout = "custom"; # see xkb module
+          kb_layout = "us, ru";
+          kb_options = "custom:layout_switch"; # see xkb module
           numlock_by_default = true;
           repeat_rate = 50;
           repeat_delay = 500;

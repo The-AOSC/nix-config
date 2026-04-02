@@ -1,0 +1,3 @@
+! include %S/evdev
+! option = symbols
+custom:layout_switch = +custom(layout_switch)
