@@ -29,10 +29,10 @@ in {
       ];
       settings = {
         windowrule = [
-          "suppressevent maximize, class:.*"
+          "match:class .*, suppress_event maximize"
         ];
         misc = {
-          new_window_takes_over_fullscreen = 2; # unfullscreen
+          on_focus_under_fullscreen = 2; # unfullscreen
           session_lock_xray = true;
           force_default_wallpaper = 0;
         };
