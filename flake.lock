@@ -423,6 +423,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-zapret2": {
+      "locked": {
+        "lastModified": 1774060995,
+        "narHash": "sha256-LbuTI9LfuKv67O8z0727hHsQ8KNN1lJ0e4/m5NcB7cQ=",
+        "owner": "andre4ik3",
+        "repo": "nixpkgs",
+        "rev": "982a9dac061dadb56d6508335d8a9c67dd0dc965",
+        "type": "github"
+      },
+      "original": {
+        "owner": "andre4ik3",
+        "ref": "init-zapret2",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": [
@@ -537,6 +553,7 @@
           "nixpkgs"
         ],
         "nixpkgs-nixvim": "nixpkgs-nixvim",
+        "nixpkgs-zapret2": "nixpkgs-zapret2",
         "nixvim": "nixvim",
         "nixvirt": "nixvirt",
         "nom": "nom",

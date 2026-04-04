@@ -5,6 +5,7 @@
         (aspects.users "aosc")
         (aspects.users "root")
         (aspects.users "root")._.local
+        aspects.zapret2
       ];
       nixos = {
         imports = [
