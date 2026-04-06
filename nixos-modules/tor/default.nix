@@ -20,7 +20,7 @@
           KeepAliveIsolateSOCKSAuth = true;
           IPv6Traffic = true;
           PreferIPv6 = true;
-          addr = "127.0.0.1";
+          addr = "0.0.0.0";
           port = 9150;
         };
       };
@@ -49,6 +49,7 @@
         ];
       };
     };
+    networking.firewall.allowedTCPPorts = [9150];
     networking.networkmanager.dispatcherScripts = [
       {
         source = pkgs.writeShellScript "restart-tor" ''

@@ -15,8 +15,6 @@
       brightnessctl
     ];
     fileSystems."/persist".neededForBoot = true;
-    services.tor.client.socksListenAddress.addr = lib.mkForce "0.0.0.0";
-    networking.firewall.allowedTCPPorts = [9150]; # tor proxy
     system.stateVersion = "25.11";
     modules.tor.enable = true;
     modules.kanata.enable = true;
