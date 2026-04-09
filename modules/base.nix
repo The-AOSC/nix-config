@@ -4,6 +4,7 @@
   flake.aspects = {aspects, ...}: {
     base = {
       includes = [
+        aspects.direnv
         aspects.secrets
       ];
       nixos = {
