@@ -93,7 +93,6 @@
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-lib.follows = "nixpkgs";
-    nixpkgs-nixvim.url = "github:nixos/nixpkgs?rev=ce0546f43cf747ef8f232a204569be9b7771b375";
     nixpkgs-zapret2.url = "github:andre4ik3/nixpkgs/init-zapret2";
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -102,7 +101,7 @@
           follows = "flake-parts";
           inputs.nixpkgs-lib.follows = "nixpkgs-lib";
         };
-        nixpkgs.follows = "nixpkgs-nixvim";
+        nixpkgs.follows = "nixpkgs";
       };
     };
     nixvirt = {
