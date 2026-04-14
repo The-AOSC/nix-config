@@ -1,12 +1,40 @@
 {inputs, ...}: {
   # https://github.com/NixOS/nixpkgs/pull/501874
   flake-file.inputs.nixpkgs-zapret2.url = "github:andre4ik3/nixpkgs/init-zapret2";
-  flake.aspects.zapret2.nixos = {config, pkgs, lib, ...}: {
-    nixpkgs.overlays = [(final: prev: {
-      zapret2 = final.callPackage "${inputs.nixpkgs-zapret2}/pkgs/by-name/za/zapret2/package.nix" {};
-    })];
+  flake.aspects.zapret2.nixos = {
+    config,
+    pkgs,
+    lib,
+    ...
+  }: {
+    networking.nftables.tables.zapret = {
+      family = "inet";
+      content = let
+        cfg = config.services.zapret;
+        qnum = toString cfg.qnum;
+        httpParams = lib.optionalString (
+          cfg.httpMode == "first"
+        ) "ct original packets 1-6";
+        udpPorts = lib.concatStringsSep "," cfg.udpPorts;
+      in ''
+        chain POSTROUTING {
+          type filter hook postrouting priority mangle;
+          tcp dport 443 ct original packets 1-6 meta mark and 0x40000000 != 0x40000000 counter queue num ${qnum} bypass
+          ${lib.optionalString (cfg.httpSupport)
+          ''tcp dport 80 ${httpParams} meta mark and 0x40000000 != 0x40000000 counter queue num ${qnum} bypass''}
+          ${lib.optionalString (cfg.udpSupport)
+          ''udp dport { ${udpPorts} } meta mark and 0x40000000 != 0x40000000 counter queue num ${qnum} bypass''}
+        }
+      '';
+    };
+    nixpkgs.overlays = [
+      (final: prev: {
+        zapret2 = final.callPackage "${inputs.nixpkgs-zapret2}/pkgs/by-name/za/zapret2/package.nix" {};
+      })
+    ];
     services.zapret = {
       enable = true;
+      configureFirewall = lib.mkIf config.networking.nftables.enable false;
       package = pkgs.symlinkJoin {
         inherit (pkgs.zapret2) name;
         paths = [pkgs.zapret2];

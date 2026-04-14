@@ -32,6 +32,7 @@
             enable = true;
             allowPing = true;
           };
+          nftables.enable = true;
         };
         users.mutableUsers = false;
         boot.loader = {
