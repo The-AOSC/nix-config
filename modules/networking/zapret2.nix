@@ -1,6 +1,6 @@
 {inputs, ...}: {
   # https://github.com/NixOS/nixpkgs/pull/501874
-  flake-file.inputs.nixpkgs-zapret2.url = "github:andre4ik3/nixpkgs/init-zapret2";
+  flake-file.inputs.nixpkgs-zapret2.url = "github:NixOs/nixpkgs/master";
   flake.aspects.zapret2.nixos = {
     config,
     pkgs,
