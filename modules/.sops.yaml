@@ -39,3 +39,15 @@ creation_rules:
         age:
         - *host_evacuis
         - *host_vestigia
+  - path_regex: secrets/wireguard-evacuis.yaml
+    key_groups:
+      - pgp:
+        - *user_aosc
+        age:
+        - *host_evacuis
+  - path_regex: secrets/wireguard-vestigia.yaml
+    key_groups:
+      - pgp:
+        - *user_aosc
+        age:
+        - *host_vestigia
