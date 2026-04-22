@@ -49,11 +49,11 @@
     programs.ssh.knownHosts = {
       "vestigia/rsa" = {
         hostNames = ["vestigia"];
-        publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCnLm/0GCVn7Bw0HDDjjwejf1fMyemxMmAVY/MVC2oKa0toWCGx2HChbL0EBbQLokX6DGb7NkBRkmtCldIzBCT1/zT8xASJXdjhuOWBmo2MqoBAoMHb6gAyBHgy9g8UmiZ8hpdnYMs8BUk3prjKXKp75sQeH+z8ckp1vgLSeNllxRuWGxswmRJ9Ow1qXmVePxMEyIjx3fWEUH6RFKYVTOUzFn6mtRrYjFHBh+Znjpa7f3hlJlINBXWXcgpmCqjZVBDTcHaG5QheCJFsussHq56ciN8m/bodLNRShOpfbYmKyqdYPdTHg1YKqCFXN+w3VugQ94/hwE8aa2+gyvXthJomKYcW9uSPUvYt8Gxp58sGF+W5PmfcBwGSWynrdvFdYkMySH/jTFWYREM8kNzs6RHijAJLOftTjR+3mTsDDmP/Ewdyis/oQSS9ec8FBcXNxNOpDW+kr3+xBLrt0zou+9nvvjrSRFL5COVAwuC4EIsTzbIgJp74qHEL9ZDgweGqFMO/vnCEgAUu2WVdpWkEQP1NN+0JzdgFHLWJXGJher6ceAGzCUT+pZpjDTfLddsC6L9NBPpxKf5JMMlItSZ1OqQDzRPnUMdGi5T8NZtHO4tS4zUx678AW9ZDkuycS0OgoydeQ2QOXYN0qFZejomoJiA3Fb87644BqEZmtXS/m5VaqQ==";
+        publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCyJ9H0/Oo+1ZC8KaR/TI7V+tRz39UOx0ij/lkwG5dr7xyCImofsaj+fzk7CDLamiU7nkVm9eC1U8PmmLSJVimeJ30yK6/i6x69XxET1X5tkbr5gLd4LYoX2+FtCV5HshNTVXeV06g4ejFtaxyDn4LvpGmEosCUejdxlLy/kCd7ZrBG+aFGzRMiCUCwHR4nWFE9NdZLAmwcRmwldHsp0ZhzY4rOjdrwf4/p1N2ctB1N0raH5gudQYOitQkvkRNntE1rjbF4FM5zZmi+DO3fjzI1ge8FJRpWUfMIrTses+GKXT/fpizRcdKSPdf/umgIoQBBWjYTFh0SP/+dvLepgITkxsZ22BGrvLQdiYJqzL7UbQj3fiim59FpGt2voKA4qsuJK0uarSPnYhC8HNaqkUujhZv5iADozWofk79k8FdR61L+1NXyf1NB7aVGur9KcNTrdfTm45X3S/VVjUBMTp6FIh8O8YhUq2g5JbmzUTyORhJPfhLHEKQMhtf1RUuZoolZzmAzt1+U/PAc0RrAiRGlLUV52SCdcQb/FBkvx/AI4Jtqv8mQ+311XEM0/uaOfhBZvlyd/3p2xwLdhimMG1zmVBY26z/+a/2O0VbwH329C6mTp/xX1DapbRWp6ofCQkdiQsm3/Mg27BUJw3fn407FXGwUryGcV2oBHpiUosBbRw==";
       };
       "vestigia/ed25519" = {
         hostNames = ["vestigia"];
-        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhpBSfn12pVZJw3wAe96GH9uRuvTTbE0veFDnIRfzE3";
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIEmXQ7td4T+AYHoNQSkPpAElfP4uxmLDvsufvKphfoJ";
       };
     };
     environment.persistence."/persist" = {

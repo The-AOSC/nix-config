@@ -1,7 +1,7 @@
 {
   flake.aspects.hosts._.vestigia.nixos.disko.devices = {
     disk.system = {
-      device = "/dev/disk/by-id/ata-ST1000LM035-1RK172_WL1XYZ8E";
+      device = "/dev/disk/by-id/ata-Q100SMRIMY256_POG546009250";
       content = {
         type = "gpt";
         partitions = {
