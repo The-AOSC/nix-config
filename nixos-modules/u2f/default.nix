@@ -15,15 +15,25 @@ in {
       in
         with lib.types;
           attrsOf (
-            submodule ({config, ...}: {
+            submodule ({
+              config,
+              name,
+              ...
+            }: {
               options = {
+                rootSkipU2f = lib.mkOption {
+                  type = lib.types.bool;
+                  default = config.useDefaultRules;
+                  defaultText = lib.literalExpression "config.security.pam.services.${name}.useDefaultRules";
+                  description = "Skip u2f check for root user";
+                };
                 u2fAuthControl = lib.mkOption {
                   inherit (options.security.pam.u2f.control) type description;
                   default = cfg.security.pam.u2f.control;
                   defaultText = lib.literalExpression "config.security.pam.u2f.control";
                 };
               };
-              config = lib.mkIf enable {
+              config = lib.mkIf (enable && config.rootSkipU2f) {
                 /*
                 !!!!!!!!!!! WARNING !!!!!!!!!!!
                 from nixos source:
@@ -67,6 +77,7 @@ in {
         "doas".u2fAuthControl = "sufficient";
         "polkit-1".u2fAuthControl = "sufficient";
         "sshd".u2fAuth = false;
+        "other".rootSkipU2f = false;
       };
     };
   };

@@ -1,6 +1,4 @@
-{inputs, ...}: {
-  # https://github.com/NixOS/nixpkgs/pull/501874
-  flake-file.inputs.nixpkgs-zapret2.url = "github:NixOs/nixpkgs/master";
+{
   flake.aspects.zapret2.nixos = {
     config,
     pkgs,
@@ -27,11 +25,6 @@
         }
       '';
     };
-    nixpkgs.overlays = [
-      (final: prev: {
-        zapret2 = final.callPackage "${inputs.nixpkgs-zapret2}/pkgs/by-name/za/zapret2/package.nix" {};
-      })
-    ];
     services.zapret = {
       enable = true;
       configureFirewall = lib.mkIf config.networking.nftables.enable false;

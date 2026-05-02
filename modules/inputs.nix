@@ -1,7 +1,6 @@
 {
   flake-file.inputs = {
-    # https://flakehub.com/flake/AshleyYakeley/NixVirt
-    nixvirt.url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
+    nixvirt.url = "github:AshleyYakeley/NixVirt";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
