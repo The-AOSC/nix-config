@@ -223,6 +223,26 @@
         "type": "github"
       }
     },
+    "glide": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778024252,
+        "narHash": "sha256-OrsLZrBKEdx7qi+AUZBDIjXKFxziEaC8IJqCU9PUvuE=",
+        "owner": "tompassarelli",
+        "repo": "glide",
+        "rev": "0b691a8c4a1f4404f4a3a19595468b34ab22bacb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tompassarelli",
+        "repo": "glide",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -423,22 +443,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-zapret2": {
-      "locked": {
-        "lastModified": 1777636121,
-        "narHash": "sha256-ptkbwoYMHQnD+mRtqywZaVGE7cDlOGiPG18LDGkoV7g=",
-        "owner": "NixOs",
-        "repo": "nixpkgs",
-        "rev": "6ba2db6316c5201e90da46b92b34badb1052bc4b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOs",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixvim": {
       "inputs": {
         "flake-parts": [
@@ -541,6 +545,7 @@
         "flake-aspects": "flake-aspects",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",
+        "glide": "glide",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
@@ -551,7 +556,6 @@
         "nix-monitored": "nix-monitored",
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
-        "nixpkgs-zapret2": "nixpkgs-zapret2",
         "nixvim": "nixvim",
         "nixvirt": "nixvirt",
         "nom": "nom",
