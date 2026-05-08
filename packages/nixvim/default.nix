@@ -3,7 +3,6 @@
     ./colorscheme.nix
     ./latex.nix
     ./neorg.nix
-    ./securemodelines.nix
   ];
   viAlias = true;
   vimAlias = true;
@@ -25,6 +24,8 @@
     updatetime = 100;
     # no folds closed at startup
     foldlevelstart = 99;
+    # disable modelines
+    modeline = false;
   };
   highlight."ExtraWhitespace" = {
     ctermbg = "red";
