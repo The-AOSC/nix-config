@@ -2,7 +2,7 @@
   flake.aspects = {aspects, ...}: {
     hosts._.evacuis = {
       includes = [
-        (aspects.glide "default" "/dev/input/event10")
+        (aspects.glide "default")
         (aspects.users "aosc")
         (aspects.users "root")
         (aspects.users "root")._.local
