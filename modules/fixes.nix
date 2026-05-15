@@ -24,6 +24,13 @@
                 });
           };
       });
+      wireshark = prev.wireshark.overrideAttrs (old: {
+        patches =
+          old.patches or []
+          ++ [
+            ../patches/wireshark/4.6.5-disable-sidebar.patch
+          ];
+      });
     })
   ];
 }
