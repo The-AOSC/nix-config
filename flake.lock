@@ -79,21 +79,6 @@
         "type": "github"
       }
     },
-    "files": {
-      "locked": {
-        "lastModified": 1776952985,
-        "narHash": "sha256-P1PaPjWrHrg0o7qqp78EenQZoXWYw8D+94sllU8a+xQ=",
-        "owner": "mightyiam",
-        "repo": "files",
-        "rev": "30398488637d905ce32c39d2931a98799bd78ecf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mightyiam",
-        "repo": "files",
-        "type": "github"
-      }
-    },
     "flake-aspects": {
       "locked": {
         "lastModified": 1773552804,
@@ -427,22 +412,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1778253243,
-        "narHash": "sha256-KkH2QvU6iRLDTGGEwH5jnMqHWj4zMTuHxi1S1zdr01w=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "4fcda7103530b23c5ca44286344912082aad4220",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixvim": {
       "inputs": {
         "flake-parts": [
@@ -541,7 +510,6 @@
         "catppuccin-vimium": "catppuccin-vimium",
         "disko": "disko",
         "ez-configs": "ez-configs",
-        "files": "files",
         "flake-aspects": "flake-aspects",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",
@@ -555,7 +523,6 @@
         "nix-mineral": "nix-mineral",
         "nix-monitored": "nix-monitored",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-master": "nixpkgs-master",
         "nixvim": "nixvim",
         "nixvirt": "nixvirt",
         "nom": "nom",

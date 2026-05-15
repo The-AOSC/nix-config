@@ -1,7 +1,6 @@
 top @ {inputs, ...}: {
   imports = [
     inputs.ez-configs.flakeModule
-    inputs.files.flakeModules.default
     inputs.flake-parts.flakeModules.easyOverlay
     inputs.home-manager.flakeModules.home-manager
   ];
@@ -193,13 +192,6 @@ top @ {inputs, ...}: {
           description = "Wrapper around nixos-anywhere for use with this flake";
         };
       };
-      update-files = {
-        program = with config.files.writer; "${drv}/bin/${exeFilename}";
-        meta = {
-          description = "Update dynamically generated files in repository";
-        };
-      };
     };
-    files.files = [];
   };
 }

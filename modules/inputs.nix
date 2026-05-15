@@ -6,7 +6,6 @@
       url = "github:cynicsketch/nix-mineral";
       inputs.ndg.follows = "";
     };
-    files.url = "github:mightyiam/files";
     nur.url = "github:nix-community/NUR";
     catppuccin.url = "github:catppuccin/nix";
     catppuccin-vimium = {

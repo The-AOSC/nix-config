@@ -1,10 +1,6 @@
 {inputs, ...}: {
-  flake-file.inputs = {
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-  };
   flake.aspects.base.nixos.nixpkgs.overlays = [
     (final: prev: {
-      #inherit (import inputs.nixpkgs-master {inherit (final.stdenv) system;}) endgame-singularity davfs2;
       nh-unwrapped = prev.nh-unwrapped.override (args: {
         rustPlatform =
           args.rustPlatform
