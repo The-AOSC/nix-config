@@ -1,5 +1,5 @@
 TARGET = libmulti-dimensional-workspaces.so
-CXXFLAGS = -Wall -Werror -O2 -std=c++23 -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon`
+CXXFLAGS = -Wall -O2 -std=c++23 -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon`
 LDFLAGS = -shared
 
 default: $(TARGET)

@@ -28,8 +28,8 @@ in
     ];
     pnpmDeps = pnpm.fetchDeps {
       inherit pname version src;
-      fetcherVersion = 2;
-      hash = "sha256-ua5n5ZBNwUr9PfUy2UKAlC8ao0vzTvXhjUjsiEzPp6w=";
+      fetcherVersion = 3;
+      hash = "sha256-hmKWufAML/pD734Fd/P5fZ1E6+A/NMKhukjkyOnZr4o=";
     };
     buildPhase = ''
       runHook preBuild
