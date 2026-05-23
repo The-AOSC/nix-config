@@ -30,6 +30,11 @@
     ./librewolf.nix
   ];
   config = lib.mkIf config.modules.theme.enable {
+    lib.catppuccin = rec {
+      palette = (lib.importJSON "${pkgs.catppuccin}/palette/palette.json");
+      colors = palette.${config.catppuccin.flavor}.colors;
+      accent = colors.${config.catppuccin.accent};
+    };
     catppuccin = {
       inherit (config.modules.theme.catppuccin) accent flavor;
       enable = true;
@@ -71,9 +76,10 @@
       platformTheme.name = "kvantum";
       style.name = "kvantum";
     };
-    wayland.windowManager.hyprland.settings.general = {
-      "col.inactive_border" = "$surface0";
-      "col.active_border" = "$accent";
+    catppuccin.hyprland.enable = false;
+    wayland.windowManager.hyprland.settings.config.general = {
+      "col.inactive_border" = "${config.lib.catppuccin.colors.surface0.hex}";
+      "col.active_border" = "${config.lib.catppuccin.accent.hex}";
     };
   };
 }

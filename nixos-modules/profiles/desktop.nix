@@ -12,7 +12,6 @@
     profiles.base = lib.mkDefault true;
     profiles.headless = lib.mkDefault false;
     modules.netConfig.disableConflictCheck = true;
-    modules.hyprland.enable = true;
     modules.kanata.enable = true;
     modules.kdeconnect.enable = true;
     modules.nix-index.enable = true;

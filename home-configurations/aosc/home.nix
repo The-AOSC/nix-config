@@ -6,24 +6,6 @@
   modules.swaylock.enable = true;
   modules.tor.enable = true;
   modules.tor-browser.enable = true;
-  wayland.windowManager.hyprland.settings.monitorv2 = [
-    {
-      output = "eDP-1";
-      mode = "1920x1080@60";
-    }
-    {
-      output = "Virtual-1";
-      mode = "prefered";
-      position = "auto";
-      scale = 1;
-    }
-    {
-      output = "";
-      mode = "highres";
-      position = "auto";
-      scale = 1;
-    }
-  ];
   home.persistence."/persist" = {
     directories = [
       "dav"

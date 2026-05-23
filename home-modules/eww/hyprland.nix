@@ -68,7 +68,6 @@ in {
            :space-evenly false
            :class "workspaces"
         ${let
-      array_sizes = lib.map lib.toInt (lib.reverseList (lib.splitString ":" config.wayland.windowManager.hyprland.settings.plugin.mdw.array_sizes));
       generate = sizes: offset: let
         level = lib.length sizes;
         sub-count = lib.head sizes;
@@ -87,6 +86,6 @@ in {
             ${lib.concatMapStrings generate-subelement (lib.genList lib.id sub-count)})
         '';
     in
-      generate array_sizes 1}))
+      generate config.modules.hyprland.workspacesArraySizes 1}))
   '';
 }

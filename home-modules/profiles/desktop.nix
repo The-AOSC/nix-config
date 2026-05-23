@@ -21,8 +21,6 @@
     modules.gpg.enable = true;
     modules.htop.enable = true;
     modules.hunspell.enable = true;
-    modules.hyprland.enable = true;
-    modules.hyprlock.enable = true;
     modules.kdeconnect.enable = true;
     modules.kitty.enable = true;
     modules.lan-mouse.enable = true;

@@ -96,7 +96,6 @@ top @ {inputs, ...}: {
           mindustry150
           mindustry150-server
           mindustry150-wayland
-          multi-dimensional-workspaces
           nix-flake-add-roots
           nixvim-configured
           stylus
@@ -121,9 +120,6 @@ top @ {inputs, ...}: {
         };
         mindustry150-wayland = final.callPackage ../packages/mindustry/package.nix {
           enableWayland = true;
-        };
-        multi-dimensional-workspaces = final.callPackage ../packages/multi-dimensional-workspaces {
-          inherit (final.hyprlandPlugins) mkHyprlandPlugin;
         };
         nixvim-configured = final.callPackage ../packages/nixvim/package.nix {};
         nix-flake-add-roots = final.callPackage ../packages/nix-flake-add-roots {};
