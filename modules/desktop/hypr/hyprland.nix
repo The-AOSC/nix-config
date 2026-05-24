@@ -115,8 +115,8 @@
               "SHIFT + XF86AudioMute" = {
                 bind = ''
                   function()
-                    hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%")
-                    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ 0")
+                    hl.dispatch(hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%"))
+                    hl.dispatch(hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"))
                   end
                 '';
                 locked = true;
@@ -139,8 +139,8 @@
               "SHIFT + ALT + XF86AudioMute" = {
                 bind = ''
                   function()
-                    hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 100%")
-                    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0")
+                    hl.dispatch(hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 100%"))
+                    hl.dispatch(hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0"))
                   end
                 '';
                 locked = true;
