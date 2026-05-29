@@ -121,7 +121,7 @@ top @ {inputs, ...}: {
         mindustry150-wayland = final.callPackage ../packages/mindustry/package.nix {
           enableWayland = true;
         };
-        nixvim-configured = final.callPackage ../packages/nixvim/package.nix {};
+        nixvim-configured = final.callPackage ../packages/nixvim/package.nix {inherit (inputs.nixvim.inputs) nixpkgs;};
         nix-flake-add-roots = final.callPackage ../packages/nix-flake-add-roots {};
         stylus = final.callPackage ../packages/stylus {
           stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;

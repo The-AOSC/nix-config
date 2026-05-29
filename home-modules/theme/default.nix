@@ -76,10 +76,12 @@
       platformTheme.name = "kvantum";
       style.name = "kvantum";
     };
-    catppuccin.hyprland.enable = false;
-    wayland.windowManager.hyprland.settings.config.general = {
-      "col.inactive_border" = "${config.lib.catppuccin.colors.surface0.hex}";
-      "col.active_border" = "${config.lib.catppuccin.accent.hex}";
+    wayland.windowManager.hyprland.settings.config = {
+      general = {
+        "col.inactive_border" = lib.generators.mkLuaInline "colors.surface0";
+        "col.active_border" = lib.generators.mkLuaInline "colors.accent";
+      };
+      misc."col.splash" = lib.generators.mkLuaInline "colors.text";
     };
   };
 }

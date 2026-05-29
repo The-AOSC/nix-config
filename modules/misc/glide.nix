@@ -42,7 +42,7 @@
             }
             *arg = NULL;
             argv[0] = "glide";
-            execve("${lib.getExe inputs.glide.packages.${pkgs.system}.default}", argv, NULL);
+            execve("${lib.getExe inputs.glide.packages.${pkgs.stdenv.hostPlatform.system}.default}", argv, NULL);
           }
         '';
         # activate immediately on touch

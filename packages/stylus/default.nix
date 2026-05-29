@@ -1,6 +1,8 @@
 {
   stdenv,
   fetchurl,
+  pnpmConfigHook,
+  fetchPnpmDeps,
   pnpm_10,
   nodejs,
   zip,
@@ -24,9 +26,10 @@ in
     ];
     nativeBuildInputs = [
       nodejs
-      pnpm.configHook
+      pnpm
+      pnpmConfigHook
     ];
-    pnpmDeps = pnpm.fetchDeps {
+    pnpmDeps = fetchPnpmDeps {
       inherit pname version src;
       fetcherVersion = 3;
       hash = "sha256-hmKWufAML/pD734Fd/P5fZ1E6+A/NMKhukjkyOnZr4o=";
