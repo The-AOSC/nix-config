@@ -26,7 +26,6 @@
   };
   imports = [
     inputs.catppuccin.homeModules.catppuccin
-    ./eww.nix
     ./librewolf.nix
   ];
   config = lib.mkIf config.modules.theme.enable {
