@@ -163,12 +163,12 @@
             "XF86MonBrightnessUp" = {
               bind = ''hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+")'';
               locked = true;
-              release = true;
+              repeating = true;
             };
             "XF86MonBrightnessDown" = {
               bind = ''hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-")'';
               locked = true;
-              release = true;
+              repeating = true;
             };
             # mouse
             "SUPER + m" = {
