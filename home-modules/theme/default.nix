@@ -31,7 +31,7 @@
   ];
   config = lib.mkIf config.modules.theme.enable {
     lib.catppuccin = rec {
-      palette = (lib.importJSON "${pkgs.catppuccin}/palette/palette.json");
+      palette = lib.importJSON "${pkgs.catppuccin}/palette/palette.json";
       colors = palette.${config.catppuccin.flavor}.colors;
       accent = colors.${config.catppuccin.accent};
     };

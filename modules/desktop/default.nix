@@ -3,6 +3,7 @@
     desktop = {
       includes = [
         aspects.desktop._.hyprland
+        aspects.desktop._.quickshell
       ];
       nixos = {
         programs.uwsm = {
