@@ -1,6 +1,17 @@
 {inputs, ...}: {
   flake.aspects.base.nixos.nixpkgs.overlays = [
     (final: prev: {
+      # https://github.com/NixOS/nixpkgs/pull/523359/commits/6b5f8083d4aea8d1a30e114a2c3166c57aa861b2
+      jitterentropy-rngd = prev.jitterentropy-rngd.overrideAttrs (old: {
+        patches =
+          old.patches or []
+          ++ [
+            (final.fetchpatch2 {
+              url = "https://github.com/smuellerDD/jitterentropy-rngd/compare/61ad2e7c83b95402536b90b52eabe20ce60cfbd7...cee0c7a035e9564d161053012c6ea36b2ce27383.patch";
+              hash = "sha256-e112LAqIlNL1oGd01wAON0aWZKAOoMznpwQx64DS4OE=";
+            })
+          ];
+      });
       nh-unwrapped = prev.nh-unwrapped.override (args: {
         rustPlatform =
           args.rustPlatform
