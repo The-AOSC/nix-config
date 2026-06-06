@@ -36,6 +36,27 @@
         "type": "github"
       }
     },
+    "copyparty": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779822991,
+        "narHash": "sha256-r6e4eHEyQJEDhT6gkW3B9+OgB0pZebw2+du4bvN3vww=",
+        "owner": "9001",
+        "repo": "copyparty",
+        "rev": "6e75faa62349a59f4df328a4939ba8626d89ee1a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "9001",
+        "repo": "copyparty",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -144,23 +165,18 @@
       }
     },
     "flake-utils": {
-      "inputs": {
-        "systems": [
-          "nixvim",
-          "systems"
-        ]
-      },
       "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "lastModified": 1678901627,
+        "narHash": "sha256-U02riOqrKKzwjsxc/400XnElV+UtPUQWpANPlyazjH0=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "rev": "93a2b84fc4b70d9e089d029deacc3583435c2ed6",
         "type": "github"
       },
       "original": {
-        "id": "flake-utils",
-        "type": "indirect"
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
       }
     },
     "git-hooks": {
@@ -458,7 +474,10 @@
     },
     "nom": {
       "inputs": {
-        "flake-utils": "flake-utils",
+        "flake-utils": [
+          "copyparty",
+          "flake-utils"
+        ],
         "git-hooks": [
           "nix-gaming",
           "git-hooks"
@@ -508,6 +527,7 @@
       "inputs": {
         "catppuccin": "catppuccin",
         "catppuccin-vimium": "catppuccin-vimium",
+        "copyparty": "copyparty",
         "disko": "disko",
         "ez-configs": "ez-configs",
         "flake-aspects": "flake-aspects",

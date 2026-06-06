@@ -14,6 +14,10 @@
       url = "github:/catppuccin/vimium";
       flake = false;
     };
+    copyparty = {
+      url = "github:9001/copyparty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -112,7 +116,7 @@
     nom = {
       url = "github:maralorn/nix-output-monitor";
       inputs = {
-        flake-utils.inputs.systems.follows = "nixvim/systems";
+        flake-utils.follows = "copyparty/flake-utils";
         git-hooks = {
           follows = "nix-gaming/git-hooks";
           inputs = {

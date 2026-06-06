@@ -112,7 +112,7 @@ in {
           '';
         };
       in {
-        "${dav-hostname}" = virtHost // {default = true;};
+        "${dav-hostname}" = virtHost;
         "${dav-hostname}.local" = virtHost;
       };
     };
