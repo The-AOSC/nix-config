@@ -137,7 +137,7 @@ let
       };
     };
     config = {
-      flake-file.inputs = lib.mkMerge (lib.map (v: v.config) inputsConfig);
+      flake-file.inputs = lib.mkIf cfg.enable (lib.mkMerge (lib.map (v: v.config) inputsConfig));
     };
   };
 in {
