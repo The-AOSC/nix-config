@@ -2,10 +2,7 @@
   flake-file.inputs = {
     nixvirt.url = "github:AshleyYakeley/NixVirt";
     nix-index-database.url = "github:nix-community/nix-index-database";
-    nix-mineral = {
-      url = "github:cynicsketch/nix-mineral";
-      inputs.ndg.follows = "";
-    };
+    nix-mineral.url = "github:cynicsketch/nix-mineral";
     nur.url = "github:nix-community/NUR";
     catppuccin.url = "github:catppuccin/nix";
     catppuccin-vimium = {

@@ -31,6 +31,7 @@
     catppuccin = {
       inherit (config.modules.theme.catppuccin) accent flavor;
       enable = true;
+      autoEnable = true;
     };
   };
 }

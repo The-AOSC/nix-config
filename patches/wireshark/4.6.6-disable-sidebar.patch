@@ -1,0 +1,42 @@
+diff --git a/ui/recent.c b/ui/recent.c
+index 0ef5df508a..fb1faec49d 100644
+--- a/ui/recent.c
++++ b/ui/recent.c
+@@ -1680,12 +1680,12 @@ recent_read_static(char **rf_path_return, int *rf_errno_return)
+     recent.gui_fileopen_remembered_dir = NULL;
+ 
+     /* defaults for the welcome page sidebar */
+-    recent.gui_welcome_page_sidebar_learn_visible = true;
+-    recent.gui_welcome_page_sidebar_tips_visible = true;
+-    recent.gui_welcome_page_sidebar_tips_events = true;
+-    recent.gui_welcome_page_sidebar_tips_sponsorship = true;
+-    recent.gui_welcome_page_sidebar_tips_tips = true;
+-    recent.gui_welcome_page_sidebar_tips_auto_advance = true;
++    recent.gui_welcome_page_sidebar_learn_visible = false;
++    recent.gui_welcome_page_sidebar_tips_visible = false;
++    recent.gui_welcome_page_sidebar_tips_events = false;
++    recent.gui_welcome_page_sidebar_tips_sponsorship = false;
++    recent.gui_welcome_page_sidebar_tips_tips = false;
++    recent.gui_welcome_page_sidebar_tips_auto_advance = false;
+     recent.gui_welcome_page_sidebar_tips_interval = 8;
+ 
+     /* Construct the pathname of the user's recent common file. */
+@@ -1990,12 +1990,12 @@ recent_init(void)
+ {
+     memset(&recent, 0, sizeof(recent_settings_t));
+ 
+-    recent.gui_welcome_page_sidebar_learn_visible = true;
+-    recent.gui_welcome_page_sidebar_tips_visible = true;
+-    recent.gui_welcome_page_sidebar_tips_events = true;
+-    recent.gui_welcome_page_sidebar_tips_sponsorship = true;
+-    recent.gui_welcome_page_sidebar_tips_tips = true;
+-    recent.gui_welcome_page_sidebar_tips_auto_advance = true;
++    recent.gui_welcome_page_sidebar_learn_visible = false;
++    recent.gui_welcome_page_sidebar_tips_visible = false;
++    recent.gui_welcome_page_sidebar_tips_events = false;
++    recent.gui_welcome_page_sidebar_tips_sponsorship = false;
++    recent.gui_welcome_page_sidebar_tips_tips = false;
++    recent.gui_welcome_page_sidebar_tips_auto_advance = false;
+     recent.gui_welcome_page_sidebar_tips_interval = 8;
+ }
+ 
