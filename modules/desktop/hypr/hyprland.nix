@@ -89,6 +89,14 @@
             match.class = ".*";
             suppress_event = "maximize";
           }
+          {
+            match.class = "org.gnupg.pinentry-qt";
+            pin = true;
+          }
+          {
+            match.title = "Hyprland Polkit Agent";
+            pin = true;
+          }
         ];
         bind = lib.concatLists (
           lib.mapAttrsToList (hotkey: value:
@@ -228,6 +236,7 @@
             "SUPER + f".bind = ''hl.dsp.window.fullscreen()'';
             "SUPER + SHIFT + q".bind = ''hl.dsp.window.close()'';
             "SUPER + SHIFT + Space".bind = ''hl.dsp.window.float()'';
+            "SUPER + SHIFT + ALT + Space".bind = ''hl.dsp.window.pin()'';
             # launch
             "SUPER + Return".bind = ''hl.dsp.exec_cmd("${terminalStart} fish")'';
             "SUPER + SHIFT + Escape".bind = ''hl.dsp.exec_cmd("${terminalStart} htop")'';
