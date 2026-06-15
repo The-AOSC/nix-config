@@ -76,12 +76,73 @@
       platformTheme.name = "kvantum";
       style.name = "kvantum";
     };
-    wayland.windowManager.hyprland.settings.config = {
-      general = {
-        "col.inactive_border" = lib.generators.mkLuaInline "colors.surface0";
-        "col.active_border" = lib.generators.mkLuaInline "colors.accent";
+    wayland.windowManager.hyprland.settings = {
+      config = {
+        general = {
+          #"col.inactive_border" = lib.generators.mkLuaInline "colors.surface0";
+          # this is the only way to apply gradient to unfocused window (see https://github.com/hyprwm/Hyprland/discussions/14030)
+          "col.inactive_border" = {
+            colors = [
+              (lib.generators.mkLuaInline "colors.surface0")
+              (lib.generators.mkLuaInline "colors.blue")
+              (lib.generators.mkLuaInline "colors.blue")
+            ];
+            angle = 45;
+          };
+          "col.active_border" = lib.generators.mkLuaInline "colors.accent";
+        };
+        misc."col.splash" = lib.generators.mkLuaInline "colors.text";
       };
-      misc."col.splash" = lib.generators.mkLuaInline "colors.text";
+      window_rule = let
+        mkColors = tokens: lib.generators.mkLuaInline (lib.concatStringsSep ''.." "..'' tokens);
+      in [
+        {
+          match.float = false;
+          match.pin = false;
+          border_color = mkColors [
+            "colors.accent"
+            "colors.surface0"
+          ];
+        }
+        {
+          match.float = true;
+          match.pin = false;
+          match.focus = true;
+          border_color = mkColors [
+            "colors.accent"
+            "colors.blue"
+            ''"45deg"''
+            # ignored (set in col.inactive_border)
+            "colors.surface0"
+            "colors.blue"
+            "colors.blue"
+            ''"45deg"''
+          ];
+        }
+        {
+          match.float = true;
+          match.pin = true;
+          match.focus = true;
+          border_color = mkColors [
+            "colors.accent"
+            "colors.red"
+            ''"45deg"''
+            # ignored (replaced with solid color)
+            "colors.surface0"
+            "colors.red"
+            ''"45deg"''
+          ];
+        }
+        {
+          match.float = true;
+          match.pin = true;
+          match.focus = false;
+          border_color = mkColors [
+            "colors.red"
+            "colors.red"
+          ];
+        }
+      ];
     };
   };
 }
