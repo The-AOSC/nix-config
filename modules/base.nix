@@ -19,7 +19,6 @@
         environment.persistence."/persist" = {
           enable = true;
           directories = [
-            "/var/lib/nixos"
             "/var/log/journal"
           ];
           files = [

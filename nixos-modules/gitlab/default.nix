@@ -77,6 +77,7 @@
           inputs.self.nixosModules.sshd
           inputs.sops-nix.nixosModules.sops
           (inputs.self.aspects.secrets._.gitlab {owner = config.services.gitlab.user;}).modules.nixos
+          (inputs.self.aspects.base._.static-ids.modules.nixos)
         ];
         networking.firewall = {
           enable = true;
@@ -141,7 +142,6 @@
               group = config.services.gitlab.group;
               mode = "0700";
             }
-            "/var/lib/nixos"
           ];
         };
         system.stateVersion = "24.05";
