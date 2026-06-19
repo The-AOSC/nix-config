@@ -1,6 +1,35 @@
 {inputs, ...}: {
+  flake-file.inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   flake.aspects.base.nixos.nixpkgs.overlays = [
     (final: prev: {
+      librewolf-unwrapped = final.callPackage "${inputs.nixpkgs-master}/pkgs/by-name/li/librewolf-unwrapped/package.nix" {};
+      nix-output-monitor = final.callPackage ({
+        haskell,
+        haskellPackages,
+        installShellFiles,
+        lib,
+      }: let
+        inherit (haskell.lib.compose) justStaticExecutables overrideCabal;
+
+        overrides = {
+          version = "git";
+          src = inputs.nom;
+          passthru.updateScript = ./update.sh;
+          testTargets = ["unit-tests"];
+          buildTools = [installShellFiles];
+          postInstall = ''
+            ln -s nom "$out/bin/nom-build"
+            ln -s nom "$out/bin/nom-shell"
+            chmod a+x $out/bin/nom-build
+            installShellCompletion completions/*
+          '';
+        };
+        raw-pkg = haskellPackages.callPackage "${inputs.nom}/default.nix" {};
+      in
+        lib.pipe raw-pkg [
+          (overrideCabal overrides)
+          justStaticExecutables
+        ]) {};
       nh-unwrapped = prev.nh-unwrapped.override (args: {
         rustPlatform =
           args.rustPlatform

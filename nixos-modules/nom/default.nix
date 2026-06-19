@@ -14,13 +14,6 @@
   config = lib.mkIf config.modules.nom.enable {
     nixpkgs.overlays = [
       (final: prev: {
-        nix-output-monitor = prev.nix-output-monitor.overrideAttrs (old: {
-          version = "git";
-          src = inputs.nom;
-          patches = [
-            ./nom-fix-build-completion-detection.patch
-          ];
-        });
         comma = prev.comma.override {
           nix = config.nix.package;
         };
