@@ -235,6 +235,15 @@
             "SUPER + ALT + l".bind = ''hl.dsp.window.swap({direction="right"})'';
             "SUPER + f".bind = ''hl.dsp.window.fullscreen()'';
             "SUPER + SHIFT + q".bind = ''hl.dsp.window.close()'';
+            "SUPER + Space".bind = ''
+              function()
+                if ((hl.get_active_window() or {}).floating) then
+                  hl.dispatch(hl.dsp.focus({window="tiled"}))
+                else
+                  hl.dispatch(hl.dsp.focus({window="floating"}))
+                end
+              end
+            '';
             "SUPER + SHIFT + Space".bind = ''hl.dsp.window.float()'';
             "SUPER + SHIFT + ALT + Space".bind = ''hl.dsp.window.pin()'';
             # launch
