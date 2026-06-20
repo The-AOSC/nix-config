@@ -23,7 +23,7 @@
               speed = 8.0,
               style = "${style}",
             })
-            hl.dispatch(hl.dsp.focus({workspace=new+1}))
+            hl.dispatch(hl.dsp.focus({workspace=new+1,on_current_monitor=true}))
           end
         end
       '';
