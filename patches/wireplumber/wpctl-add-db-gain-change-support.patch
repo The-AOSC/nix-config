@@ -1,3 +1,5 @@
+diff --git a/src/tools/meson.build b/src/tools/meson.build
+index ffd5f15..e3a9a8d 100644
 --- a/src/tools/meson.build
 +++ b/src/tools/meson.build
 @@ -1,7 +1,7 @@
@@ -8,11 +10,12 @@
 +  dependencies : [gobject_dep, gio_dep, wp_dep, pipewire_dep, libintl_dep, mathlib],
  )
  
- install_data('shell-completion/wpctl.zsh',
-diff '--color=auto' -ruN a/src/tools/wpctl.c b/src/tools/wpctl.c
---- a/src/tools/wpctl.c	2025-10-10 15:03:03.102029233 +0500
-+++ b/src/tools/wpctl.c	2025-10-10 16:07:25.926741878 +0500
-@@ -913,7 +913,7 @@
+ install_data('shell-completion/wpctl.bash',
+diff --git a/src/tools/wpctl.c b/src/tools/wpctl.c
+index 9601b89..d0cc3f0 100644
+--- a/src/tools/wpctl.c
++++ b/src/tools/wpctl.c
+@@ -1094,7 +1094,7 @@ set_volume_parse_positional (gint argc, gchar ** argv, GError **error)
      return FALSE;
    }
  
@@ -21,7 +24,7 @@ diff '--color=auto' -ruN a/src/tools/wpctl.c b/src/tools/wpctl.c
  
    if (g_regex_match(regex, argv[3], 0, &info)) {
      gchar *str = g_match_info_fetch (info, 1);
-@@ -922,16 +922,30 @@
+@@ -1103,16 +1103,30 @@ set_volume_parse_positional (gint argc, gchar ** argv, GError **error)
      g_free (str);
  
      str = g_match_info_fetch (info, 2);
@@ -58,11 +61,11 @@ diff '--color=auto' -ruN a/src/tools/wpctl.c b/src/tools/wpctl.c
      }
      g_free (str);
    } else {
-@@ -975,6 +989,17 @@
-     g_clear_pointer (&variant, g_variant_unref);
+@@ -1158,6 +1172,18 @@ do_set_volume (WpCtl * self, WpPipewireObject *proxy)
  
-     cmdline.set_volume.volume = (cmdline.set_volume.volume + curr_volume);
-+  } else if (cmdline.set_volume.type == 'r' ) {
+     new_volume += curr_volume;
+   }
++  if (cmdline.set_volume.type == 'r') {
 +    g_signal_emit_by_name (mixer_api, "get-volume", id, &variant);
 +      if (!variant) {
 +      fprintf (stderr, "Node %d does not support volume\n", id);
@@ -72,7 +75,8 @@ diff '--color=auto' -ruN a/src/tools/wpctl.c b/src/tools/wpctl.c
 +    g_variant_lookup (variant, "volume", "d", &curr_volume);
 +    g_clear_pointer (&variant, g_variant_unref);
 +
-+    cmdline.set_volume.volume = (cmdline.set_volume.volume * curr_volume);
++    new_volume *= curr_volume;
++  }
+   if (new_volume < 0) {
+     new_volume = 0.0;
    }
-   if (cmdline.set_volume.volume < 0) {
-     cmdline.set_volume.volume = 0.0;

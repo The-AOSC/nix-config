@@ -1,8 +1,6 @@
 {inputs, ...}: {
-  flake-file.inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   flake.aspects.base.nixos.nixpkgs.overlays = [
     (final: prev: {
-      librewolf-unwrapped = final.callPackage "${inputs.nixpkgs-master}/pkgs/by-name/li/librewolf-unwrapped/package.nix" {};
       nix-output-monitor = final.callPackage ({
         haskell,
         haskellPackages,

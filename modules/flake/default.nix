@@ -25,6 +25,17 @@
             original.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
           }
         ]
+        [
+          {
+            original.owner = "nixos";
+            original.repo = "nixpkgs";
+            original.type = "github";
+          }
+          {
+            original.type = "tarball";
+            original.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
+          }
+        ]
       ];
     };
     systems = ["x86_64-linux"];

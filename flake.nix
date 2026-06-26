@@ -6,7 +6,10 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 
   inputs = {
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     catppuccin-vimium = {
       url = "github:/catppuccin/vimium";
       flake = false;
@@ -69,7 +72,7 @@
           inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
         };
         git-hooks.inputs = {
-          flake-compat.follows = "nix-mineral/flake-compat";
+          flake-compat.follows = "nix-gaming/flake-compat";
           gitignore.inputs.nixpkgs.follows = "nixpkgs";
           nixpkgs.follows = "nixpkgs";
         };
@@ -83,6 +86,7 @@
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
       inputs = {
+        flake-compat.follows = "nix-gaming/flake-compat";
         flake-parts = {
           follows = "flake-parts";
           inputs.nixpkgs-lib.follows = "flake-parts/nixpkgs-lib";
@@ -95,7 +99,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
@@ -117,7 +120,7 @@
         git-hooks = {
           follows = "nix-gaming/git-hooks";
           inputs = {
-            flake-compat.follows = "nix-mineral/flake-compat";
+            flake-compat.follows = "nix-gaming/flake-compat";
             gitignore = {
               follows = "nix-gaming/git-hooks/gitignore";
               inputs.nixpkgs.follows = "nixpkgs";
