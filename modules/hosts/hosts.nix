@@ -4,6 +4,8 @@
   lib,
   ...
 }: {
+  den.hosts.x86_64-linux.evacuis.users.aosc = {};
+  den.hosts.x86_64-linux.vestigia = {};
   flake.aspects = {aspects, ...}: {
     hosts = config.lib.aspects.make-namespace {
       perInstance = hostname: {
@@ -13,16 +15,23 @@
         nixos.imports = [
           inputs.self.nixosModules.default
         ];
-        nixos.networking.hostName = hostname;
       };
     };
   };
-  flake.nixosConfigurations = lib.mapAttrs (hostname: aspect:
-    inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
-      modules = [
-        (config.lib.aspects.aspects-lib.resolve "nixos" [] (inputs.self.aspects.hosts hostname))
-      ];
-    })
-  inputs.self.aspects.hosts._;
+  den.hosts.x86_64-linux.evacuis.instantiate = args:
+    inputs.nixpkgs.lib.nixosSystem ({
+        specialArgs = {inherit inputs;};
+      }
+      // args);
+  den.hosts.x86_64-linux.vestigia.instantiate = args:
+    inputs.nixpkgs.lib.nixosSystem ({
+        specialArgs = {inherit inputs;};
+      }
+      // args);
+  den.aspects.evacuis.nixos.imports = [
+    (config.lib.aspects.aspects-lib.resolve "nixos" [] (inputs.self.aspects.hosts "evacuis"))
+  ];
+  den.aspects.vestigia.nixos.imports = [
+    (config.lib.aspects.aspects-lib.resolve "nixos" [] (inputs.self.aspects.hosts "vestigia"))
+  ];
 }

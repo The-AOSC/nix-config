@@ -57,6 +57,21 @@
         "type": "github"
       }
     },
+    "den": {
+      "locked": {
+        "lastModified": 1783011234,
+        "narHash": "sha256-qB7uYBoWlng5aoPWa3YgvZ6suVc0hd97qkuDHuvE7O0=",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "1614f6f8ed435c5bb257408bf91fd662f9aac43e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "den",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -533,6 +548,7 @@
         "catppuccin": "catppuccin",
         "catppuccin-vimium": "catppuccin-vimium",
         "copyparty": "copyparty",
+        "den": "den",
         "disko": "disko",
         "ez-configs": "ez-configs",
         "flake-aspects": "flake-aspects",
