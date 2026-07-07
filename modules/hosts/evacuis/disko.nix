@@ -1,5 +1,5 @@
 {
-  flake.aspects.hosts._.evacuis.nixos.disko.devices = {
+  den.hosts.x86_64-linux.evacuis.disko.devices = {
     disk.system = {
       device = "/dev/disk/by-id/nvme-WD_PC_SN740_SDDQNQD-1T00-1014_241006802182";
       content = {

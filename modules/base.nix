@@ -1,5 +1,4 @@
 {inputs, ...}: {
-  flake-file.inputs.disko.url = "github:nix-community/disko";
   flake-file.inputs.impermanence.url = "github:nix-community/impermanence";
   flake.aspects = {aspects, ...}: {
     base = {
@@ -13,7 +12,6 @@
         ...
       }: {
         imports = [
-          inputs.disko.nixosModules.disko
           inputs.impermanence.nixosModules.impermanence
         ];
         environment.persistence."/persist" = {
