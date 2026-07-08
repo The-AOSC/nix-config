@@ -4,7 +4,6 @@
       includes = [
         aspects.copyparty
         aspects.desktop
-        (aspects.glide "default")
         (aspects.users "aosc")
         (aspects.users "root")
         (aspects.users "root")._.local

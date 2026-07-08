@@ -5,7 +5,9 @@
 }: {
   options.lib = lib.mkOption {
     description = "Reusable functions";
-    type = lib.types.attrs;
+    type = lib.types.submodule {
+      freeformType = lib.types.attrs;
+    };
     default = {};
   };
   config = {
