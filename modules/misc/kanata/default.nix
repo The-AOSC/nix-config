@@ -16,7 +16,7 @@
           readOnly = true;
         };
       };
-      config.name = "auto-vkey${namePrefix}-${lib.replaceString "-" "_" name}";
+      config.name = "auto-vkey${namePrefix}-${lib.replaceStrings ["-" " "] ["_" "_"] name}";
     });
   layerType = namePrefix:
     lib.types.submodule ({
@@ -24,7 +24,7 @@
       name,
       ...
     }: let
-      newPrefix = "${namePrefix}-${lib.replaceString "-" "_" name}";
+      newPrefix = "${namePrefix}-${lib.replaceStrings ["-" " "] ["_" "_"] name}";
     in {
       options = {
         subLayers = lib.mkOption {
@@ -93,8 +93,8 @@
               layer:
                 lib.mapAttrsToList (
                   bind: action:
-                    lib.optionalAttrs (lib.hasInfix " " bind) {
-                      ${bind}.${layer.name} = action;
+                    lib.optionalAttrs (lib.hasInfix " " (lib.trim bind)) {
+                      ${lib.concatStringsSep " " (lib.sort lib.lessThan (lib.remove "" (lib.splitString " " bind)))}.${layer.name} = action;
                     }
                 )
                 layer.binds
@@ -104,7 +104,7 @@
         );
         parse-layer = layer: ''
           (deflayermap (${layer.name})
-            ${lib.concatMapAttrsStringSep "" (bind: action: lib.optionalString (!(lib.hasInfix " " bind)) "${bind} ${action}\n") layer.binds})
+            ${lib.concatMapAttrsStringSep "" (bind: action: lib.optionalString (!(lib.hasInfix " " (lib.trim bind))) "${bind} ${action}\n") layer.binds})
         '';
       in ''
         (defsrc)
