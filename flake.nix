@@ -74,7 +74,6 @@
         };
         git-hooks.inputs = {
           flake-compat.follows = "nix-gaming/flake-compat";
-          gitignore.inputs.nixpkgs.follows = "nixpkgs";
           nixpkgs.follows = "nixpkgs";
         };
         nixpkgs.follows = "nixpkgs";
@@ -100,6 +99,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-b5aa0fbd538984f6e3d201be0005b4463d8b09f8.url = "github:NixOS/nixpkgs?rev=b5aa0fbd538984f6e3d201be0005b4463d8b09f8";
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
@@ -122,10 +122,6 @@
           follows = "nix-gaming/git-hooks";
           inputs = {
             flake-compat.follows = "nix-gaming/flake-compat";
-            gitignore = {
-              follows = "nix-gaming/git-hooks/gitignore";
-              inputs.nixpkgs.follows = "nixpkgs";
-            };
             nixpkgs.follows = "nixpkgs";
           };
         };

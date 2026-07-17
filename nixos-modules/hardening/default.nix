@@ -12,6 +12,7 @@
     modules.hardening.enable = lib.mkEnableOption "hardening";
   };
   config = lib.mkIf config.modules.hardening.enable {
+    documentation.nixos.options.splitBuild = false;
     nix-mineral = {
       enable = true;
       filesystems.enable = false;

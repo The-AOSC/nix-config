@@ -18,6 +18,7 @@
           nix = config.nix.package;
         };
       })
+      inputs.nom.overlays.default
     ];
     nix.monitored = {
       enable = true;

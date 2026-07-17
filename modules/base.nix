@@ -36,6 +36,7 @@
           systemd-boot.enable = true;
           efi.canTouchEfiVariables = true;
         };
+        zramSwap.enable = true;
         programs.fish.enable = true;
         programs.nano.enable = false;
         programs.neovim.enable = true;

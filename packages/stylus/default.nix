@@ -3,14 +3,14 @@
   fetchurl,
   pnpmConfigHook,
   fetchPnpmDeps,
-  pnpm_10,
+  pnpm_11,
   nodejs,
   zip,
   lib,
   stylus-nur,
   ...
 }: let
-  pnpm = pnpm_10;
+  pnpm = pnpm_11;
   extensionPath = "extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
 in
   stdenv.mkDerivation rec {
@@ -31,8 +31,8 @@ in
     ];
     pnpmDeps = fetchPnpmDeps {
       inherit pname version src;
-      fetcherVersion = 3;
-      hash = "sha256-hmKWufAML/pD734Fd/P5fZ1E6+A/NMKhukjkyOnZr4o=";
+      fetcherVersion = 4;
+      hash = "sha256-Nh2Qo14+csm88XJcFqVLM/mJOqgwgEIvzQRbx6PlPmk=";
     };
     buildPhase = ''
       runHook preBuild
