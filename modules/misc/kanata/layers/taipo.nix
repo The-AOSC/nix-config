@@ -120,7 +120,7 @@
         "aux3 ^m      " = "home";
         "aux3    ^r   " = "up";
         "aux3       ^p" = "end";
-        "aux3 vr vr   " = "pgdn";
+        "aux3 vm vr   " = "pgdn";
         "aux3    vr vp" = "pgup";
         # ===========
         "aux3 ^m ^r   " = "S-6";
