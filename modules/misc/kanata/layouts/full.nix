@@ -49,6 +49,9 @@
         "," = "mlft";
         "." = "mrgt";
         "/" = "mmid";
+        "x" = "mlft";
+        "z" = "mrgt";
+        "lsft" = "mmid";
         "y" = layer-switch config.layers.gaming.name;
         "ralt" = "(layer-while-held ${config.layers.mode-select.name})";
         "___" = "XX";
