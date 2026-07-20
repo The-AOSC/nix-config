@@ -12,14 +12,14 @@
     tap-hold = tap: hold: "(tap-hold ${toString (repress-timeout + chord-timeout)} ${toString hold-timeout} ${tap} ${hold})";
     tap-hold-fixed-chord = tap-vkey: flag-vkey: hold: {
       raw = ''
-        (multi (switch ((input virtual ${flag-vkey})) (on-press press-vkey ${tap-vkey}) break
+        (multi (one-shot-pause-processing 1)
+               (switch ((input virtual ${flag-vkey})) (on-press press-vkey ${tap-vkey}) break
                        () ${tap-hold ''
             (multi (one-shot-pause-processing 1)
                    (on-press tap-vkey ${tap-vkey}))
           ''
           hold} break)
                (on-release release-vkey ${tap-vkey})
-               (one-shot-pause-processing 1)
                (on-press press-vkey ${flag-vkey})
                (on-physical-idle ${toString (repress-timeout + chord-timeout)} release-vkey ${flag-vkey}))
       '';

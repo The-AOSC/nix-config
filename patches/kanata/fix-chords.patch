@@ -1,0 +1,24 @@
+diff --git a/src/kanata/mod.rs b/src/kanata/mod.rs
+index d9e5d00..eb3a8f9 100644
+--- a/src/kanata/mod.rs
++++ b/src/kanata/mod.rs
+@@ -1226,8 +1226,8 @@ impl Kanata {
+         if let Some(hold_info) = layout.tap_hold_tracker.take_hold_activated()
+             && hold_info.coord.0 == NORMAL_KEY_ROW
+             && let Some(tx) = _tx
++            && let Some(osc) = OsCode::from_u16(hold_info.coord.1)
+         {
+-            let osc = OsCode::from(hold_info.coord.1);
+             let key = osc.to_string().to_lowercase();
+             log::debug!("HoldActivated: key={key} coord={:?}", hold_info.coord);
+             match tx.try_send(ServerMessage::HoldActivated { key }) {
+@@ -1241,8 +1241,8 @@ impl Kanata {
+         if let Some(tap_info) = layout.tap_hold_tracker.take_tap_activated()
+             && tap_info.coord.0 == NORMAL_KEY_ROW
+             && let Some(tx) = _tx
++            && let Some(osc) = OsCode::from_u16(tap_info.coord.1)
+         {
+-            let osc = OsCode::from(tap_info.coord.1);
+             let key = osc.to_string().to_lowercase();
+             log::debug!("TapActivated: key={key} coord={:?}", tap_info.coord);
+             match tx.try_send(ServerMessage::TapActivated { key }) {

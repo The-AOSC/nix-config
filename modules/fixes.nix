@@ -1,8 +1,11 @@
-{inputs, ...}: {
-  flake-file.inputs.nixpkgs-b5aa0fbd538984f6e3d201be0005b4463d8b09f8.url = "github:NixOS/nixpkgs?rev=b5aa0fbd538984f6e3d201be0005b4463d8b09f8";
+{
   flake.aspects.base.nixos.nixpkgs.overlays = [
     (final: prev: {
-      inherit (inputs.nixpkgs-b5aa0fbd538984f6e3d201be0005b4463d8b09f8.legacyPackages.${final.hostPlatform.system}) kanata;
+      kanata = prev.kanata.overrideAttrs (old: {
+        patches = old.patches or [] ++ [
+          ../patches/kanata/fix-chords.patch
+        ];
+      });
       nh-unwrapped = prev.nh-unwrapped.override (args: {
         rustPlatform =
           args.rustPlatform
