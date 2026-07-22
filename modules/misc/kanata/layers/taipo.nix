@@ -28,7 +28,7 @@
       {
         "aux1" = "bspc";
         "aux2" = "del";
-        "aux3".raw = tap-hold "rpt-any" "(switch)";
+        "aux3".raw = tap-hold "rpt-any" "(layer-while-held ${config.subLayers.stub.name})";
         # ===========
         "^i         " = "i";
         "   ^m      " = "n";
@@ -217,6 +217,7 @@
     imports = [(mkLayer base)];
     subLayers.controls = mkLayer controls;
     subLayers.functions = mkLayer functions;
+    subLayers.stub = {};
     virtualKeys =
       {
         left = {
