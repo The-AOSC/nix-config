@@ -10,6 +10,7 @@ RowLayout {
         RowLayout {
             spacing: 2
             Text {
+                id: sinkVolume
                 verticalAlignment: Text.AlignVCenter
                 text: `${Math.round(Audio.sink?.audio.volume*100)}%`
                 visible: !!Audio.sink && !Audio.sink.audio.muted
@@ -17,6 +18,7 @@ RowLayout {
                 font: Theme.font
             }
             Text {
+                Layout.preferredHeight: Math.max(this.implicitHeight, sinkVolume.implicitHeight)
                 verticalAlignment: Text.AlignVCenter
                 text: Audio.sink?.audio.muted?"󰖁":"󰕾"
                 visible: !!Audio.sink
@@ -34,6 +36,7 @@ RowLayout {
         RowLayout {
             spacing: 2
             Text {
+                id: sourceVolume
                 verticalAlignment: Text.AlignVCenter
                 text: `${Math.round(Audio.source?.audio.volume*100)}%`
                 visible: !!Audio.source && !Audio.source.audio.muted
@@ -41,6 +44,7 @@ RowLayout {
                 font: Theme.font
             }
             Text {
+                Layout.preferredHeight: Math.max(this.implicitHeight, sourceVolume.implicitHeight)
                 verticalAlignment: Text.AlignVCenter
                 text: Audio.source?.audio.muted?"":""
                 visible: !!Audio.source
