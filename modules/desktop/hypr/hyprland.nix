@@ -75,6 +75,7 @@
             no_donation_nag = true;
           };
           dwindle = {
+            preserve_split = true;
             force_split = 2; # bottom/right
           };
         };
@@ -233,6 +234,8 @@
             "SUPER + ALT + j".bind = ''hl.dsp.window.swap({direction="down"})'';
             "SUPER + ALT + k".bind = ''hl.dsp.window.swap({direction="up"})'';
             "SUPER + ALT + l".bind = ''hl.dsp.window.swap({direction="right"})'';
+            "SUPER + ALT + SHIFT + j".bind = ''hl.dsp.layout("rotatesplit 90")'';
+            "SUPER + ALT + SHIFT + k".bind = ''hl.dsp.layout("rotatesplit -90")'';
             "SUPER + f".bind = ''hl.dsp.window.fullscreen()'';
             "SUPER + SHIFT + q".bind = ''hl.dsp.window.close()'';
             "SUPER + Space".bind = ''
