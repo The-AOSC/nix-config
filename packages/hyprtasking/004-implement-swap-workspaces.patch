@@ -1,0 +1,103 @@
+diff --git a/src/layout/grid.cpp b/src/layout/grid.cpp
+index 93cd4f2..2cbac7a 100644
+--- a/src/layout/grid.cpp
++++ b/src/layout/grid.cpp
+@@ -49,6 +49,32 @@ HTLayoutGrid::HTLayoutGrid(VIEWID new_view_id) : HTLayoutBase(new_view_id) {
+     init_position();
+ }
+ 
++void HTLayoutGrid::swap_workspaces(WORKSPACEID ws1, WORKSPACEID ws2) {
++    const auto tmp = ws_slot_cache[ws1];
++    ws_slot_cache[ws1] = ws_slot_cache[ws2];
++    ws_slot_cache[ws2] = tmp;
++    refresh_workspace_cache();
++    const PHLMONITOR monitor = get_monitor();
++    if (monitor == nullptr) {
++        return;
++    }
++    if (monitor->m_activeWorkspace == nullptr) {
++        return;
++    }
++    if ((ws1 == monitor->m_activeWorkspace->m_id)||(ws2 == monitor->m_activeWorkspace->m_id)) {
++        layer = ws_slot_cache[monitor->m_activeWorkspace->m_id].layer;
++        const PHTVIEW par_view = ht_manager->get_view_from_id(view_id);
++        if (par_view == nullptr || par_view->active) {
++            return;
++        }
++        build_overview_layout(HT_VIEW_CLOSED);
++        offset->setValue(-overview_layout[monitor->m_activeWorkspace->m_id].box.pos());
++        scale->setValue(1.f);
++        *offset = -overview_layout[monitor->m_activeWorkspace->m_id].box.pos();
++        *scale = 1.f;
++    }
++}
++
+ // Bit layout: [layer:24][y:20][x:20]. Used purely as an unordered_map key;
+ // limits are implicit and not enforced (grid dims are not validated).
+ long long HTLayoutGrid::pack_slot(int layer, int x, int y) {
+diff --git a/src/layout/grid.hpp b/src/layout/grid.hpp
+index 76086ed..8d1a03f 100644
+--- a/src/layout/grid.hpp
++++ b/src/layout/grid.hpp
+@@ -48,6 +48,7 @@ class HTLayoutGrid: public HTLayoutBase {
+     virtual void render();
+ 
+     void refresh_workspace_cache(const std::unordered_set<WORKSPACEID>& extra_off_limits = {});
++    void swap_workspaces(WORKSPACEID ws1, WORKSPACEID ws2);
+     WORKSPACEID slot_workspace(int layer, int x, int y);
+ 
+     const std::unordered_map<WORKSPACEID, HTGridSlot>& cache() const { return ws_slot_cache; }
+diff --git a/src/main.cpp b/src/main.cpp
+index 3bd4dad..09ba7e2 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -238,6 +238,41 @@ static int lua_move_id(lua_State *L) {
+     return 0;
+ }
+ 
++static int lua_swap_pos(lua_State *L) {
++    const int layer1 = luaL_optinteger(L, 1, -1);
++    const int x1 = luaL_optinteger(L, 2, -1);
++    const int y1 = luaL_optinteger(L, 3, -1);
++    const int layer2 = luaL_optinteger(L, 4, -1);
++    const int x2 = luaL_optinteger(L, 5, -1);
++    const int y2 = luaL_optinteger(L, 6, -1);
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return luaL_error(L, "%s", "layers are only supported in grid layout");
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    if (
++            (0 <= layer1) && (layer1 < 1<<24) && (0 <= x1) && (x1 < 1<<20) && (0 <= y1) && (y1 < 1<<20) &&
++            (0 <= layer2) && (layer2 < 1<<24) && (0 <= x2) && (x2 < 1<<20) && (0 <= y2) && (y2 < 1<<20)
++       ) {
++        WORKSPACEID ws1 = grid->slot_workspace(layer1, x1, y1);
++        WORKSPACEID ws2 = grid->slot_workspace(layer2, x2, y2);
++        if ((ws1 == WORKSPACE_INVALID) || (ws2 == WORKSPACE_INVALID)) {
++            return luaL_error(L, "%s", "workspace not found");
++        }
++        grid->swap_workspaces(ws1, ws2);
++        g_pEventManager->postEvent(SHyprIPCEvent{"hyprtaskingworkspacerearange", ""});
++        return 0;
++    } else {
++        return luaL_error(L, "%s", "invalid workspace");
++    }
++}
++
+ DISPATCHER(movewindow) {
+     if (ht_manager == nullptr)
+         return {.success = false, .error = "ht_manager is null"};
+@@ -866,6 +901,7 @@ static void add_dispatchers() {
+     add_dispatcher(toggle);
+     add_dispatcher(move);
+     HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "move_id", lua_move_id);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "swap_pos", lua_swap_pos);
+     add_dispatcher(movewindow);
+     add_dispatcher(killhovered);
+     add_dispatcher(setlayer);

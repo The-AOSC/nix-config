@@ -23,6 +23,13 @@
           hl.dispatch(hl.dsp.window.move({workspace=hl.plugin.hyprtasking.pos_to_workspace_id(${func}),follow=false}))
         end
       '';
+      swapWorkspaces = func: argss: ''
+        function()
+          local layer1,x1,y1 = hl.plugin.hyprtasking.workspace_id_to_pos((hl.get_active_workspace() or {id=-1}).id)
+          local layer2,x2,y2 = ${func}
+          ${lib.concatMapStringsSep "\n" (args: "hl.plugin.hyprtasking.swap_pos(${args})") argss}
+        end
+      '';
     in {
       enable = true;
       systemd = {
@@ -230,6 +237,25 @@
             "SUPER + SHIFT + 8".bind = moveToWorkspace "2,x,y";
             "SUPER + SHIFT + 9".bind = moveToWorkspace "3,x,y";
             "SUPER + SHIFT + 0".bind = moveToWorkspace "4,x,y";
+            "SUPER + ALT + 1".bind = swapWorkspaces "layer1,0,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + 2".bind = swapWorkspaces "layer1,1,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + 3".bind = swapWorkspaces "layer1,2,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + 4".bind = swapWorkspaces "layer1,3,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + 5".bind = swapWorkspaces "layer1,4,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + w".bind = swapWorkspaces "layer1,x1,math.max(y1-1,0)" (lib.genList (x: "layer1,${lib.toString x},y1,layer2,${lib.toString x},y2") 5);
+            "SUPER + ALT + s".bind = swapWorkspaces "layer1,x1,math.min(y1+1,4)" (lib.genList (x: "layer1,${lib.toString x},y1,layer2,${lib.toString x},y2") 5);
+            "SUPER + ALT + 6".bind = swapWorkspaces "0,x1,y1" (lib.concatLists (lib.genList (y: lib.genList (x: "layer1,${lib.toString x},${lib.toString y},layer2,${lib.toString x},${lib.toString y}") 5) 5));
+            "SUPER + ALT + 7".bind = swapWorkspaces "1,x1,y1" (lib.concatLists (lib.genList (y: lib.genList (x: "layer1,${lib.toString x},${lib.toString y},layer2,${lib.toString x},${lib.toString y}") 5) 5));
+            "SUPER + ALT + 8".bind = swapWorkspaces "2,x1,y1" (lib.concatLists (lib.genList (y: lib.genList (x: "layer1,${lib.toString x},${lib.toString y},layer2,${lib.toString x},${lib.toString y}") 5) 5));
+            "SUPER + ALT + 9".bind = swapWorkspaces "3,x1,y1" (lib.concatLists (lib.genList (y: lib.genList (x: "layer1,${lib.toString x},${lib.toString y},layer2,${lib.toString x},${lib.toString y}") 5) 5));
+            "SUPER + ALT + 0".bind = swapWorkspaces "4,x1,y1" (lib.concatLists (lib.genList (y: lib.genList (x: "layer1,${lib.toString x},${lib.toString y},layer2,${lib.toString x},${lib.toString y}") 5) 5));
+            "SUPER + ALT + SHIFT + w".bind = swapWorkspaces "layer1,x1,math.max(y1-1,0)" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + SHIFT + s".bind = swapWorkspaces "layer1,x1,math.min(y1+1,4)" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + SHIFT + 6".bind = swapWorkspaces "0,x1,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + SHIFT + 7".bind = swapWorkspaces "1,x1,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + SHIFT + 8".bind = swapWorkspaces "2,x1,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + SHIFT + 9".bind = swapWorkspaces "3,x1,y1" ["layer1,x1,y1,layer2,x2,y2"];
+            "SUPER + ALT + SHIFT + 0".bind = swapWorkspaces "4,x1,y1" ["layer1,x1,y1,layer2,x2,y2"];
             # windows
             "SUPER + h".bind = ''hl.dsp.focus({direction="left"})'';
             "SUPER + j".bind = ''hl.dsp.focus({direction="down"})'';
