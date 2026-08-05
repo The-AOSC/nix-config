@@ -80,8 +80,8 @@
     wayland.windowManager.hyprland.settings = {
       config = {
         general = {
-          #"col.inactive_border" = lib.generators.mkLuaInline "colors.surface0";
-          # this is the only way to apply gradient to unfocused window (see https://github.com/hyprwm/Hyprland/discussions/14030)
+          "col.inactive_border" = lib.generators.mkLuaInline "colors.surface0";
+          /*
           "col.inactive_border" = {
             colors = [
               (lib.generators.mkLuaInline "colors.surface0")
@@ -90,6 +90,7 @@
             ];
             angle = 45;
           };
+          */
           "col.active_border" = lib.generators.mkLuaInline "colors.accent";
         };
         misc."col.splash" = lib.generators.mkLuaInline "colors.text";
@@ -113,7 +114,7 @@
             "colors.accent"
             "colors.blue"
             ''"45deg"''
-            # ignored (set in col.inactive_border)
+            # ignored (replaced with solid color)
             "colors.surface0"
             "colors.blue"
             "colors.blue"
@@ -132,6 +133,15 @@
             "colors.surface0"
             "colors.red"
             ''"45deg"''
+          ];
+        }
+        {
+          match.float = true;
+          match.pin = false;
+          match.focus = false;
+          border_color = mkColors [
+            "colors.blue"
+            "colors.blue"
           ];
         }
         {

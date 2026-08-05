@@ -11,29 +11,16 @@
       terminal = "${lib.getExe config.programs.kitty.package} --single-instance";
       terminalStart = "${terminal} --";
       terminalStartHold = "${terminal} --single-instance=no --hold -o shell='sleep 99d' --";
-      switchWorkspace = func: style: ''
+      switchWorkspace = func: ''
         function()
-          local id = (hl.get_active_workspace() or {id=1}).id-1
-          local new = ${func}
-          if (id ~= new) then
-            hl.animation({
-              bezier = "default",
-              enabled = true,
-              leaf = "workspaces",
-              speed = 8.0,
-              style = "${style}",
-            })
-            hl.dispatch(hl.dsp.focus({workspace=new+1,on_current_monitor=true}))
-          end
+          local layer,x,y = hl.plugin.hyprtasking.workspace_id_to_pos((hl.get_active_workspace() or {id=-1}).id)
+          hl.plugin.hyprtasking.move_id(hl.plugin.hyprtasking.pos_to_workspace_id(${func}))
         end
       '';
       moveToWorkspace = func: ''
         function()
-          local id = (hl.get_active_workspace() or {id=1}).id-1
-          local new = ${func}
-          if (id ~= new) then
-            hl.dispatch(hl.dsp.window.move({workspace=new+1,follow=false}))
-          end
+          local layer,x,y = hl.plugin.hyprtasking.workspace_id_to_pos((hl.get_active_workspace() or {id=-1}).id)
+          hl.dispatch(hl.dsp.window.move({workspace=hl.plugin.hyprtasking.pos_to_workspace_id(${func}),follow=false}))
         end
       '';
     in {
@@ -43,6 +30,9 @@
         variables = ["--all"];
       };
       configType = "lua";
+      plugins = [
+        pkgs.hyprtasking
+      ];
       settings = {
         config = {
           misc = {
@@ -78,7 +68,25 @@
             preserve_split = true;
             force_split = 2; # bottom/right
           };
+          plugin.hyprtasking = {
+            layout = "grid";
+            bg_color = (lib.generators.mkLuaInline ''tonumber("0x" .. colors.baseAlpha)'');
+            gap_size = 4;
+            border_size = 2;
+            grid.rows = 5;
+            grid.cols = 5;
+            grid.layers = 5;
+          };
         };
+        animation = [
+          {
+            bezier = "default";
+            enabled = true;
+            leaf = "workspaces";
+            speed = 6.0;
+            style = "fade";
+          }
+        ];
         monitor = lib.singleton {
           output = "";
           mode = "highres";
@@ -197,30 +205,31 @@
               mouse = true;
             };
             # workspaces
-            "SUPER + 1".bind = switchWorkspace "id//5*5+0" "slide";
-            "SUPER + 2".bind = switchWorkspace "id//5*5+1" "slide";
-            "SUPER + 3".bind = switchWorkspace "id//5*5+2" "slide";
-            "SUPER + 4".bind = switchWorkspace "id//5*5+3" "slide";
-            "SUPER + 5".bind = switchWorkspace "id//5*5+4" "slide";
-            "SUPER + s".bind = switchWorkspace "id//25*25+math.max((id//5)%5-1, 0)*5+id%5" "slidevert -100%";
-            "SUPER + w".bind = switchWorkspace "id//25*25+math.min((id//5)%5+1, 4)*5+id%5" "slidevert -100%";
-            "SUPER + 6".bind = switchWorkspace "25*0+id%25" "fade";
-            "SUPER + 7".bind = switchWorkspace "25*1+id%25" "fade";
-            "SUPER + 8".bind = switchWorkspace "25*2+id%25" "fade";
-            "SUPER + 9".bind = switchWorkspace "25*3+id%25" "fade";
-            "SUPER + 0".bind = switchWorkspace "25*4+id%25" "fade";
-            "SUPER + SHIFT + 1".bind = moveToWorkspace "id//5*5+0";
-            "SUPER + SHIFT + 2".bind = moveToWorkspace "id//5*5+1";
-            "SUPER + SHIFT + 3".bind = moveToWorkspace "id//5*5+2";
-            "SUPER + SHIFT + 4".bind = moveToWorkspace "id//5*5+3";
-            "SUPER + SHIFT + 5".bind = moveToWorkspace "id//5*5+4";
-            "SUPER + SHIFT + s".bind = moveToWorkspace "id//25*25+math.max((id//5)%5-1, 0)*5+id%5";
-            "SUPER + SHIFT + w".bind = moveToWorkspace "id//25*25+math.min((id//5)%5+1, 4)*5+id%5";
-            "SUPER + SHIFT + 6".bind = moveToWorkspace "25*0+id%25";
-            "SUPER + SHIFT + 7".bind = moveToWorkspace "25*1+id%25";
-            "SUPER + SHIFT + 8".bind = moveToWorkspace "25*2+id%25";
-            "SUPER + SHIFT + 9".bind = moveToWorkspace "25*3+id%25";
-            "SUPER + SHIFT + 0".bind = moveToWorkspace "25*4+id%25";
+            "SUPER + SHIFT + Grave".bind = ''function() hl.plugin.hyprtasking.toggle("cursor") end'';
+            "SUPER + 1".bind = switchWorkspace "layer,0,y";
+            "SUPER + 2".bind = switchWorkspace "layer,1,y";
+            "SUPER + 3".bind = switchWorkspace "layer,2,y";
+            "SUPER + 4".bind = switchWorkspace "layer,3,y";
+            "SUPER + 5".bind = switchWorkspace "layer,4,y";
+            "SUPER + w".bind = ''function() hl.plugin.hyprtasking.move("up") end'';
+            "SUPER + s".bind = ''function() hl.plugin.hyprtasking.move("down") end'';
+            "SUPER + 6".bind = ''function() hl.plugin.hyprtasking.setlayer(0) end'';
+            "SUPER + 7".bind = ''function() hl.plugin.hyprtasking.setlayer(1) end'';
+            "SUPER + 8".bind = ''function() hl.plugin.hyprtasking.setlayer(2) end'';
+            "SUPER + 9".bind = ''function() hl.plugin.hyprtasking.setlayer(3) end'';
+            "SUPER + 0".bind = ''function() hl.plugin.hyprtasking.setlayer(4) end'';
+            "SUPER + SHIFT + 1".bind = moveToWorkspace "layer,0,y";
+            "SUPER + SHIFT + 2".bind = moveToWorkspace "layer,1,y";
+            "SUPER + SHIFT + 3".bind = moveToWorkspace "layer,2,y";
+            "SUPER + SHIFT + 4".bind = moveToWorkspace "layer,3,y";
+            "SUPER + SHIFT + 5".bind = moveToWorkspace "layer,4,y";
+            "SUPER + SHIFT + w".bind = moveToWorkspace "layer,x,math.max(y-1,0)";
+            "SUPER + SHIFT + s".bind = moveToWorkspace "layer,x,math.min(y+1,4)";
+            "SUPER + SHIFT + 6".bind = moveToWorkspace "0,x,y";
+            "SUPER + SHIFT + 7".bind = moveToWorkspace "1,x,y";
+            "SUPER + SHIFT + 8".bind = moveToWorkspace "2,x,y";
+            "SUPER + SHIFT + 9".bind = moveToWorkspace "3,x,y";
+            "SUPER + SHIFT + 0".bind = moveToWorkspace "4,x,y";
             # windows
             "SUPER + h".bind = ''hl.dsp.focus({direction="left"})'';
             "SUPER + j".bind = ''hl.dsp.focus({direction="down"})'';

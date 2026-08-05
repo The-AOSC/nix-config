@@ -1,0 +1,166 @@
+diff --git a/src/main.cpp b/src/main.cpp
+index b81bcb4..8ce9a66 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -220,6 +220,23 @@ DISPATCHER(move) {
+     return {};
+ }
+ 
++static int lua_move_id(lua_State *L) {
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    const PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (!cursor_view->navigating && !cursor_view->active) {
++        cursor_view->layout->init_position();
++    } else {
++        cursor_view->layout->build_overview_layout(HT_VIEW_CLOSED);
++    }
++    cursor_view->move_id(luaL_optinteger(L, 1, -1), false);
++    return 0;
++}
++
+ DISPATCHER(movewindow) {
+     if (ht_manager == nullptr)
+         return {.success = false, .error = "ht_manager is null"};
+@@ -727,16 +744,137 @@ static int lua_is_active(lua_State* L) {
+     return 1;
+ }
+ 
++static int lua_pos_to_workspace_id(lua_State *L) {
++    const int layer = luaL_optinteger(L, 1, -1);
++    const int x = luaL_optinteger(L, 2, -1);
++    const int y = luaL_optinteger(L, 3, -1);
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return luaL_error(L, "%s", "layers are only supported in grid layout");
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    if ((0 <= layer) && (layer < 1<<24) && (0 <= x) && (x < 1<<20) && (0 <= y) && (y < 1<<20)) {
++        lua_pushinteger(L, grid->slot_workspace(layer, x, y));
++    } else {
++        lua_pushinteger(L, WORKSPACE_INVALID);
++    }
++    return 1;
++}
++
++static int lua_workspace_id_to_pos(lua_State *L) {
++    const WORKSPACEID workspace = luaL_optinteger(L, 1, -1);
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return luaL_error(L, "%s", "layers are only supported in grid layout");
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    const auto pos = grid->cache().find(workspace);
++    if (pos == grid->cache().end()) {
++        lua_pushinteger(L, -1);
++        lua_pushinteger(L, -1);
++        lua_pushinteger(L, -1);
++    } else {
++        lua_pushinteger(L, pos->second.layer);
++        lua_pushinteger(L, pos->second.x);
++        lua_pushinteger(L, pos->second.y);
++    }
++    return 3;
++}
++
++static int lua_workspace_id_to_layer(lua_State *L) {
++    const WORKSPACEID workspace = luaL_optinteger(L, 1, -1);
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return luaL_error(L, "%s", "layers are only supported in grid layout");
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    const auto pos = grid->cache().find(workspace);
++    if (pos == grid->cache().end()) {
++        lua_pushinteger(L, -1);
++    } else {
++        lua_pushinteger(L, pos->second.layer);
++    }
++    return 1;
++}
++
++static int lua_workspace_id_to_x(lua_State *L) {
++    const WORKSPACEID workspace = luaL_optinteger(L, 1, -1);
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return luaL_error(L, "%s", "layers are only supported in grid layout");
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    const auto pos = grid->cache().find(workspace);
++    if (pos == grid->cache().end()) {
++        lua_pushinteger(L, -1);
++    } else {
++        lua_pushinteger(L, pos->second.x);
++    }
++    return 1;
++}
++
++static int lua_workspace_id_to_y(lua_State *L) {
++    const WORKSPACEID workspace = luaL_optinteger(L, 1, -1);
++    if (ht_manager == nullptr) {
++        return luaL_error(L, "%s", "ht_manager is null");
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return luaL_error(L, "%s", "cursor_view is null");
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return luaL_error(L, "%s", "layers are only supported in grid layout");
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    const auto pos = grid->cache().find(workspace);
++    if (pos == grid->cache().end()) {
++        lua_pushinteger(L, -1);
++    } else {
++        lua_pushinteger(L, pos->second.y);
++    }
++    return 1;
++}
++
+ static void add_dispatchers() {
+     add_dispatcher(if_not_active);
+     add_dispatcher(if_active);
+     add_dispatcher(toggle);
+     add_dispatcher(move);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "move_id", lua_move_id);
+     add_dispatcher(movewindow);
+     add_dispatcher(killhovered);
+     add_dispatcher(setlayer);
+     add_dispatcher(setlayerwindow);
+     HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "is_active", lua_is_active);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "workspace_id_to_pos", lua_workspace_id_to_pos);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "workspace_id_to_layer", lua_workspace_id_to_layer);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "workspace_id_to_x", lua_workspace_id_to_x);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "workspace_id_to_y", lua_workspace_id_to_y);
++    HyprlandAPI::addLuaFunction(PHANDLE, "hyprtasking", "pos_to_workspace_id", lua_pos_to_workspace_id);
+ }
+ 
+ #define addConfigValue(T, config, descr, value) do { \

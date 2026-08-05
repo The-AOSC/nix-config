@@ -93,6 +93,7 @@ top @ {inputs, ...}: {
           (config.packages)
           christbashtree
           colorbindiff
+          hyprtasking
           mindustry150
           mindustry150-server
           mindustry150-wayland
@@ -113,6 +114,7 @@ top @ {inputs, ...}: {
       {
         christbashtree = final.callPackage ../packages/christbashtree.nix {};
         colorbindiff = final.callPackage ../packages/colorbindiff.nix {};
+        hyprtasking = final.callPackage ../packages/hyprtasking/package.nix {};
         mindustry150 = final.callPackage ../packages/mindustry/package.nix {};
         mindustry150-server = final.callPackage ../packages/mindustry/package.nix {
           enableClient = false;

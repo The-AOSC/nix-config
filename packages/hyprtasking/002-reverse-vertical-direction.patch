@@ -1,0 +1,13 @@
+diff --git a/src/layout/grid.cpp b/src/layout/grid.cpp
+index 9807234..93cd4f2 100644
+--- a/src/layout/grid.cpp
++++ b/src/layout/grid.cpp
+@@ -83,7 +83,7 @@ void HTLayoutGrid::refresh_workspace_cache(
+     std::vector<HTGridSlot> slots;
+     slots.reserve((size_t)LAYERS * ROWS * COLS);
+     for (int l = 0; l < LAYERS; l++)
+-        for (int y = 0; y < ROWS; y++)
++        for (int y = ROWS-1; y >= 0; y--)
+             for (int x = 0; x < COLS; x++)
+                 slots.push_back(HTGridSlot {l, x, y});
+ 
