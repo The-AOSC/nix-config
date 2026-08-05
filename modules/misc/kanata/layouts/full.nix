@@ -71,6 +71,8 @@
           "s" = layer-switch config.layers.simple.name;
           "m" = layer-switch config.layers.simple-mouse.name;
           "t" = layer-switch config.layers.taipo.name;
+          "y" = layer-switch config.layers.taipo.name;
+          "p" = layer-switch config.layers.taipo.name;
           "___" = "XX";
         };
       };
