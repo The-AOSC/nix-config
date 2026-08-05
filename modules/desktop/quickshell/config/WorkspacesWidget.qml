@@ -14,13 +14,14 @@ RowLayout {
     property var dim2: 5
     property var dim3: 5
     required property var screen
-    property var currentWorkspace: (Hyprland.monitorFor(screen).activeWorkspace?.id || 1) - 1
+    property var currentWorkspace: Hyprland.monitorFor(screen).activeWorkspace?.id || 0
+    property var activePos: Workspaces.workspaceGridMap[currentWorkspace] ?? [0, 0, 0]
     WorkspacesGroupWidget {
         currentWorkspace: root.currentWorkspace
-        offset: 0
-        step: dim2*dim3
+        activePos: root.activePos[0]
+        workspaces: Workspaces.gridWorkspaceMap ?? {}
         count: dim1
-        switchAnimation: "fade"
+        axis: "layer"
         Rectangle {
             radius: root.borderRadius
             Layout.fillHeight: true
@@ -35,10 +36,11 @@ RowLayout {
                 anchors.leftMargin: root.pad
                 anchors.rightMargin: root.pad
                 currentWorkspace: root.currentWorkspace
-                offset: Math.floor(root.currentWorkspace/5/5)*5*5
-                step: dim3
+                activePos: root.activePos[1]
+                workspaces: (Workspaces.gridWorkspaceMap ?? {})[root.activePos[0]] ?? {}
                 count: dim2
-                switchAnimation: "slidevert -100%"
+                axis: "y"
+                reverse: true
                 Rectangle {
                     radius: root.borderRadius
                     Layout.fillHeight: true
@@ -53,14 +55,13 @@ RowLayout {
                         anchors.leftMargin: root.pad
                         anchors.rightMargin: root.pad
                         currentWorkspace: root.currentWorkspace
-                        offset: Math.floor(root.currentWorkspace/5)*5
-                        step: 1
+                        activePos: root.activePos[2]
+                        workspaces: ((Workspaces.gridWorkspaceMap ?? {})[root.activePos[0]] ?? {})[root.activePos[1]] ?? {}
                         count: dim3
-                        switchAnimation: "slide"
+                        axis: "x"
                         WorkspaceWidget {
                             currentWorkspace: root.currentWorkspace
-                            offset: root.currentWorkspace
-                            step: 1
+                            workspaces: (((Workspaces.gridWorkspaceMap ?? {})[root.activePos[0]] ?? {})[root.activePos[1]] ?? {})[root.activePos[2]] ?? {}
                         }
                     }
                 }

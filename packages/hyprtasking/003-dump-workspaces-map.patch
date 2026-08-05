@@ -1,0 +1,64 @@
+diff --git a/src/main.cpp b/src/main.cpp
+index 8ce9a66..3bd4dad 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -9,6 +9,7 @@
+ #include <hyprland/src/devices/IKeyboard.hpp>
+ #include <hyprland/src/helpers/Monitor.hpp>
+ #include <hyprland/src/macros.hpp>
++#include <hyprland/src/managers/EventManager.hpp>
+ #include <hyprland/src/managers/KeybindManager.hpp>
+ #include <hyprland/src/layout/LayoutManager.hpp>
+ #include <hyprland/src/managers/PointerManager.hpp>
+@@ -931,6 +932,42 @@ static void init_config() {
+     // HyprlandAPI::reloadConfig();
+ }
+ 
++static std::string hyprctl_get_grid_workspaces_map(eHyprCtlOutputFormat format, std::string arg) {
++    (void)format; // always JSON
++    (void)arg;
++    const int ROWS = HTConfig::value<Config::INTEGER>("grid:rows");
++    const int COLS = HTConfig::value<Config::INTEGER>("grid:cols");
++    const int LAYERS = HTConfig::value<Config::INTEGER>("grid:layers");
++    if (ROWS <= 0 || COLS <= 0 || LAYERS <= 0) {
++        return "{}";
++    }
++    if (ht_manager == nullptr) {
++        return "{}";
++    }
++    PHTVIEW cursor_view = ht_manager->get_view_from_cursor();
++    if (cursor_view == nullptr) {
++        return "{}";
++    }
++    if (cursor_view->layout->layout_name() != "grid") {
++        return "{}";
++    }
++    auto *grid = static_cast<HTLayoutGrid*>(cursor_view->layout.get());
++    std::string res = "";
++    for (int l=0; l<LAYERS; l++) {
++        res += std::format("{}\"{}\":", l?",":"{", l);
++        for (int y=0; y<ROWS; y++) {
++            res += std::format("{}\"{}\":", y?",":"{", y);
++            for (int x=0; x<COLS; x++) {
++                res += std::format("{}\"{}\":{}", x?",":"{", x, grid->slot_workspace(l, x, y));
++            }
++            res += "}";
++        }
++        res += "}";
++    }
++    res += "}";
++    return res;
++}
++
+ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
+     PHANDLE = handle;
+ 
+@@ -950,6 +987,8 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
+     register_callbacks();
+     init_functions();
+     register_monitors();
++    HyprlandAPI::registerHyprCtlCommand(PHANDLE, (SHyprCtlCommand){.name="get_grid_workspaces_map",.exact=true,.fn=hyprctl_get_grid_workspaces_map});
++    g_pEventManager->postEvent(SHyprIPCEvent{"hyprtaskingworkspacerearange", ""});
+ 
+     Log::logger->log(LOG, "[Hyprtasking] Plugin initialized");
+ 

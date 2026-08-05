@@ -17,6 +17,7 @@ hyprlandPlugins.mkHyprlandPlugin {
   patches = [
     ./001-implement-absolute-navigation.patch
     ./002-reverse-vertical-direction.patch
+    ./003-dump-workspaces-map.patch
   ];
   nativeBuildInputs = [
     meson
