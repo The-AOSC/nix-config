@@ -109,7 +109,8 @@
       in ''
         (defsrc)
         ${config.extraConfig}
-        (defvirtualkeys ${lib.concatMapStringsSep "\n" (layer: lib.concatMapAttrsStringSep "\n" (_: vkey: "${vkey.name} ${vkey.action}") layer.virtualKeys) allLayers})
+        (deflocalkeys-linux lvl3 84 lvl5 195)
+        (defvirtualkeys ${lib.concatStringsSep "\n" (lib.sort lib.lessThan (lib.concatLists (lib.map (layer: lib.mapAttrsToList (_: vkey: "${vkey.name} ${vkey.action}") layer.virtualKeys) allLayers)))})
         (defchordsv2 ${lib.concatMapAttrsStringSep "" (bind: layers: ''
             (${bind}) (switch ${
               lib.concatMapAttrsStringSep "" (layer: action: ''

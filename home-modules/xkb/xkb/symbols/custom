@@ -6,3 +6,33 @@ xkb_symbols "layout_switch" {
     key <FK19> {[ISO_First_Group]};
     key <FK24> {[ISO_Last_Group]};
 };
+
+partial alphanumeric_keys
+xkb_symbols "smart_unshift" {
+    key <LVL3> {[ISO_Level3_Shift], type[group1]="ONE_LEVEL"};  // mod5, keycode 84 (92 in xkb)
+    //key <LVL5> {[ISO_Level5_Shift], type[group1]="ONE_LEVEL"};  // mod3, keycode 195 (203 in xkb)
+
+    //           -              S-              LV3-            LV3-S-          LV5-            LV5-S-          LV5-LV3-    LV5-LV3-S-
+    //key <TLDE> {[grave,         asciitilde,     grave,          grave,          asciitilde,     asciitilde,     VoidSymbol,   VoidSymbol], type[group1] = "EIGHT_LEVEL"};
+    key <TLDE> {[grave,         asciitilde,     grave,          grave           ], type[group1] = "FOUR_LEVEL"};
+    key <BKSL> {[backslash,     bar,            backslash,      backslash       ], type[group1] = "FOUR_LEVEL"};
+    key <AE01> {[1,             exclam,         1,              1               ], type[group1] = "FOUR_LEVEL"};
+    key <AE02> {[2,             at,             2,              2               ], type[group1] = "FOUR_LEVEL"};
+    key <AE03> {[3,             numbersign,     3,              3               ], type[group1] = "FOUR_LEVEL"};
+    key <AE04> {[4,             dollar,         4,              4               ], type[group1] = "FOUR_LEVEL"};
+    key <AE05> {[5,             percent,        5,              5               ], type[group1] = "FOUR_LEVEL"};
+    key <AE06> {[6,             asciicircum,    6,              6               ], type[group1] = "FOUR_LEVEL"};
+    key <AE07> {[7,             ampersand,      7,              7               ], type[group1] = "FOUR_LEVEL"};
+    key <AE08> {[8,             asterisk,       8,              8               ], type[group1] = "FOUR_LEVEL"};
+    key <AE09> {[9,             parenleft,      9,              9               ], type[group1] = "FOUR_LEVEL"};
+    key <AE10> {[0,             parenright,     0,              0               ], type[group1] = "FOUR_LEVEL"};
+    key <AE11> {[minus,         underscore,     minus,          minus           ], type[group1] = "FOUR_LEVEL"};
+    key <AE12> {[equal,         plus,           equal,          equal           ], type[group1] = "FOUR_LEVEL"};
+    key <AD11> {[bracketleft,   braceleft,      bracketleft,    bracketleft     ], type[group1] = "FOUR_LEVEL"};
+    key <AD12> {[bracketright,  braceright,     bracketright,   bracketright    ], type[group1] = "FOUR_LEVEL"};
+    key <AC10> {[semicolon,     colon,          semicolon,      semicolon       ], type[group1] = "FOUR_LEVEL"};
+    key <AC11> {[apostrophe,    quotedbl,       apostrophe,     apostrophe      ], type[group1] = "FOUR_LEVEL"};
+    key <AB08> {[comma,         less,           comma,          comma           ], type[group1] = "FOUR_LEVEL"};
+    key <AB09> {[period,        greater,        period,         period          ], type[group1] = "FOUR_LEVEL"};
+    key <AB10> {[slash,         question,       slash,          slash           ], type[group1] = "FOUR_LEVEL"};
+};

@@ -1,3 +1,4 @@
 ! include %S/evdev
 ! option = symbols
 custom:layout_switch = +custom(layout_switch)
+custom:smart_unshift = +custom(smart_unshift)

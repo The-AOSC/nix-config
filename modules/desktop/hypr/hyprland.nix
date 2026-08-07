@@ -49,7 +49,7 @@
           };
           input = {
             kb_layout = "us, ru";
-            kb_options = "custom:layout_switch"; # see xkb module
+            kb_options = "custom:layout_switch,custom:smart_unshift"; # see xkb module
             numlock_by_default = true;
             repeat_rate = 50;
             repeat_delay = 500;
@@ -116,13 +116,21 @@
         ];
         bind = lib.concatLists (
           lib.mapAttrsToList (hotkey: value:
-            lib.map ({bind, ...} @ opts: {
-              _args = [
-                hotkey
-                (lib.generators.mkLuaInline bind)
-                (lib.removeAttrs opts ["bind"])
-              ];
-            }) (lib.toList value)) {
+            lib.concatLists (lib.map ({bind, ...} @ opts:
+              (lib.singleton {
+                _args = [
+                  hotkey
+                  (lib.generators.mkLuaInline bind)
+                  (lib.removeAttrs opts ["bind"])
+                ];
+              })
+              ++ (lib.optional (lib.hasInfix "SHIFT" hotkey) {
+                _args = [
+                  "MOD5 + ${hotkey}" # ignore ISO_Level3_Shift
+                  (lib.generators.mkLuaInline bind)
+                  (lib.removeAttrs opts ["bind"])
+                ];
+              })) (lib.toList value))) {
             # speakers
             "XF86AudioMute" = {
               bind = ''hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")'';

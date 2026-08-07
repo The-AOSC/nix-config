@@ -24,11 +24,18 @@
                (on-physical-idle ${toString (repress-timeout + chord-timeout)} release-vkey ${flag-vkey}))
       '';
     };
+    smart-unshift = key: ''
+      (switch ((or nop0
+                   nop4
+                   (input virtual ${config.subLayers."!stub".virtualKeys.lsft.name})
+                   (input virtual ${config.subLayers."!stub".virtualKeys.rsft.name}))) (multi lvl3 ${key}) break
+              () ${key} break)
+    '';
     base =
       {
         "aux1" = "bspc";
         "aux2" = "del";
-        "aux3".raw = tap-hold "rpt-any" "(layer-while-held ${config.subLayers.stub.name})";
+        "aux3".raw = tap-hold "rpt-any" "(layer-while-held ${config.subLayers."!stub".name})";
         # ===========
         "^i         " = "i";
         "   ^m      " = "n";
@@ -54,14 +61,14 @@
         "vi       vp" = "d";
         # ===========
         #"^i vm      " = "";
-        "   ^m vr   " = "\\";
+        "   ^m vr   " = smart-unshift "\\";
         #"      ^r vp" = "";
         "^i    vr   " = "k";
         "   ^m    vp" = "j";
         "^i       vp" = "w";
         # ===========
         #"vi ^m      " = "";
-        "   vm ^r   " = "/";
+        "   vm ^r   " = smart-unshift "/";
         #"      vr ^p" = "";
         "vi    ^r   " = "v";
         "   vm    ^p" = "x";
@@ -72,42 +79,42 @@
         "^i ^m ^r   " = "tab";
         "   ^m ^r ^p" = "esc";
         # ===========
-        "^i vm      " = ".";
-        "^i vm    vp" = ",";
-        "^i vm vr   " = "'";
+        "^i vm      " = smart-unshift ".";
+        "^i vm    vp" = smart-unshift ",";
+        "^i vm vr   " = smart-unshift "'";
         "^i    vr vp" = "S-'";
-        "^i vm vr vp" = "`";
+        "^i vm vr vp" = smart-unshift "`";
         "vi vm vr vp" = "S-`";
         "^i    ^r vp" = "S-/";
         "^i ^m ^r vp" = "S-1";
         "^i ^m    vp" = "S-2";
-        "      vr ^p" = ";";
+        "      vr ^p" = smart-unshift ";";
         "   vm vr ^p" = "S-;";
         "vi vm    vp" = "S-3";
         "vi    vr vp" = "S-8";
         # ===========
-        "aux1 vm      " = "1";
-        "aux1    vr   " = "2";
-        "aux1       vp" = "3";
-        "aux1 vm vr   " = "4";
-        "aux1    vr vp" = "5";
-        "aux1 ^m      " = "6";
-        "aux1    ^r   " = "7";
-        "aux1       ^p" = "8";
-        "aux1 ^m ^r   " = "9";
-        "aux1    ^r ^p" = "0";
+        "aux1 vm      " = smart-unshift "1";
+        "aux1    vr   " = smart-unshift "2";
+        "aux1       vp" = smart-unshift "3";
+        "aux1 vm vr   " = smart-unshift "4";
+        "aux1    vr vp" = smart-unshift "5";
+        "aux1 ^m      " = smart-unshift "6";
+        "aux1    ^r   " = smart-unshift "7";
+        "aux1       ^p" = smart-unshift "8";
+        "aux1 ^m ^r   " = smart-unshift "9";
+        "aux1    ^r ^p" = smart-unshift "0";
         # ===========
-        "aux1 vm    vp" = "-";
+        "aux1 vm    vp" = smart-unshift "-";
         "aux1 vm vr vp" = "S--";
         "aux1 ^m    ^p" = "S-=";
-        "aux1 ^m ^r ^p" = "=";
+        "aux1 ^m ^r ^p" = smart-unshift "=";
         # ===========
         "aux2 vm      " = "S-9";
-        "aux2    vr   " = "[";
+        "aux2    vr   " = smart-unshift "[";
         "aux2       vp" = "S-[";
         "aux2 vm vr   " = "S-,";
         "aux2 ^m      " = "S-0";
-        "aux2    ^r   " = "]";
+        "aux2    ^r   " = smart-unshift "]";
         "aux2       ^p" = "S-]";
         "aux2 ^m ^r   " = "S-.";
         # ===========
@@ -129,12 +136,11 @@
         "vi ^m ^r vp".raw = let
           mkLock = data: let
             nop = lib.elemAt data 0;
-            vkey = config.virtualKeys.${lib.elemAt data 1}.name;
-          in
-            lib.optionalString (config.virtualKeys ? ${lib.elemAt data 1}) ''
-              (${nop}) (on-press press-vkey ${vkey}) fallthrough
-              ((not ${nop})) (on-press release-vkey ${vkey}) fallthrough
-            '';
+            vkey = config.subLayers."!stub".virtualKeys.${lib.elemAt data 1}.name;
+          in ''
+            (${nop}) (on-press press-vkey ${vkey}) fallthrough
+            ((not ${nop})) (on-press release-vkey ${vkey}) fallthrough
+          '';
         in ''
           (switch ${lib.concatMapStringsSep "\n" mkLock [
             ["nop0" "lsft"]
@@ -217,8 +223,8 @@
     imports = [(mkLayer base)];
     subLayers.controls = mkLayer controls;
     subLayers.functions = mkLayer functions;
-    subLayers.stub = {};
-    virtualKeys =
+    # those virtualkeys need to be defined early, so add ! to layer name to make it appear earlier
+    subLayers."!stub".virtualKeys =
       {
         left = {
           lctl.action = "lctl";
@@ -250,7 +256,7 @@ in {
     ];
     config.unlock-mods-action = ''
       (multi ${
-        lib.concatMapStringsSep "\n" (vkey: "(on-press release-vkey ${config.virtualKeys.${vkey}.name})")
+        lib.concatMapStringsSep "\n" (vkey: "(on-press release-vkey ${config.subLayers."!stub".virtualKeys.${vkey}.name})")
         ["lctl" "lalt" "lmet" "rsft" "rctl" "ralt" "rmet"]
       })
     '';
