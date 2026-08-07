@@ -3,7 +3,20 @@
     hyprland.includes = [aspects.hyprlock];
     hyprlock = {
       nixos = {
-        security.pam.services.hyprlock = {};
+        security.pam.services.hyprlock = {
+          config,
+          lib,
+          ...
+        }: {
+          # hyprlock starts pam conversation before key is inserted (927e09fb7dac85df8e21c64989b65bcd3383d67e)
+          rules.auth = {
+            rootskipu2f.order = config.rules.auth.unix.order + 1;
+            u2f.order = config.rules.auth.unix.order + 2;
+            unix.control = lib.mkForce "required";
+            rootskipu2f.control = lib.mkForce "sufficient";
+          };
+          u2fAuthControl = "sufficient";
+        };
       };
       homeManager = {
         config,

@@ -66,7 +66,6 @@
       gimp
       grim
       imagemagick
-      jmtpfs
       jq
       killall
       man-pages

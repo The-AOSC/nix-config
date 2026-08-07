@@ -22,14 +22,12 @@
           quiet-boot = false;
         };
         etc = {
-          generic-machine-id = false;
           kicksecure-gitconfig = false;
           kicksecure-issue = false;
           no-root-securetty = false; # allow local root login
         };
         kernel = {
           amd-iommu-force-isolation = false;
-          lockdown = false; # hibernation
           binfmt-misc = lib.mkIf (with config.boot.binfmt; ((emulatedSystems != []) || (registrations != {}))) true;
         };
         network = {

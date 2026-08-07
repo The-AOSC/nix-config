@@ -1,16 +1,16 @@
 diff --git a/src/main.cpp b/src/main.cpp
-index 8ce9a66..3bd4dad 100644
+index d31f9c4..18b96a3 100644
 --- a/src/main.cpp
 +++ b/src/main.cpp
 @@ -9,6 +9,7 @@
  #include <hyprland/src/devices/IKeyboard.hpp>
- #include <hyprland/src/helpers/Monitor.hpp>
+ #include <hyprland/src/output/Monitor.hpp>
  #include <hyprland/src/macros.hpp>
 +#include <hyprland/src/managers/EventManager.hpp>
  #include <hyprland/src/managers/KeybindManager.hpp>
  #include <hyprland/src/layout/LayoutManager.hpp>
- #include <hyprland/src/managers/PointerManager.hpp>
-@@ -931,6 +932,42 @@ static void init_config() {
+ #include <hyprland/src/pointer/PointerManager.hpp>
+@@ -933,6 +934,42 @@ static void init_config() {
      // HyprlandAPI::reloadConfig();
  }
  
@@ -53,7 +53,7 @@ index 8ce9a66..3bd4dad 100644
  APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
      PHANDLE = handle;
  
-@@ -950,6 +987,8 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
+@@ -952,6 +989,8 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
      register_callbacks();
      init_functions();
      register_monitors();

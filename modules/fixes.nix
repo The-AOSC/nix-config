@@ -2,9 +2,11 @@
   flake.aspects.base.nixos.nixpkgs.overlays = [
     (final: prev: {
       kanata = prev.kanata.overrideAttrs (old: {
-        patches = old.patches or [] ++ [
-          ../patches/kanata/fix-chords.patch
-        ];
+        patches =
+          old.patches or []
+          ++ [
+            ../patches/kanata/fix-chords.patch
+          ];
       });
       nh-unwrapped = prev.nh-unwrapped.override (args: {
         rustPlatform =

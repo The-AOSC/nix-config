@@ -11,10 +11,11 @@ hyprlandPlugins.mkHyprlandPlugin {
   src = fetchFromGitHub {
     owner = "raybbian";
     repo = "hyprtasking";
-    rev = "b3e1ae4e48d57fc69a03db73d8dc2496628e6633";
-    hash = "sha256-W+WX/oTKSzqdX6zoaIxRyHQv5Jdd/z/6JXR7Da1nfKY=";
+    rev = "a3efa15ada7318daa6fcf55c361dd7bdef15df3e";
+    hash = "sha256-KCJM6c+XRUO9VWP9KUUWJCMxxSPaiWMZNMOdnO0x3vk=";
   };
   patches = [
+    ./update-for-v0.56.1.patch
     ./001-implement-absolute-navigation.patch
     ./002-reverse-vertical-direction.patch
     ./003-dump-workspaces-map.patch

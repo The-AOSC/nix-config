@@ -1,8 +1,8 @@
 diff --git a/src/main.cpp b/src/main.cpp
-index b81bcb4..8ce9a66 100644
+index 61152c2..d31f9c4 100644
 --- a/src/main.cpp
 +++ b/src/main.cpp
-@@ -220,6 +220,23 @@ DISPATCHER(move) {
+@@ -221,6 +221,23 @@ DISPATCHER(move) {
      return {};
  }
  
@@ -26,7 +26,7 @@ index b81bcb4..8ce9a66 100644
  DISPATCHER(movewindow) {
      if (ht_manager == nullptr)
          return {.success = false, .error = "ht_manager is null"};
-@@ -727,16 +744,137 @@ static int lua_is_active(lua_State* L) {
+@@ -729,16 +746,137 @@ static int lua_is_active(lua_State* L) {
      return 1;
  }
  

@@ -77,7 +77,7 @@
           };
           plugin.hyprtasking = {
             layout = "grid";
-            bg_color = (lib.generators.mkLuaInline ''tonumber("0x" .. colors.baseAlpha)'');
+            bg_color = lib.generators.mkLuaInline ''tonumber("0x" .. colors.baseAlpha)'';
             gap_size = 4;
             border_size = 2;
             grid.rows = 5;
