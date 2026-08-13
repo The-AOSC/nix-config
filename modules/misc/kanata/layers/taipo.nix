@@ -175,6 +175,8 @@
       "   vm   " = "XX";
       "      ^r" = "bru";
       "      vr" = "brdn";
+      "   ^m ^r" = "powr";
+      "   vm vr" = "prnt";
       "^i ^m ^r" = "powr";
       "vi vm vr" = "prnt";
       "^p" = "XX";
