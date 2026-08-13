@@ -18,6 +18,8 @@
     relativenumber = true;
     # no line wrapping
     wrap = false;
+    # wrap lines on spaces when wrapping enabled
+    linebreak = true;
     # show tabs, nb-spaces, trailing spaces as ">", "+" and "-"
     list = true;
     # time until swap update & gitgutter update time
