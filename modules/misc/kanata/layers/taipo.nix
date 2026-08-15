@@ -10,27 +10,42 @@
     chord-timeout = 200;
     one-shot = action: "(one-shot-release ${toString one-shot-timeout} ${action})";
     tap-hold = tap: hold: "(tap-hold ${toString (repress-timeout + chord-timeout)} ${toString hold-timeout} ${tap} ${hold})";
-    tap-hold-fixed-chord = tap-vkey: flag-vkey: hold: {
+    tap-hold-fixed-chord = tap-vkey: flag-vkey: hold: unshift-vkey: {
       raw = ''
         (multi (one-shot-pause-processing 1)
-               (switch ((input virtual ${flag-vkey})) (on-press press-vkey ${tap-vkey}) break
+          (switch ${
+          lib.optionalString (lib.isString unshift-vkey) ''
+            ((and (input virtual ${flag-vkey})
+                  (or nop0
+                      nop4
+                      (input virtual ${config.subLayers."!stub".virtualKeys.lsft.name})
+                      (input virtual ${config.subLayers."!stub".virtualKeys.rsft.name})))) (on-press press-vkey ${unshift-vkey}) break
+          ''
+        }
+                       ((input virtual ${flag-vkey})) (on-press press-vkey ${tap-vkey}) break
                        () ${tap-hold ''
             (multi (one-shot-pause-processing 1)
-                   (on-press tap-vkey ${tap-vkey}))
+                   (switch ${
+              lib.optionalString (lib.isString unshift-vkey) ''
+                ((or nop0
+                     nop4
+                     (input virtual ${config.subLayers."!stub".virtualKeys.lsft.name})
+                     (input virtual ${config.subLayers."!stub".virtualKeys.rsft.name}))) (on-press tap-vkey ${unshift-vkey}) break
+              ''
+            }
+                           () (on-press tap-vkey ${tap-vkey}) break)
+                   )
           ''
           hold} break)
                (on-release release-vkey ${tap-vkey})
+               ${lib.optionalString (lib.isString unshift-vkey) ''(on-release release-vkey ${unshift-vkey})''}
                (on-press press-vkey ${flag-vkey})
                (on-physical-idle ${toString (repress-timeout + chord-timeout)} release-vkey ${flag-vkey}))
       '';
     };
-    smart-unshift = key: ''
-      (switch ((or nop0
-                   nop4
-                   (input virtual ${config.subLayers."!stub".virtualKeys.lsft.name})
-                   (input virtual ${config.subLayers."!stub".virtualKeys.rsft.name}))) (multi lvl3 ${key}) break
-              () ${key} break)
-    '';
+    smart-unshift = key: {
+      unshift = key;
+    };
     base =
       {
         "aux1" = "bspc";
@@ -205,17 +220,29 @@
       "aux3" = "XX";
     };
     isChord = bind: lib.hasInfix " " (lib.trim bind);
-    isBrokenChord = bind: action: (isChord bind) && (lib.isString action);
+    isBrokenChord = bind: action: (isChord bind) && ((lib.isString action) || (action?unshift));
     convertBind = lib.replaceStrings ["^i" "^m" "^r" "^p" "vi" "vm" "vr" "vp" "aux1" "aux2" "aux3"] src-layout;
     mkBinds = binds: lib.mapAttrs' (bind: action: lib.nameValuePair (convertBind bind) (action.raw or (tap-hold action "XX"))) binds;
     mkFixedChords = binds: {config, ...}: {
-      virtualKeys =
-        lib.concatMapAttrs (bind: action: {
-          "${convertBind bind}".action = action;
+      virtualKeys = lib.concatMapAttrs (bind: action:
+        {
+          "${convertBind bind}".action =
+            if lib.isAttrs action
+            then action.unshift
+            else action;
           "flag-${convertBind bind}".action = "nop9";
-        })
-        binds;
-      binds = mkBinds (lib.mapAttrs (bind: _: tap-hold-fixed-chord config.virtualKeys.${convertBind bind}.name config.virtualKeys."flag-${convertBind bind}".name "XX") binds);
+        }
+        // (lib.optionalAttrs (lib.isAttrs action) {
+          "${convertBind bind}-unshift".action = "L3S-${action.unshift}";
+        }))
+      binds;
+      binds = mkBinds (lib.mapAttrs (bind: action:
+        tap-hold-fixed-chord config.virtualKeys.${convertBind bind}.name config.virtualKeys."flag-${convertBind bind}".name "XX" (
+          if lib.isAttrs action
+          then config.virtualKeys."${convertBind bind}-unshift".name
+          else null
+        ))
+      binds);
     };
     mkLayer = binds: {...}: {
       imports = [(mkFixedChords (lib.filterAttrs isBrokenChord binds))];

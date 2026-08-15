@@ -1,0 +1,26 @@
+diff --git a/keyberon/src/key_code.rs b/keyberon/src/key_code.rs
+index 60aed7e..004ff94 100644
+--- a/keyberon/src/key_code.rs
++++ b/keyberon/src/key_code.rs
+@@ -789,7 +789,7 @@ impl KeyCode {
+         use KeyCode::*;
+         matches!(
+             self,
+-            LShift | RShift | LCtrl | RCtrl | LAlt | RAlt | LGui | RGui
++            LShift | RShift | LCtrl | RCtrl | LAlt | RAlt | LGui | RGui | K0xBF | Execute
+         )
+     }
+ }
+diff --git a/parser/src/cfg/mod.rs b/parser/src/cfg/mod.rs
+index 569f180..3ffd841 100644
+--- a/parser/src/cfg/mod.rs
++++ b/parser/src/cfg/mod.rs
+@@ -1802,6 +1802,8 @@ fn parse_key_list(expr: &SExpr, s: &ParserState, label: &str) -> Result<Vec<OsCo
+ }
+ 
+ static KEYMODI: &[(&str, KeyCode)] = &[
++    ("L3S-", KeyCode::K0xBF),
++    ("L5S-", KeyCode::Execute),
+     ("S-", KeyCode::LShift),
+     ("‹⇧", KeyCode::LShift),
+     ("⇧›", KeyCode::RShift),

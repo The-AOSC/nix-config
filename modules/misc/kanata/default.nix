@@ -154,6 +154,17 @@ in {
     };
     den.aspects.kanata = {host, ...}: {
       nixos = lib.optionalAttrs (host.kanata.keyboards != {}) {
+        nixpkgs.overlays = [
+          (final: prev: {
+            kanata = prev.kanata.overrideAttrs (old: {
+              patches =
+                old.patches or []
+                ++ [
+                  ../../../patches/kanata/l3s-l5s-mods.patch
+                ];
+            });
+          })
+        ];
         services.kanata = {
           enable = true;
           keyboards =
