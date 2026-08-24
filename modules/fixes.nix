@@ -27,6 +27,15 @@
                 });
           };
       });
+      translate-shell = prev.translate-shell.overrideAttrs (old: {
+        patches = old.patches or [] ++ [
+          (final.fetchpatch2 {
+            # https://github.com/soimort/translate-shell/pull/550
+            url = "https://github.com/soimort/translate-shell/commit/b8e57d7446356b7c659e335bf1e652f9f09682bf.patch?full_index=1";
+            hash = "sha256-6StdSPAOD/2VLv5vPlRE5zLW9+5LgRc6l0kyPe1YyPM=";
+          })
+        ];
+      });
       wine-ge-fixed = final.wine-ge.overrideAttrs (finalAttrs: old: {
         patches =
           old.patches or []
