@@ -1,9 +1,9 @@
 {lib, ...}: let
   mkTaipo = hand: src-layout: {config, ...}: let
-    shift = key: "(multi ${{
-      left = "lsft";
-      right = "rsft";
-    }."${hand}"} ${key})";
+    shift = key: "${{
+      left = "S";
+      right = "RS";
+    }."${hand}"}-${key}";
     one-shot-timeout = 5000;
     repress-timeout = 200;
     hold-timeout = 300;
@@ -120,21 +120,21 @@
         "aux1    ^r ^p" = smart-unshift "0";
         # ===========
         "aux1 vm    vp" = smart-unshift "-";
-        "aux1 vm vr vp" = "S--";
-        "aux1 ^m    ^p" = "S-=";
+        "aux1 vm vr vp" = shift "-";
+        "aux1 ^m    ^p" = shift "=";
         "aux1 ^m ^r ^p" = smart-unshift "=";
         # ===========
-        "aux2 vm      " = "S-9";
+        "aux2 vm      " = shift "9";
         "aux2    vr   " = smart-unshift "[";
-        "aux2       vp" = "S-[";
-        "aux2 vm vr   " = "S-,";
-        "aux2 ^m      " = "S-0";
+        "aux2       vp" = shift "[";
+        "aux2 vm vr   " = shift ",";
+        "aux2 ^m      " = shift "0";
         "aux2    ^r   " = smart-unshift "]";
-        "aux2       ^p" = "S-]";
-        "aux2 ^m ^r   " = "S-.";
+        "aux2       ^p" = shift "]";
+        "aux2 ^m ^r   " = shift ".";
         # ===========
-        "aux2 vm vr vp" = "S-\\";
-        "aux2 ^m ^r ^p" = "S-7";
+        "aux2 vm vr vp" = shift "\\";
+        "aux2 ^m ^r ^p" = shift "7";
         # ===========
         "aux3 vm      " = "left";
         "aux3    vr   " = "down";
@@ -145,9 +145,9 @@
         "aux3 vm vr   " = "pgdn";
         "aux3    vr vp" = "pgup";
         # ===========
-        "aux3 ^m ^r   " = "S-6";
-        "aux3 ^m ^r ^p" = "S-5";
-        "aux3    ^r ^p" = "S-4";
+        "aux3 ^m ^r   " = shift "6";
+        "aux3 ^m ^r ^p" = shift "5";
+        "aux3    ^r ^p" = shift "4";
         "vi ^m ^r vp".raw = let
           mkLock = data: let
             nop = lib.elemAt data 0;
