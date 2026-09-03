@@ -9,12 +9,6 @@
       desktop = true;
       home = true;
     };
-    boot.kernelPatches = [
-      {
-        name = "fix-headphones-audio";
-        patch = ../../../patches/linux/fix-headphones-audio.patch;
-      }
-    ];
     time.timeZone = "Asia/Yekaterinburg";
     fileSystems."/persist".neededForBoot = true;
     fileSystems."/media".neededForBoot = true;

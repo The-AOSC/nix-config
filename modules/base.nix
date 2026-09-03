@@ -23,6 +23,7 @@
             "/etc/machine-id"
           ];
         };
+        boot.kernelPackages = pkgs.linuxPackages_latest;
         networking = {
           networkmanager.enable = true;
           firewall = {
