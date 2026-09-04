@@ -133,7 +133,8 @@
               hello32 = "${pkgs.pkgsCross.mingw32.hello}/bin/hello.exe";
               hello64 = "${pkgs.pkgsCross.mingwW64.hello}/bin/hello.exe";
             in ''
-              TIMEOUT = ${builtins.toString timeout}
+              import datetime
+              TIMEOUT = datetime.timedelta(seconds=${builtins.toString timeout})
               machine.wait_for_unit("multi-user.target")
               ${lib.concatMapStrings (hello: ''
                 output = machine.succeed("wine ${hello}", timeout=TIMEOUT)
@@ -156,7 +157,8 @@
               hello32 = "${pkgs.pkgsCross.mingw32.hello}/bin/hello.exe";
               hello64 = "${pkgs.pkgsCross.mingwW64.hello}/bin/hello.exe";
             in ''
-              TIMEOUT = ${builtins.toString timeout}
+              import datetime
+              TIMEOUT = datetime.timedelta(seconds=${builtins.toString timeout})
               machine.wait_for_x()
               ${lib.concatMapStrings (hello: let
                 hello-bat = pkgs.writeText "hello.bat" ''

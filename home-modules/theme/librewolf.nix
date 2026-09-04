@@ -23,7 +23,7 @@
                   "${pkgs.nur.repos.rycee.firefox-addons.vimium.addonId}".settings = {
                     # TODO: remove hardcoded color definitions after upstream fix
                     settings.userDefinedLinkHintCss =
-                      builtins.readFile "${inputs.catppuccin-vimium}/themes/catppuccin-vimium-${flavor}.css"
+                      builtins.readFile "${inputs.catppuccin-vimium}/themes/vimium/catppuccin-vimium-${flavor}.css"
                       + ''
                         /* Catppuccin ${flavor} Palette Fix */
                         :root {
