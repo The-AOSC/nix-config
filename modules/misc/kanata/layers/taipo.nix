@@ -252,42 +252,39 @@
     imports = [(mkLayer base)];
     subLayers.controls = mkLayer controls;
     subLayers.functions = mkLayer functions;
-    # those virtualkeys need to be defined early, so add ! to layer name to make it appear earlier
-    subLayers."!stub".virtualKeys =
-      {
-        left = {
-          lctl.action = "lctl";
-          lsft.action = "lsft";
-          lalt.action = "lalt";
-          lmet.action = "lmet";
-        };
-        right = {
-          rctl.action = "rctl";
-          rsft.action = "rsft";
-          ralt.action = "ralt";
-          rmet.action = "rmet";
-        };
-      }."${hand}";
   };
 in {
   lib.kanata.layers.taipo = {
-    left,
-    right,
+    left ? null,
+    right ? null,
   }: {config, ...}: {
     options.unlock-mods-action = lib.mkOption {
       type = lib.types.str;
       description = "Action that unlocks mods locked with taipo layer";
       readOnly = true;
     };
-    imports = [
-      (mkTaipo "left" left)
-      (mkTaipo "right" right)
+    imports = lib.concatLists [
+      (lib.optional (left != null) (mkTaipo "left" left))
+      (lib.optional (right != null) (mkTaipo "right" right))
     ];
-    config.unlock-mods-action = ''
-      (multi ${
-        lib.concatMapStringsSep "\n" (vkey: "(on-press release-vkey ${config.subLayers."!stub".virtualKeys.${vkey}.name})")
-        ["lctl" "lalt" "lmet" "rsft" "rctl" "ralt" "rmet"]
-      })
-    '';
+    config = {
+      # those virtualkeys need to be defined early, so add ! to layer name to make it appear earlier
+      subLayers."!stub".virtualKeys = {
+        lctl.action = "lctl";
+        lsft.action = "lsft";
+        lalt.action = "lalt";
+        lmet.action = "lmet";
+        rctl.action = "rctl";
+        rsft.action = "rsft";
+        ralt.action = "ralt";
+        rmet.action = "rmet";
+      };
+      unlock-mods-action = ''
+        (multi ${
+          lib.concatMapStringsSep "\n" (vkey: "(on-press release-vkey ${config.subLayers."!stub".virtualKeys.${vkey}.name})")
+          ["lctl" "lalt" "lmet" "rsft" "rctl" "ralt" "rmet"]
+        })
+      '';
+    };
   };
 }
