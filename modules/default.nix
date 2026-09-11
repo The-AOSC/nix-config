@@ -99,6 +99,7 @@ top @ {inputs, ...}: {
           mindustry150-wayland
           nix-flake-add-roots
           nixvim-configured
+          rofi-pass-wayland
           stylus
           wine-ge-fixed
           wine-staging-fixed
@@ -125,6 +126,7 @@ top @ {inputs, ...}: {
         };
         nixvim-configured = final.callPackage ../packages/nixvim/package.nix {inherit (inputs.nixvim.inputs) nixpkgs;};
         nix-flake-add-roots = final.callPackage ../packages/nix-flake-add-roots {};
+        rofi-pass-wayland = final.callPackage ../packages/rofi-pass-wayland.nix {};
         stylus = final.callPackage ../packages/stylus {
           stylus-nur = final.nur.repos.rycee.firefox-addons.stylus;
         };
