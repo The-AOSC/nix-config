@@ -13,11 +13,11 @@
   config = lib.mkIf config.modules.rofi.enable {
     programs.rofi = {
       enable = true;
-      terminal = "${config.programs.kitty.package}/bin/kitty --single-instance";
-      modes = [
-        "drun"
-      ];
-      extraConfig = {
+      settings = {
+        terminal = "${config.programs.kitty.package}/bin/kitty --single-instance";
+        modes = [
+          "drun"
+        ];
         show-icons = true;
       };
     };

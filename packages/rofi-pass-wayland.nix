@@ -18,7 +18,6 @@
   wl-clipboard,
   wtype,
 }:
-
 stdenv.mkDerivation {
   pname = "rofi-pass";
   version = "2.0.2-unstable-2024-06-16";
@@ -30,7 +29,7 @@ stdenv.mkDerivation {
     hash = "sha256-vLkbrwvD25ZLHtqMESjV9zyBwcOFs54ZI0JbXGeVBJE=";
   };
 
-  nativeBuildInputs = [ makeBinaryWrapper ];
+  nativeBuildInputs = [makeBinaryWrapper];
 
   dontBuild = true;
 
@@ -46,23 +45,21 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  wrapperPath = lib.makeBinPath (
-    [
-      coreutils
-      findutils
-      gawk
-      gnugrep
-      gnused
-      libnotify
-      pwgen
-      qrencode
-      rofi
-      util-linuxMinimal
-      (pass-wayland.withExtensions (ext: [ ext.pass-otp ]))
-      wl-clipboard
-      wtype
-    ]
-  );
+  wrapperPath = lib.makeBinPath [
+    coreutils
+    findutils
+    gawk
+    gnugrep
+    gnused
+    libnotify
+    pwgen
+    qrencode
+    rofi
+    util-linuxMinimal
+    (pass-wayland.withExtensions (ext: [ext.pass-otp]))
+    wl-clipboard
+    wtype
+  ];
 
   fixupPhase = ''
     runHook preFixup
@@ -75,7 +72,7 @@ stdenv.mkDerivation {
     runHook postFixup
   '';
 
-  passthru.updateScript = unstableGitUpdater { };
+  passthru.updateScript = unstableGitUpdater {};
 
   meta = {
     description = "Script to make rofi work with password-store";
@@ -83,6 +80,6 @@ stdenv.mkDerivation {
     homepage = "https://github.com/Seme4eg/rofi-pass-wayland";
     license = lib.licenses.mit;
     platforms = with lib.platforms; linux;
-    maintainers = [ ];
+    maintainers = [];
   };
 }
